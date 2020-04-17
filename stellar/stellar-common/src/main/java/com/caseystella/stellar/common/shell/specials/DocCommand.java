@@ -1,19 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one
- *  or more contributor license agreements.  See the NOTICE file
- *  distributed with this work for additional information
- *  regarding copyright ownership.  The ASF licenses this file
- *  to you under the Apache License, Version 2.0 (the
- *  "License"); you may not use this file except in compliance
- *  with the License.  You may obtain a copy of the License at
+ * Licensed to the Apache Software Foundation (ASF) under one or more contributor license
+ * agreements. See the NOTICE file distributed with this work for additional information regarding
+ * copyright ownership. The ASF licenses this file to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the License. You may obtain a
+ * copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  *
  */
 package com.caseystella.stellar.common.shell.specials;
@@ -31,8 +28,7 @@ import java.util.stream.StreamSupport;
 import static com.caseystella.stellar.common.shell.StellarResult.error;
 
 /**
- * A special command that allows a user to request doc string
- * about a Stellar function.
+ * A special command that allows a user to request doc string about a Stellar function.
  *
  * For example `?TO_STRING` will output the docs for the function `TO_STRING`
  */
@@ -58,16 +54,16 @@ public class DocCommand implements SpecialCommand {
     String functionName = StringUtils.substring(command, 1);
 
     // grab any docs for the given function
-    Spliterator<StellarFunctionInfo> fnIterator = executor.getFunctionResolver().getFunctionInfo().spliterator();
-    Optional<StellarFunctionInfo> functionInfo = StreamSupport
-            .stream(fnIterator, false)
-            .filter(info -> StringUtils.equals(functionName, info.getName()))
-            .findFirst();
+    Spliterator<StellarFunctionInfo> fnIterator =
+        executor.getFunctionResolver().getFunctionInfo().spliterator();
+    Optional<StellarFunctionInfo> functionInfo = StreamSupport.stream(fnIterator, false)
+        .filter(info -> StringUtils.equals(functionName, info.getName())).findFirst();
 
-    if(functionInfo.isPresent()) {
+    if (functionInfo.isPresent()) {
       result = StellarResult.success(docFormat(functionInfo.get()));
     } else {
-      result = StellarResult.error(String.format("No docs available for function '%s'", functionName));
+      result =
+          StellarResult.error(String.format("No docs available for function '%s'", functionName));
     }
 
     return result;
@@ -75,6 +71,7 @@ public class DocCommand implements SpecialCommand {
 
   /**
    * Formats the Stellar function info object into a readable string.
+   * 
    * @param info The stellar function info object.
    * @return A readable string.
    */
@@ -88,9 +85,9 @@ public class DocCommand implements SpecialCommand {
     docString.append(String.format("Description: %-60s\n\n", info.getDescription()));
 
     // params
-    if(info.getParams().length > 0) {
+    if (info.getParams().length > 0) {
       docString.append("Arguments:\n");
-      for(String param : info.getParams()) {
+      for (String param : info.getParams()) {
         docString.append(String.format("\t%-60s\n", param));
       }
       docString.append("\n");

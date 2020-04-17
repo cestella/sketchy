@@ -1,9 +1,9 @@
 /**
  * Licensed to the Apache Software Foundation (ASF) under one or more contributor license
- * agreements.  See the NOTICE file distributed with this work for additional information regarding
- * copyright ownership.  The ASF licenses this file to you under the Apache License, Version 2.0
- * (the "License"); you may not use this file except in compliance with the License.  You may obtain
- * a copy of the License at
+ * agreements. See the NOTICE file distributed with this work for additional information regarding
+ * copyright ownership. The ASF licenses this file to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the License. You may obtain a
+ * copy of the License at
  *
  * http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -37,12 +37,10 @@ public class TextFunctions {
     tagsList = ImmutableList.copyOf(tags);
   }
 
-  @Stellar(name = "LANGS",
-      namespace = "FUZZY",
+  @Stellar(name = "LANGS", namespace = "FUZZY",
       description = "Returns a list of IETF BCP 47 available to the system, such as en, fr, de. "
           + "These values may be passed to FUZZY_SCORE",
-      params = {},
-      returns = "A list of IEF BCP 47 language tag strings")
+      params = {}, returns = "A list of IEF BCP 47 language tag strings")
   /**
    * GetAvailableLanaguageTags exposes IEF BCP 47 lanaguage tags available to the system
    */
@@ -54,25 +52,17 @@ public class TextFunctions {
     }
   }
 
-  @Stellar(name = "SCORE",
-      namespace = "FUZZY",
-      description =
-          "Returns the Fuzzy Score which indicates the similarity score between two Strings "
-              +
-              "One point is given for every matched character. Subsequent matches yield two bonus "
-              +
-              "points. A higher score indicates a higher similarity",
-      params = {
-          "string - The full term that should be matched against",
+  @Stellar(name = "SCORE", namespace = "FUZZY",
+      description = "Returns the Fuzzy Score which indicates the similarity score between two Strings "
+          + "One point is given for every matched character. Subsequent matches yield two bonus "
+          + "points. A higher score indicates a higher similarity",
+      params = {"string - The full term that should be matched against",
           "string - The query that will be matched against a term",
           "string - The IETF BCP 47 language code to use such as en, fr, de "
-              +
-              "( SEE  FUZZY_LANGS  and https://tools.ietf.org/html/bcp47)"
-      },
+              + "( SEE  FUZZY_LANGS  and https://tools.ietf.org/html/bcp47)"},
       returns = "integer representing the score")
   /**
-   * FuzzyScoreFunction exposes the Apache Commons Text Similarity FuzzyScore through
-   * Stellar.
+   * FuzzyScoreFunction exposes the Apache Commons Text Similarity FuzzyScore through Stellar.
    */
   public static class FuzzyScoreFunction extends BaseStellarFunction {
 
@@ -99,7 +89,7 @@ public class TextFunctions {
         throw new ParseException(
             "FUZZY_SCORE requires a valid IETF BCP47 language code see FUZZY_LANGS and https://tools.ietf.org/html/bcp47");
       }
-      
+
       if (StringUtils.isEmpty(term) || StringUtils.isEmpty(query)) {
         return 0;
       }

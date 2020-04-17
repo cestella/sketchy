@@ -1,19 +1,16 @@
 /**
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
+ * Licensed to the Apache Software Foundation (ASF) under one or more contributor license
+ * agreements. See the NOTICE file distributed with this work for additional information regarding
+ * copyright ownership. The ASF licenses this file to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the License. You may obtain a
+ * copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  */
 package com.caseystella.stellar.common.utils;
 
@@ -82,12 +79,12 @@ public class UnitTestHelper {
   }
 
   public static void verboseLogging(String pattern, Level level) {
-    ConsoleAppender console = new ConsoleAppender(); //create appender
-    //configure the appender
+    ConsoleAppender console = new ConsoleAppender(); // create appender
+    // configure the appender
     console.setLayout(new PatternLayout(pattern));
     console.setThreshold(level);
     console.activateOptions();
-    //add appender to any Logger (here is root)
+    // add appender to any Logger (here is root)
     Logger.getRootLogger().addAppender(console);
   }
 
@@ -116,14 +113,14 @@ public class UnitTestHelper {
     logger.setLevel(level);
   }
 
-  public static java.util.logging.Level getJavaLoggingLevel(){
+  public static java.util.logging.Level getJavaLoggingLevel() {
     java.util.logging.Logger logger = java.util.logging.Logger.getLogger("");
     return logger.getLevel();
   }
 
   /**
-   * Create directory that is automatically cleaned up after the
-   * JVM shuts down through use of a Runtime shutdown hook.
+   * Create directory that is automatically cleaned up after the JVM shuts down through use of a
+   * Runtime shutdown hook.
    *
    * @param dir Directory to create, including missing parent directories
    * @return File handle to the created temp directory
@@ -133,8 +130,8 @@ public class UnitTestHelper {
   }
 
   /**
-   * Create directory that is automatically cleaned up after the
-   * JVM shuts down through use of a Runtime shutdown hook.
+   * Create directory that is automatically cleaned up after the JVM shuts down through use of a
+   * Runtime shutdown hook.
    *
    * @param dir Directory to create, including missing parent directories
    * @param cleanup true/false
@@ -142,7 +139,8 @@ public class UnitTestHelper {
    */
   public static File createTempDir(File dir, boolean cleanup) throws IOException {
     if (!dir.mkdirs() && !dir.exists()) {
-      throw new IOException(String.format("Failed to create directory structure '%s'", dir.toString()));
+      throw new IOException(
+          String.format("Failed to create directory structure '%s'", dir.toString()));
     }
     if (cleanup) {
       addCleanupHook(dir.toPath());
@@ -151,8 +149,8 @@ public class UnitTestHelper {
   }
 
   /**
-   * Create directory that is automatically cleaned up after the
-   * JVM shuts down through use of a Runtime shutdown hook.
+   * Create directory that is automatically cleaned up after the JVM shuts down through use of a
+   * Runtime shutdown hook.
    *
    * @param prefix Prefix to apply to temp directory name
    * @return File handle to the created temp directory
@@ -163,8 +161,8 @@ public class UnitTestHelper {
   }
 
   /**
-   * Create directory that is optionally cleaned up after the
-   * JVM shuts down through use of a Runtime shutdown hook.
+   * Create directory that is optionally cleaned up after the JVM shuts down through use of a
+   * Runtime shutdown hook.
    *
    * @param prefix Prefix to apply to temp directory name
    * @param cleanup true/false

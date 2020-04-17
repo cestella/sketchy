@@ -5,11 +5,13 @@ import com.esotericsoftware.kryo.io.Output;
 
 public abstract class AbstractDistributionSketchType<S> implements SketchType<S> {
   protected int k;
+
   public AbstractDistributionSketchType(int k) {
     this.k = k;
   }
 
   protected abstract byte[] toByteArray(S v);
+
   protected abstract S heapify(byte[] heap);
 
   @Override

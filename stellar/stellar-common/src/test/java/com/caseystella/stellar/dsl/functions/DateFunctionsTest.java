@@ -1,20 +1,17 @@
 /*
  *
- *  Licensed to the Apache Software Foundation (ASF) under one
- *  or more contributor license agreements.  See the NOTICE file
- *  distributed with this work for additional information
- *  regarding copyright ownership.  The ASF licenses this file
- *  to you under the Apache License, Version 2.0 (the
- *  "License"); you may not use this file except in compliance
- *  with the License.  You may obtain a copy of the License at
+ * Licensed to the Apache Software Foundation (ASF) under one or more contributor license
+ * agreements. See the NOTICE file distributed with this work for additional information regarding
+ * copyright ownership. The ASF licenses this file to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the License. You may obtain a
+ * copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  *
  */
 
@@ -49,12 +46,15 @@ public class DateFunctionsTest {
 
   /**
    * Runs a Stellar expression.
+   * 
    * @param expr The expression to run.
    */
   private Object run(String expr) {
     StellarProcessor processor = new StellarProcessor();
     assertTrue(processor.validate(expr));
-    return processor.parse(expr, new DefaultVariableResolver( x -> variables.get(x), x -> variables.containsKey(x)), StellarFunctions.FUNCTION_RESOLVER(), Context.EMPTY_CONTEXT());
+    return processor.parse(expr,
+        new DefaultVariableResolver(x -> variables.get(x), x -> variables.containsKey(x)),
+        StellarFunctions.FUNCTION_RESOLVER(), Context.EMPTY_CONTEXT());
   }
 
   /**
@@ -237,8 +237,8 @@ public class DateFunctionsTest {
   }
 
   /**
-   * Test that the String returned is formatted as specified.
-   * LocalDate.parse will throw if it is not.
+   * Test that the String returned is formatted as specified. LocalDate.parse will throw if it is
+   * not.
    */
   @Test
   public void testDateFormatDefault() {
@@ -257,9 +257,10 @@ public class DateFunctionsTest {
   public void testDateFormatDefaultTimezone() {
     Object result = run("DATE_FORMAT('EEE MMM dd yyyy hh:mm:ss zzzz', test_datetime)");
 
-    boolean inDaylightSavings = ZoneId.of( TimeZone.getDefault().getID() )
-            .getRules().isDaylightSavings(Instant.ofEpochMilli(AUG2016) );
-    assertTrue(result.toString().endsWith(TimeZone.getDefault().getDisplayName(inDaylightSavings, 1)));
+    boolean inDaylightSavings = ZoneId.of(TimeZone.getDefault().getID()).getRules()
+        .isDaylightSavings(Instant.ofEpochMilli(AUG2016));
+    assertTrue(
+        result.toString().endsWith(TimeZone.getDefault().getDisplayName(inDaylightSavings, 1)));
   }
 
   /**
@@ -267,11 +268,13 @@ public class DateFunctionsTest {
    */
   @Test
   public void testDateFormatNull() {
-    assertThrows(ParseException.class, () -> run("DATE_FORMAT('EEE MMM dd yyyy hh:mm:ss zzz', nada, 'EST')"));
+    assertThrows(ParseException.class,
+        () -> run("DATE_FORMAT('EEE MMM dd yyyy hh:mm:ss zzz', nada, 'EST')"));
   }
 
   @Test
   public void testDateFormatInvalid() {
-    assertThrows(ParseException.class, () -> run("DATE_FORMAT('INVALID DATE FORMAT', test_datetime, 'EST')"));
+    assertThrows(ParseException.class,
+        () -> run("DATE_FORMAT('INVALID DATE FORMAT', test_datetime, 'EST')"));
   }
 }

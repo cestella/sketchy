@@ -1,20 +1,17 @@
 /*
  *
- *  Licensed to the Apache Software Foundation (ASF) under one
- *  or more contributor license agreements.  See the NOTICE file
- *  distributed with this work for additional information
- *  regarding copyright ownership.  The ASF licenses this file
- *  to you under the Apache License, Version 2.0 (the
- *  "License"); you may not use this file except in compliance
- *  with the License.  You may obtain a copy of the License at
+ * Licensed to the Apache Software Foundation (ASF) under one or more contributor license
+ * agreements. See the NOTICE file distributed with this work for additional information regarding
+ * copyright ownership. The ASF licenses this file to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the License. You may obtain a
+ * copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  *
  */
 
@@ -34,13 +31,12 @@ import java.util.Optional;
 import org.apache.commons.math3.util.FastMath;
 
 /**
- * A (near) constant memory implementation of a statistics provider.
- * For first order statistics, simple terms are stored and composed
- * to return the statistics results.  This is intended to provide a
- * mergeable implementation for a statistics provider.
+ * A (near) constant memory implementation of a statistics provider. For first order statistics,
+ * simple terms are stored and composed to return the statistics results. This is intended to
+ * provide a mergeable implementation for a statistics provider.
  */
-public abstract class DistributionSketchImpl<T extends Number, S> implements DistributionSketch<T>,
-    Serializable {
+public abstract class DistributionSketchImpl<T extends Number, S>
+    implements DistributionSketch<T>, Serializable {
   private static final long serialVersionUID = 1L;
   transient protected SketchType<S> sketchType;
   transient protected NumberType<T> numberType;
@@ -52,15 +48,15 @@ public abstract class DistributionSketchImpl<T extends Number, S> implements Dis
   protected T min;
   protected T max;
 
-  //\mu_1, E[X]
+  // \mu_1, E[X]
   protected double M1 = 0;
-  //\mu_2: E[(X - \mu)^2]
+  // \mu_2: E[(X - \mu)^2]
   protected double M2 = 0;
-  //\mu_3: E[(X - \mu)^3]
+  // \mu_3: E[(X - \mu)^3]
   protected double M3 = 0;
-  //\mu_4: E[(X - \mu)^4]
+  // \mu_4: E[(X - \mu)^4]
   protected double M4 = 0;
-  //almost sensible default k
+  // almost sensible default k
   int k = 128;
 
   public DistributionSketchImpl() {
@@ -79,7 +75,9 @@ public abstract class DistributionSketchImpl<T extends Number, S> implements Dis
   }
 
   abstract protected NumberType<T> createNumberType();
+
   abstract protected SketchType<S> createSketchType(int k);
+
   abstract protected DistributionSketchImpl<T, S> createNew();
 
   private void copyFrom(DistributionSketchImpl<T, S> s) {
@@ -102,26 +100,27 @@ public abstract class DistributionSketchImpl<T extends Number, S> implements Dis
   public int getK() {
     return k;
   }
+
   /**
-   * Add a value.
-   * NOTE: This does not store the point, but only updates internal state.
-   * NOTE: This is NOT threadsafe.
+   * Add a value. NOTE: This does not store the point, but only updates internal state. NOTE: This
+   * is NOT threadsafe.
+   * 
    * @param value
    */
   @Override
   public void addValue(T value) {
     long n1 = n;
-    min = min == null?value:numberType.min(min, value);
-    max = max == null?value:numberType.max(max, value);
+    min = min == null ? value : numberType.min(min, value);
+    max = max == null ? value : numberType.max(max, value);
     sum = numberType.add(sum, value);
     sumOfLogs += Math.log(value.doubleValue());
     sumOfSquares = numberType.add(sumOfSquares, numberType.multiply(value, value));
     sketchType.addValue(sketch, value);
     n++;
     double delta, delta_n, delta_n2, term1;
-    //delta between the value and the mean
+    // delta between the value and the mean
     delta = value.doubleValue() - M1;
-    //(x - E[x])/n
+    // (x - E[x])/n
     delta_n = delta / n;
     delta_n2 = delta_n * delta_n;
     term1 = delta * delta_n * n1;
@@ -129,22 +128,23 @@ public abstract class DistributionSketchImpl<T extends Number, S> implements Dis
     // Adjusting expected value: See Knuth TAOCP vol 2, 3rd edition, page 232
     M1 += delta_n;
     // Adjusting the \mu_i, see http://www.johndcook.com/blog/skewness_kurtosis/
-    M4 += term1 * delta_n2 * (n*n - 3*n + 3) + 6 * delta_n2 * M2 - 4 * delta_n * M3;
+    M4 += term1 * delta_n2 * (n * n - 3 * n + 3) + 6 * delta_n2 * M2 - 4 * delta_n * M3;
     M3 += term1 * delta_n * (n - 2) - 3 * delta_n * M2;
     M2 += term1;
-    //checkFlowError(sumOfSquares, sum, sumOfSquares, M1, M2, M3, M4);
+    // checkFlowError(sumOfSquares, sum, sumOfSquares, M1, M2, M3, M4);
   }
 
   private void checkFlowError(double sumOfSquares, double sum, double... vals) {
-    //overflow
-    for(double val : vals) {
-      if(Double.isInfinite(val)) {
+    // overflow
+    for (double val : vals) {
+      if (Double.isInfinite(val)) {
         throw new IllegalStateException("Double overflow!");
       }
     }
-    //underflow.  It is sufficient to check sumOfSquares because sumOfSquares is going to converge to 0 faster than sum
-    //in the situation where we're looking at an underflow.
-    if(sumOfSquares == 0.0 && sum > 0) {
+    // underflow. It is sufficient to check sumOfSquares because sumOfSquares is going to converge
+    // to 0 faster than sum
+    // in the situation where we're looking at an underflow.
+    if (sumOfSquares == 0.0 && sum > 0) {
       throw new IllegalStateException("Double underflow!");
     }
   }
@@ -156,17 +156,17 @@ public abstract class DistributionSketchImpl<T extends Number, S> implements Dis
 
   @Override
   public Optional<T> getMin() {
-    return Objects.equals(min, numberType.maxValue()) ?Optional.empty():Optional.ofNullable(min);
+    return Objects.equals(min, numberType.maxValue()) ? Optional.empty() : Optional.ofNullable(min);
   }
 
   @Override
   public Optional<T> getMax() {
-    return Objects.equals(max, numberType.minValue()) ?Optional.empty():Optional.ofNullable(max);
+    return Objects.equals(max, numberType.minValue()) ? Optional.empty() : Optional.ofNullable(max);
   }
 
   @Override
   public double getMean() {
-    return getSum().doubleValue()/getCount();
+    return getSum().doubleValue() / getCount();
   }
 
   @Override
@@ -176,7 +176,7 @@ public abstract class DistributionSketchImpl<T extends Number, S> implements Dis
 
   @Override
   public double getVariance() {
-    return M2/(n - 1.0);
+    return M2 / (n - 1.0);
   }
 
   @Override
@@ -196,7 +196,7 @@ public abstract class DistributionSketchImpl<T extends Number, S> implements Dis
 
   @Override
   public double getQuadraticMean() {
-    return FastMath.sqrt(sumOfSquares.doubleValue()/n);
+    return FastMath.sqrt(sumOfSquares.doubleValue() / n);
   }
 
   @Override
@@ -210,41 +210,43 @@ public abstract class DistributionSketchImpl<T extends Number, S> implements Dis
   }
 
   /**
-   * Unbiased kurtosis.
-   * See http://commons.apache.org/proper/commons-math/apidocs/org/apache/commons/math4/stat/descriptive/moment/Kurtosis.html
+   * Unbiased kurtosis. See
+   * http://commons.apache.org/proper/commons-math/apidocs/org/apache/commons/math4/stat/descriptive/moment/Kurtosis.html
+   * 
    * @return unbiased kurtosis
    */
   @Override
   public double getKurtosis() {
-    //kurtosis = { [n(n+1) / (n -1)(n - 2)(n-3)] \mu_4 / std^4 } - [3(n-1)^2 / (n-2)(n-3)]
-    if(n < 4) {
+    // kurtosis = { [n(n+1) / (n -1)(n - 2)(n-3)] \mu_4 / std^4 } - [3(n-1)^2 / (n-2)(n-3)]
+    if (n < 4) {
       return Double.NaN;
     }
     double std = getStandardDeviation();
-    double t1 = (1.0*n)*(n+1)/((n-1)*(n-2)*(n-3));
-    double t3 = 3.0*((n-1)*(n-1))/((n-2)*(n-3));
-    return t1*(M4/FastMath.pow(std, 4))-t3;
+    double t1 = (1.0 * n) * (n + 1) / ((n - 1) * (n - 2) * (n - 3));
+    double t3 = 3.0 * ((n - 1) * (n - 1)) / ((n - 2) * (n - 3));
+    return t1 * (M4 / FastMath.pow(std, 4)) - t3;
   }
 
   /**
-   * Unbiased skewness.
-   * See  http://commons.apache.org/proper/commons-math/apidocs/org/apache/commons/math4/stat/descriptive/moment/Skewness.html
+   * Unbiased skewness. See
+   * http://commons.apache.org/proper/commons-math/apidocs/org/apache/commons/math4/stat/descriptive/moment/Skewness.html
+   * 
    * @return unbiased skewness
    */
   @Override
   public double getSkewness() {
-    //  skewness = [n / (n -1) (n - 2)] sum[(x_i - mean)^3] / std^3
-    if(n < 3) {
+    // skewness = [n / (n -1) (n - 2)] sum[(x_i - mean)^3] / std^3
+    if (n < 3) {
       return Double.NaN;
     }
-    double t1 = (1.0*n)/((n - 1)*(n-2));
+    double t1 = (1.0 * n) / ((n - 1) * (n - 2));
     double std = getStandardDeviation();
-    return t1*M3/FastMath.pow(std, 3);
+    return t1 * M3 / FastMath.pow(std, 3);
   }
 
   @Override
   public double getPercentile(double p) {
-    return sketchType.getPercentile(sketch, p/100.0);
+    return sketchType.getPercentile(sketch, p / 100.0);
   }
 
 
@@ -252,45 +254,43 @@ public abstract class DistributionSketchImpl<T extends Number, S> implements Dis
   public DistributionSketch<T> merge(DistributionSketch<T> provider) {
     DistributionSketchImpl<T, S> combined = createNew();
     DistributionSketchImpl<T, S> a = this;
-    DistributionSketchImpl<T, S> b = (DistributionSketchImpl<T, S>)provider;
+    DistributionSketchImpl<T, S> b = (DistributionSketchImpl<T, S>) provider;
 
-    //Combining the simple terms that obviously form a semigroup
+    // Combining the simple terms that obviously form a semigroup
     combined.n = a.n + b.n;
-    combined.sum = numberType.add(a.sum,b.sum);
-    if(a.min != null && b.min != null) {
+    combined.sum = numberType.add(a.sum, b.sum);
+    if (a.min != null && b.min != null) {
       combined.min = numberType.min(a.min, b.min);
       combined.max = numberType.max(a.max, b.max);
-    }
-    else {
+    } else {
       combined.min = a.min;
       combined.max = a.max;
     }
     combined.sumOfSquares = numberType.add(a.sumOfSquares, b.sumOfSquares);
-    combined.sumOfLogs = a.sumOfLogs+ b.sumOfLogs;
+    combined.sumOfLogs = a.sumOfLogs + b.sumOfLogs;
 
     // Adjusting the standardized moments, see http://www.johndcook.com/blog/skewness_kurtosis/
     double delta = b.M1 - a.M1;
-    double delta2 = delta*delta;
-    double delta3 = delta*delta2;
-    double delta4 = delta2*delta2;
+    double delta2 = delta * delta;
+    double delta3 = delta * delta2;
+    double delta4 = delta2 * delta2;
 
-    combined.M1 = (a.n*a.M1 + b.n*b.M1) / combined.n;
+    combined.M1 = (a.n * a.M1 + b.n * b.M1) / combined.n;
 
-    combined.M2 = a.M2 + b.M2 +
-            delta2 * a.n * b.n / combined.n;
+    combined.M2 = a.M2 + b.M2 + delta2 * a.n * b.n / combined.n;
 
-    combined.M3 = a.M3 + b.M3 +
-            delta3 * a.n * b.n * (a.n - b.n)/(combined.n*combined.n);
-    combined.M3 += 3.0*delta * (a.n*b.M2 - b.n*a.M2) / combined.n;
+    combined.M3 = a.M3 + b.M3 + delta3 * a.n * b.n * (a.n - b.n) / (combined.n * combined.n);
+    combined.M3 += 3.0 * delta * (a.n * b.M2 - b.n * a.M2) / combined.n;
 
-    combined.M4 = a.M4 + b.M4 + delta4*a.n*b.n * (a.n*a.n - a.n*b.n + b.n*b.n) /
-            (combined.n*combined.n*combined.n);
-    combined.M4 += 6.0*delta2 * (a.n*a.n*b.M2 + b.n*b.n*a.M2)/(combined.n*combined.n) +
-            4.0*delta*(a.n*b.M3 - b.n*a.M3) / combined.n;
+    combined.M4 = a.M4 + b.M4 + delta4 * a.n * b.n * (a.n * a.n - a.n * b.n + b.n * b.n)
+        / (combined.n * combined.n * combined.n);
+    combined.M4 += 6.0 * delta2 * (a.n * a.n * b.M2 + b.n * b.n * a.M2) / (combined.n * combined.n)
+        + 4.0 * delta * (a.n * b.M3 - b.n * a.M3) / combined.n;
 
-    //Merging the distributional sketches
+    // Merging the distributional sketches
     combined.sketch = sketchType.merge(a.sketch, b.sketch);
-    //checkFlowError(combined.sumOfSquares, sum, combined.sumOfSquares, combined.M1, combined.M2, combined.M3, combined.M4);
+    // checkFlowError(combined.sumOfSquares, sum, combined.sumOfSquares, combined.M1, combined.M2,
+    // combined.M3, combined.M4);
     return combined;
   }
 
@@ -310,8 +310,7 @@ public abstract class DistributionSketchImpl<T extends Number, S> implements Dis
     output.writeDouble(M4);
   }
 
-  private void writeObject(java.io.ObjectOutputStream output)
-      throws IOException {
+  private void writeObject(java.io.ObjectOutputStream output) throws IOException {
     byte[] ser = SerDeUtils.toBytes(this);
     output.writeInt(ser.length);
     output.write(ser);
@@ -346,20 +345,9 @@ public abstract class DistributionSketchImpl<T extends Number, S> implements Dis
 
   @Override
   public String toString() {
-    return "DistributionSketchImpl{" +
-        "sketch=" + sketch +
-        ", n=" + n +
-        ", sum=" + sum +
-        ", sumOfSquares=" + sumOfSquares +
-        ", sumOfLogs=" + sumOfLogs +
-        ", min=" + min +
-        ", max=" + max +
-        ", M1=" + M1 +
-        ", M2=" + M2 +
-        ", M3=" + M3 +
-        ", M4=" + M4 +
-        ", k=" + k +
-        '}';
+    return "DistributionSketchImpl{" + "sketch=" + sketch + ", n=" + n + ", sum=" + sum
+        + ", sumOfSquares=" + sumOfSquares + ", sumOfLogs=" + sumOfLogs + ", min=" + min + ", max="
+        + max + ", M1=" + M1 + ", M2=" + M2 + ", M3=" + M3 + ", M4=" + M4 + ", k=" + k + '}';
   }
 
   @Override
@@ -371,17 +359,11 @@ public abstract class DistributionSketchImpl<T extends Number, S> implements Dis
       return false;
     }
     DistributionSketchImpl<?, ?> that = (DistributionSketchImpl<?, ?>) o;
-    return n == that.n &&
-        Double.compare(that.sumOfLogs, sumOfLogs) == 0 &&
-        Double.compare(that.M1, M1) == 0 &&
-        Double.compare(that.M2, M2) == 0 &&
-        Double.compare(that.M3, M3) == 0 &&
-        Double.compare(that.M4, M4) == 0 &&
-        k == that.k &&
-        Objects.equals(sum, that.sum) &&
-        Objects.equals(sumOfSquares, that.sumOfSquares) &&
-        Objects.equals(min, that.min) &&
-        Objects.equals(max, that.max);
+    return n == that.n && Double.compare(that.sumOfLogs, sumOfLogs) == 0
+        && Double.compare(that.M1, M1) == 0 && Double.compare(that.M2, M2) == 0
+        && Double.compare(that.M3, M3) == 0 && Double.compare(that.M4, M4) == 0 && k == that.k
+        && Objects.equals(sum, that.sum) && Objects.equals(sumOfSquares, that.sumOfSquares)
+        && Objects.equals(min, that.min) && Objects.equals(max, that.max);
   }
 
   @Override

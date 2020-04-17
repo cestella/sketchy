@@ -1,20 +1,17 @@
 /*
  *
- *  Licensed to the Apache Software Foundation (ASF) under one
- *  or more contributor license agreements.  See the NOTICE file
- *  distributed with this work for additional information
- *  regarding copyright ownership.  The ASF licenses this file
- *  to you under the Apache License, Version 2.0 (the
- *  "License"); you may not use this file except in compliance
- *  with the License.  You may obtain a copy of the License at
+ * Licensed to the Apache Software Foundation (ASF) under one or more contributor license
+ * agreements. See the NOTICE file distributed with this work for additional information regarding
+ * copyright ownership. The ASF licenses this file to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the License. You may obtain a
+ * copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  *
  */
 
@@ -34,27 +31,27 @@ public class StellarShellOptionsValidatorTest {
 
   @Test
   public void validateOptions() throws Exception {
-    String[] validZHostArg = new String[]{"-z", "localhost:8888"};
-    String[] validZHostArgNoPort = new String[]{"-z", "localhost"};
-    String[] validZIPArgNoPort = new String[]{"-z", "10.10.10.3"};
-    String[] validZHostArgList = new String[]{"-z", "localhost:8888,localhost:2181,localhost"};
-    String[] validZIPArg = new String[]{"-z", "10.10.10.3:9999"};
-    String[] invalidZNameArg = new String[]{"-z", "!!!@!!@!:8882"};
-    String[] invalidZIPArg = new String[]{"-z", "11111.22222.10.3:3332"};
-    String[] invalidZMissingNameArg = new String[]{"-z", ":8882"};
-    String[] invalidZZeroPortArg = new String[]{"-z", "youtube.com:0"};
-    String[] invalidZHugePortArg = new String[]{"-z", "youtube.com:75565"};
+    String[] validZHostArg = new String[] {"-z", "localhost:8888"};
+    String[] validZHostArgNoPort = new String[] {"-z", "localhost"};
+    String[] validZIPArgNoPort = new String[] {"-z", "10.10.10.3"};
+    String[] validZHostArgList = new String[] {"-z", "localhost:8888,localhost:2181,localhost"};
+    String[] validZIPArg = new String[] {"-z", "10.10.10.3:9999"};
+    String[] invalidZNameArg = new String[] {"-z", "!!!@!!@!:8882"};
+    String[] invalidZIPArg = new String[] {"-z", "11111.22222.10.3:3332"};
+    String[] invalidZMissingNameArg = new String[] {"-z", ":8882"};
+    String[] invalidZZeroPortArg = new String[] {"-z", "youtube.com:0"};
+    String[] invalidZHugePortArg = new String[] {"-z", "youtube.com:75565"};
 
 
     String existingFileName = "./target/existsFile";
     String nonExistentFile = "./target/doesNotExist";
 
-    String[] validVFileArg = new String[]{"-v", existingFileName};
-    String[] validIrcFileArg = new String[]{"-irc", existingFileName};
-    String[] validPFileArg = new String[]{"-p", existingFileName};
-    String[] invalidVFileArg = new String[]{"-v", nonExistentFile};
-    String[] invalidIrcFileArg = new String[]{"-irc", nonExistentFile};
-    String[] invalidPFileArg = new String[]{"-p", nonExistentFile};
+    String[] validVFileArg = new String[] {"-v", existingFileName};
+    String[] validIrcFileArg = new String[] {"-irc", existingFileName};
+    String[] validPFileArg = new String[] {"-p", existingFileName};
+    String[] invalidVFileArg = new String[] {"-v", nonExistentFile};
+    String[] invalidIrcFileArg = new String[] {"-irc", nonExistentFile};
+    String[] invalidPFileArg = new String[] {"-p", nonExistentFile};
 
     File existingFile = new File(existingFileName);
     if (!existingFile.exists()) {
@@ -97,77 +94,50 @@ public class StellarShellOptionsValidatorTest {
     StellarShellOptionsValidator.validateOptions(commandLine);
     // these should not
 
-    assertThrows(
-        IllegalArgumentException.class,
-        () -> {
-          CommandLine cl = parser.parse(options, invalidZNameArg);
-          StellarShellOptionsValidator.validateOptions(cl);
-        },
-        "Did not catch failure for providing invalid host name ");
+    assertThrows(IllegalArgumentException.class, () -> {
+      CommandLine cl = parser.parse(options, invalidZNameArg);
+      StellarShellOptionsValidator.validateOptions(cl);
+    }, "Did not catch failure for providing invalid host name ");
 
-    assertThrows(
-        IllegalArgumentException.class,
-        () -> {
-          CommandLine cl = parser.parse(options, invalidZIPArg);
-          StellarShellOptionsValidator.validateOptions(cl);
-        },
-        "Did not catch failure for providing invalid ip address ");
+    assertThrows(IllegalArgumentException.class, () -> {
+      CommandLine cl = parser.parse(options, invalidZIPArg);
+      StellarShellOptionsValidator.validateOptions(cl);
+    }, "Did not catch failure for providing invalid ip address ");
 
-    assertThrows(
-        IllegalArgumentException.class,
-        () -> {
-          CommandLine cl = parser.parse(options, invalidZMissingNameArg);
-          StellarShellOptionsValidator.validateOptions(cl);
-        },
-        "Did not catch failure for only providing port ");
+    assertThrows(IllegalArgumentException.class, () -> {
+      CommandLine cl = parser.parse(options, invalidZMissingNameArg);
+      StellarShellOptionsValidator.validateOptions(cl);
+    }, "Did not catch failure for only providing port ");
 
-    assertThrows(
-        IllegalArgumentException.class,
-        () -> {
-          CommandLine cl = parser.parse(options, invalidZZeroPortArg);
-          StellarShellOptionsValidator.validateOptions(cl);
-        },
-        "Did not catch failure for 0 port ");
+    assertThrows(IllegalArgumentException.class, () -> {
+      CommandLine cl = parser.parse(options, invalidZZeroPortArg);
+      StellarShellOptionsValidator.validateOptions(cl);
+    }, "Did not catch failure for 0 port ");
 
-    assertThrows(
-        IllegalArgumentException.class,
-        () -> {
-          CommandLine cl = parser.parse(options, invalidZHugePortArg);
-          StellarShellOptionsValidator.validateOptions(cl);
-        },
-        "Did not catch failure for port out of range ");
+    assertThrows(IllegalArgumentException.class, () -> {
+      CommandLine cl = parser.parse(options, invalidZHugePortArg);
+      StellarShellOptionsValidator.validateOptions(cl);
+    }, "Did not catch failure for port out of range ");
 
-    assertThrows(
-        IllegalArgumentException.class,
-        () -> {
-          CommandLine cl = parser.parse(options, invalidVFileArg);
-          StellarShellOptionsValidator.validateOptions(cl);
-        },
-        "Did not catch failure for passing non-existant file to -v ");
+    assertThrows(IllegalArgumentException.class, () -> {
+      CommandLine cl = parser.parse(options, invalidVFileArg);
+      StellarShellOptionsValidator.validateOptions(cl);
+    }, "Did not catch failure for passing non-existant file to -v ");
 
-    assertThrows(
-        IllegalArgumentException.class,
-        () -> {
-          CommandLine cl = parser.parse(options, invalidVFileArg);
-          StellarShellOptionsValidator.validateOptions(cl);
-        },
-        "Did not catch failure for passing non-existant file to -v ");
+    assertThrows(IllegalArgumentException.class, () -> {
+      CommandLine cl = parser.parse(options, invalidVFileArg);
+      StellarShellOptionsValidator.validateOptions(cl);
+    }, "Did not catch failure for passing non-existant file to -v ");
 
-    assertThrows(
-        IllegalArgumentException.class,
-        () -> {
-          CommandLine cl = parser.parse(options, invalidIrcFileArg);
-          StellarShellOptionsValidator.validateOptions(cl);
-        },
-        "Did not catch failure for passing non-existant file to -irc ");
+    assertThrows(IllegalArgumentException.class, () -> {
+      CommandLine cl = parser.parse(options, invalidIrcFileArg);
+      StellarShellOptionsValidator.validateOptions(cl);
+    }, "Did not catch failure for passing non-existant file to -irc ");
 
-    assertThrows(
-        IllegalArgumentException.class,
-        () -> {
-          CommandLine cl = parser.parse(options, invalidPFileArg);
-          StellarShellOptionsValidator.validateOptions(cl);
-        },
-        "Did not catch failure for passing non-existant file to -p ");
+    assertThrows(IllegalArgumentException.class, () -> {
+      CommandLine cl = parser.parse(options, invalidPFileArg);
+      StellarShellOptionsValidator.validateOptions(cl);
+    }, "Did not catch failure for passing non-existant file to -p ");
   }
 
 }

@@ -1,19 +1,16 @@
 /**
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
+ * Licensed to the Apache Software Foundation (ASF) under one or more contributor license
+ * agreements. See the NOTICE file distributed with this work for additional information regarding
+ * copyright ownership. The ASF licenses this file to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the License. You may obtain a
+ * copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  */
 package com.caseystella.stellar.dsl.functions;
 
@@ -85,17 +82,18 @@ public class RestConfig extends HashMap<String, Object> {
   public final static String SOCKET_TIMEOUT = "socket.timeout";
 
   /**
-   * A list of response codes that are allowed.  All others will be treated as errors.
+   * A list of response codes that are allowed. All others will be treated as errors.
    */
   public final static String RESPONSE_CODES_ALLOWED = "response.codes.allowed";
 
   /**
-   * The default value that will be returned on a successful request with empty content.  Default is null.
+   * The default value that will be returned on a successful request with empty content. Default is
+   * null.
    */
   public final static String EMPTY_CONTENT_OVERRIDE = "empty.content.override";
 
   /**
-   * The default value that will be returned on an error.  Default is null.
+   * The default value that will be returned on an error. Default is null.
    */
   public final static String ERROR_VALUE_OVERRIDE = "error.value.override";
 
@@ -110,7 +108,8 @@ public class RestConfig extends HashMap<String, Object> {
   public final static String POOLING_DEFAULT_MAX_PER_RUOTE = "pooling.default.max.per.route";
 
   /**
-   * Setting this to true will verify the actual body content length equals the content length header.
+   * Setting this to true will verify the actual body content length equals the content length
+   * header.
    */
   public final static String VERIFY_CONTENT_LENGTH = "verify.content.length";
 

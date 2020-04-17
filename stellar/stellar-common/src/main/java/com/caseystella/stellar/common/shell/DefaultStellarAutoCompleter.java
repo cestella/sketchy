@@ -1,20 +1,17 @@
 /*
  *
- *  Licensed to the Apache Software Foundation (ASF) under one
- *  or more contributor license agreements.  See the NOTICE file
- *  distributed with this work for additional information
- *  regarding copyright ownership.  The ASF licenses this file
- *  to you under the Apache License, Version 2.0 (the
- *  "License"); you may not use this file except in compliance
- *  with the License.  You may obtain a copy of the License at
+ * Licensed to the Apache Software Foundation (ASF) under one or more contributor license
+ * agreements. See the NOTICE file distributed with this work for additional information regarding
+ * copyright ownership. The ASF licenses this file to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the License. You may obtain a
+ * copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  *
  */
 package com.caseystella.stellar.common.shell;
@@ -39,24 +36,20 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 public class DefaultStellarAutoCompleter implements StellarAutoCompleter {
 
   enum OperationType {
-    DOC,
-    MAGIC,
-    NORMAL
+    DOC, MAGIC, NORMAL
   }
 
   enum AutoCompleteType implements AutoCompleteTransformation {
     FUNCTION((type, key) -> {
-      if(OperationType.DOC == type) {
+      if (OperationType.DOC == type) {
         return "?" + key;
 
-      } else if(OperationType.NORMAL == type) {
+      } else if (OperationType.NORMAL == type) {
         return key + "(";
       }
 
       return key;
-    }),
-    VARIABLE((type, key) -> key),
-    TOKEN((type, key) -> key);
+    }), VARIABLE((type, key) -> key), TOKEN((type, key) -> key);
 
     AutoCompleteTransformation transform;
 
@@ -90,7 +83,7 @@ public class DefaultStellarAutoCompleter implements StellarAutoCompleter {
     Iterable<String> candidates = IterableUtils.emptyIterable();
 
     final String lastToken = getLastToken(buffer);
-    if(StringUtils.isNotEmpty(lastToken)) {
+    if (StringUtils.isNotEmpty(lastToken)) {
 
       if (isDoc(lastToken)) {
         candidates = autoCompleteDoc(lastToken.substring(1));
@@ -108,6 +101,7 @@ public class DefaultStellarAutoCompleter implements StellarAutoCompleter {
 
   /**
    * Is a given expression a built-in magic?
+   * 
    * @param expression The expression.
    */
   private boolean isMagic(String expression) {
@@ -116,6 +110,7 @@ public class DefaultStellarAutoCompleter implements StellarAutoCompleter {
 
   /**
    * Is a given expression asking for function documentation?
+   * 
    * @param expression The expression.
    */
   private boolean isDoc(String expression) {
@@ -124,6 +119,7 @@ public class DefaultStellarAutoCompleter implements StellarAutoCompleter {
 
   /**
    * Auto-completes a partial Stellar expression
+   * 
    * @param buffer The partial buffer that needs auto-completed.
    * @return Viable candidates for auto-completion.
    */
@@ -133,6 +129,7 @@ public class DefaultStellarAutoCompleter implements StellarAutoCompleter {
 
   /**
    * Auto-completes a partial doc command.
+   * 
    * @param buffer The partial buffer that needs auto-completed.
    * @return Viable candidates for auto-completion.
    */
@@ -142,6 +139,7 @@ public class DefaultStellarAutoCompleter implements StellarAutoCompleter {
 
   /**
    * Auto-completes a partial magic commands.
+   * 
    * @param buffer The partial buffer that needs auto-completed.
    * @return Viable candidates for auto-completion.
    */
@@ -151,6 +149,7 @@ public class DefaultStellarAutoCompleter implements StellarAutoCompleter {
 
   /**
    * Returns a list of viable candidates for auto-completion.
+   * 
    * @param buffer The current buffer.
    * @param opType The type of operation needing auto-completion.
    * @return Viable candidates for auto-completion.
@@ -162,15 +161,16 @@ public class DefaultStellarAutoCompleter implements StellarAutoCompleter {
       if (ret.isEmpty()) {
         return new ArrayList<>();
       }
-      return Iterables.transform(ret.entrySet(), kv -> kv.getValue().transform(opType, kv.getKey()));
-    }
-    finally {
+      return Iterables.transform(ret.entrySet(),
+          kv -> kv.getValue().transform(opType, kv.getKey()));
+    } finally {
       indexLock.readLock().unlock();
     }
   }
 
   /**
    * Adds a candidate for auto-completing function names.
+   * 
    * @param name The name of the function candidate.
    */
   @Override
@@ -180,6 +180,7 @@ public class DefaultStellarAutoCompleter implements StellarAutoCompleter {
 
   /**
    * Adds a candidate for auto-completing variable names.
+   * 
    * @param name The name of the function candidate.
    */
   @Override
@@ -189,11 +190,12 @@ public class DefaultStellarAutoCompleter implements StellarAutoCompleter {
 
   /**
    * Add a candidate for auto-completion.
+   * 
    * @param name The name of the candidate.
    * @param type The type of candidate.
    */
   private void add(String name, AutoCompleteType type) {
-    if(StringUtils.isNotBlank(name)) {
+    if (StringUtils.isNotBlank(name)) {
       // add the candidate to the auto-complete index
       indexLock.writeLock().lock();
       try {

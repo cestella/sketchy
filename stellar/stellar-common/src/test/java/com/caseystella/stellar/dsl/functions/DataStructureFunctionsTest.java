@@ -1,19 +1,16 @@
 /**
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
+ * Licensed to the Apache Software Foundation (ASF) under one or more contributor license
+ * agreements. See the NOTICE file distributed with this work for additional information regarding
+ * copyright ownership. The ASF licenses this file to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the License. You may obtain a
+ * copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  */
 
 package com.caseystella.stellar.dsl.functions;
@@ -50,7 +47,8 @@ public class DataStructureFunctionsTest {
       assertThat("should be false", empty, CoreMatchers.equalTo(false));
     }
     {
-      boolean empty = (boolean) isEmpty.apply(ImmutableList.of(ImmutableMap.of("mykey", "myvalue")));
+      boolean empty =
+          (boolean) isEmpty.apply(ImmutableList.of(ImmutableMap.of("mykey", "myvalue")));
       assertThat("should be false", empty, CoreMatchers.equalTo(false));
     }
   }
@@ -79,13 +77,10 @@ public class DataStructureFunctionsTest {
   @Test
   @SuppressWarnings("unchecked")
   public void listAdd_number() {
-    for(String expr : ImmutableList.of("LIST_ADD(my_list, 1)"
-                                      ,"LIST_ADD([], 1)"
-                                      ,"LIST_ADD([], val)"
-                                      )
-       )
-    {
-      Object o = StellarProcessorUtils.run(expr, ImmutableMap.of("my_list", new ArrayList<>(), "val", 1));
+    for (String expr : ImmutableList.of("LIST_ADD(my_list, 1)", "LIST_ADD([], 1)",
+        "LIST_ADD([], val)")) {
+      Object o =
+          StellarProcessorUtils.run(expr, ImmutableMap.of("my_list", new ArrayList<>(), "val", 1));
       assertTrue(o instanceof List);
       List<Number> result = (List<Number>) o;
       assertEquals(1, result.size());
@@ -96,12 +91,8 @@ public class DataStructureFunctionsTest {
   @Test
   @SuppressWarnings("unchecked")
   public void listAdd_mixed() {
-    for(String expr : ImmutableList.of("LIST_ADD(my_list, 1)"
-                                      ,"LIST_ADD(['foo'], 1)"
-                                      ,"LIST_ADD(['foo'], val)"
-                                      )
-       )
-    {
+    for (String expr : ImmutableList.of("LIST_ADD(my_list, 1)", "LIST_ADD(['foo'], 1)",
+        "LIST_ADD(['foo'], val)")) {
       ArrayList<Object> list = new ArrayList<>();
       list.add("foo");
       Object o = StellarProcessorUtils.run(expr, ImmutableMap.of("my_list", list, "val", 1));
@@ -116,12 +107,8 @@ public class DataStructureFunctionsTest {
   @Test
   @SuppressWarnings("unchecked")
   public void listAdd_number_nonempty() {
-    for(String expr : ImmutableList.of("LIST_ADD(my_list, 2)"
-                                      ,"LIST_ADD([1], 2)"
-                                      ,"LIST_ADD([1], val)"
-                                      )
-       )
-    {
+    for (String expr : ImmutableList.of("LIST_ADD(my_list, 2)", "LIST_ADD([1], 2)",
+        "LIST_ADD([1], val)")) {
       ArrayList<Integer> list = new ArrayList<>();
       list.add(1);
       Object o = StellarProcessorUtils.run(expr, ImmutableMap.of("my_list", list, "val", 2));

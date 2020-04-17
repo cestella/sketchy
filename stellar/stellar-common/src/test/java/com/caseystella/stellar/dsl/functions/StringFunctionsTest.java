@@ -1,19 +1,16 @@
 /**
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
+ * Licensed to the Apache Software Foundation (ASF) under one or more contributor license
+ * agreements. See the NOTICE file distributed with this work for additional information regarding
+ * copyright ownership. The ASF licenses this file to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the License. You may obtain a
+ * copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  */
 
 package com.caseystella.stellar.dsl.functions;
@@ -36,66 +33,81 @@ public class StringFunctionsTest {
 
   @Test
   public void testStringFunctions() {
-    final Map<String, String> variableMap = new HashMap<String, String>() {{
-      put("foo", "casey");
-      put("ip", "192.168.0.1");
-      put("empty", "");
-      put("spaced", "metron is great");
-    }};
-    assertTrue(runPredicate("true and TO_UPPER(foo) == 'CASEY'", new DefaultVariableResolver(v -> variableMap.get(v),v -> variableMap.containsKey(v))));
-    assertTrue(runPredicate("foo in [ TO_LOWER('CASEY'), 'david' ]", new DefaultVariableResolver(v -> variableMap.get(v),v -> variableMap.containsKey(v))));
-    assertTrue(runPredicate("TO_UPPER(foo) in [ TO_UPPER('casey'), 'david' ] and IN_SUBNET(ip, '192.168.0.0/24')", new DefaultVariableResolver(v -> variableMap.get(v),v -> variableMap.containsKey(v))));
-    assertFalse(runPredicate("TO_LOWER(foo) in [ TO_UPPER('casey'), 'david' ]", new DefaultVariableResolver(v -> variableMap.get(v),v -> variableMap.containsKey(v))));
+    final Map<String, String> variableMap = new HashMap<String, String>() {
+      {
+        put("foo", "casey");
+        put("ip", "192.168.0.1");
+        put("empty", "");
+        put("spaced", "metron is great");
+      }
+    };
+    assertTrue(runPredicate("true and TO_UPPER(foo) == 'CASEY'",
+        new DefaultVariableResolver(v -> variableMap.get(v), v -> variableMap.containsKey(v))));
+    assertTrue(runPredicate("foo in [ TO_LOWER('CASEY'), 'david' ]",
+        new DefaultVariableResolver(v -> variableMap.get(v), v -> variableMap.containsKey(v))));
+    assertTrue(runPredicate(
+        "TO_UPPER(foo) in [ TO_UPPER('casey'), 'david' ] and IN_SUBNET(ip, '192.168.0.0/24')",
+        new DefaultVariableResolver(v -> variableMap.get(v), v -> variableMap.containsKey(v))));
+    assertFalse(runPredicate("TO_LOWER(foo) in [ TO_UPPER('casey'), 'david' ]",
+        new DefaultVariableResolver(v -> variableMap.get(v), v -> variableMap.containsKey(v))));
   }
 
   @Test
   public void testStringFunctions_advanced() {
-    final Map<String, Object> variableMap = new HashMap<String, Object>() {{
-      put("foo", "casey");
-      put("bar", "bar.casey.grok");
-      put("ip", "192.168.0.1");
-      put("empty", "");
-      put("spaced", "metron is great");
-      put("myList", ImmutableList.of("casey", "apple", "orange"));
-    }};
-    assertTrue(runPredicate("foo in SPLIT(bar, '.')", new DefaultVariableResolver(v -> variableMap.get(v),v -> variableMap.containsKey(v))));
-    assertFalse(runPredicate("foo in SPLIT(ip, '.')", new DefaultVariableResolver(v -> variableMap.get(v),v -> variableMap.containsKey(v))));
-    assertTrue(runPredicate("foo in myList", new DefaultVariableResolver(v -> variableMap.get(v),v -> variableMap.containsKey(v))));
-    assertFalse(runPredicate("foo not in myList", new DefaultVariableResolver(v -> variableMap.get(v),v -> variableMap.containsKey(v))));
+    final Map<String, Object> variableMap = new HashMap<String, Object>() {
+      {
+        put("foo", "casey");
+        put("bar", "bar.casey.grok");
+        put("ip", "192.168.0.1");
+        put("empty", "");
+        put("spaced", "metron is great");
+        put("myList", ImmutableList.of("casey", "apple", "orange"));
+      }
+    };
+    assertTrue(runPredicate("foo in SPLIT(bar, '.')",
+        new DefaultVariableResolver(v -> variableMap.get(v), v -> variableMap.containsKey(v))));
+    assertFalse(runPredicate("foo in SPLIT(ip, '.')",
+        new DefaultVariableResolver(v -> variableMap.get(v), v -> variableMap.containsKey(v))));
+    assertTrue(runPredicate("foo in myList",
+        new DefaultVariableResolver(v -> variableMap.get(v), v -> variableMap.containsKey(v))));
+    assertFalse(runPredicate("foo not in myList",
+        new DefaultVariableResolver(v -> variableMap.get(v), v -> variableMap.containsKey(v))));
   }
 
   @Test
   @SuppressWarnings("unchecked")
   public void testLeftRightFills() {
-    final Map<String, Object> variableMap = new HashMap<String, Object>() {{
-      put("foo", null);
-      put("bar", null);
-      put("notInt", "oh my");
-    }};
+    final Map<String, Object> variableMap = new HashMap<String, Object>() {
+      {
+        put("foo", null);
+        put("bar", null);
+        put("notInt", "oh my");
+      }
+    };
 
-    //LEFT
+    // LEFT
     Object left = run("FILL_LEFT('123','X', 10)", new HashedMap());
     assertNotNull(left);
     assertEquals(10, ((String) left).length());
     assertEquals("XXXXXXX123", (String) left);
 
-    //RIGHT
+    // RIGHT
     Object right = run("FILL_RIGHT('123','X', 10)", new HashedMap());
     assertNotNull(right);
     assertEquals(10, ((String) right).length());
     assertEquals("123XXXXXXX", (String) right);
 
-    //INPUT ALREADY LENGTH
+    // INPUT ALREADY LENGTH
     Object same = run("FILL_RIGHT('123','X', 3)", new HashedMap());
     assertEquals(3, ((String) same).length());
     assertEquals("123", (String) same);
 
-    //INPUT BIGGER THAN LENGTH
+    // INPUT BIGGER THAN LENGTH
     Object tooBig = run("FILL_RIGHT('1234567890','X', 3)", new HashedMap());
     assertEquals(10, ((String) tooBig).length());
     assertEquals("1234567890", (String) tooBig);
 
-    //NULL VARIABLES
+    // NULL VARIABLES
     boolean thrown = false;
     try {
       run("FILL_RIGHT('123',foo,bar)", variableMap);
@@ -146,7 +158,7 @@ public class StringFunctionsTest {
     assertTrue(thrown);
     thrown = false;
 
-    //MISSING LENGTH PARAMETER
+    // MISSING LENGTH PARAMETER
     try {
       run("FILL_RIGHT('123',foo)", variableMap);
     } catch (ParseException pe) {
@@ -158,36 +170,31 @@ public class StringFunctionsTest {
 
   @Test
   public void shannonEntropyTest() {
-    //test empty string
+    // test empty string
     assertEquals(0.0, (Double) run("STRING_ENTROPY('')", new HashMap<>()), 0.0);
     assertEquals(0.0, (Double) run("STRING_ENTROPY(foo)", ImmutableMap.of("foo", "")), 0.0);
 
     /*
-    Now consider the string aaaaaaaaaabbbbbccccc or 10 a's followed by 5 b's and 5 c's.
-    The probabilities of each character is as follows:
-    p(a) = 1/2
-    p(b) = 1/4
-    p(c) = 1/4
-    so the shannon entropy should be
-      -p(a)*log_2(p(a)) - p(b)*log_2(p(b)) - p(c)*log_2(p(c)) =
-      -0.5*-1 - 0.25*-2 - 0.25*-2 = 1.5
+     * Now consider the string aaaaaaaaaabbbbbccccc or 10 a's followed by 5 b's and 5 c's. The
+     * probabilities of each character is as follows: p(a) = 1/2 p(b) = 1/4 p(c) = 1/4 so the
+     * shannon entropy should be -p(a)*log_2(p(a)) - p(b)*log_2(p(b)) - p(c)*log_2(p(c)) = -0.5*-1 -
+     * 0.25*-2 - 0.25*-2 = 1.5
      */
-    assertEquals(1.5, (Double) run("STRING_ENTROPY(foo)", ImmutableMap.of("foo", "aaaaaaaaaabbbbbccccc")), 0.0);
+    assertEquals(1.5,
+        (Double) run("STRING_ENTROPY(foo)", ImmutableMap.of("foo", "aaaaaaaaaabbbbbccccc")), 0.0);
   }
 
   @Test
   public void testFormat() {
 
-    Map<String, Object> vars = ImmutableMap.of(
-            "cal", new Calendar.Builder().setDate(2017, 02, 02).build(),
-            "x", 234,
-            "y", 3);
+    Map<String, Object> vars = ImmutableMap.of("cal",
+        new Calendar.Builder().setDate(2017, 02, 02).build(), "x", 234, "y", 3);
 
-    assertEquals("no args",        run("FORMAT('no args')", vars));
-    assertEquals("234.0",          run("FORMAT('%.1f', TO_DOUBLE(234))", vars));
-    assertEquals("000234",         run("FORMAT('%06d', 234)", vars));
-    assertEquals("03 2,2017",      run("FORMAT('%1$tm %1$te,%1$tY', cal)", vars));
-    assertEquals("234 > 3",        run("FORMAT('%d > %d', x, y)", vars));
+    assertEquals("no args", run("FORMAT('no args')", vars));
+    assertEquals("234.0", run("FORMAT('%.1f', TO_DOUBLE(234))", vars));
+    assertEquals("000234", run("FORMAT('%06d', 234)", vars));
+    assertEquals("03 2,2017", run("FORMAT('%1$tm %1$te,%1$tY', cal)", vars));
+    assertEquals("234 > 3", run("FORMAT('%d > %d', x, y)", vars));
 
     boolean thrown = false;
     try {
@@ -211,7 +218,8 @@ public class StringFunctionsTest {
    */
   @Test
   public void testFormatWithMissingArguments() {
-    assertThrows(ParseException.class, () -> run("FORMAT('missing arg: %d')", Collections.emptyMap()));
+    assertThrows(ParseException.class,
+        () -> run("FORMAT('missing arg: %d')", Collections.emptyMap()));
   }
 
 
@@ -222,10 +230,10 @@ public class StringFunctionsTest {
   @Test
   @SuppressWarnings("unchecked")
   public void testChomp() {
-    assertEquals("abc",  run("CHOMP('abc')", new HashedMap()));
-    assertEquals("abc",  run("CHOMP(msg)", ImmutableMap.of("msg", "abc\r\n")));
-    assertEquals("",     run("CHOMP(msg)", ImmutableMap.of("msg", "\n")));
-    assertEquals("",     run("CHOMP('')", new HashedMap()));
+    assertEquals("abc", run("CHOMP('abc')", new HashedMap()));
+    assertEquals("abc", run("CHOMP(msg)", ImmutableMap.of("msg", "abc\r\n")));
+    assertEquals("", run("CHOMP(msg)", ImmutableMap.of("msg", "\n")));
+    assertEquals("", run("CHOMP('')", new HashedMap()));
     assertNull(run("CHOMP(null)", new HashedMap()));
 
     // No input
@@ -240,7 +248,7 @@ public class StringFunctionsTest {
     thrown = false;
 
     // Variable missing
-    try{
+    try {
       run("CHOMP(msg)", new HashedMap());
     } catch (ParseException pe) {
       thrown = true;
@@ -266,12 +274,12 @@ public class StringFunctionsTest {
   @Test
   @SuppressWarnings("unchecked")
   public void testChop() throws Exception {
-    assertEquals("ab",   run("CHOP('abc')", new HashedMap()));
+    assertEquals("ab", run("CHOP('abc')", new HashedMap()));
     assertNull(run("CHOP(null)", new HashedMap()));
-    assertEquals("abc",  run("CHOP(msg)", ImmutableMap.of("msg", "abc\r\n")));
-    assertEquals("",     run("CHOP(msg)", ImmutableMap.of("msg", "")));
-    assertEquals("",     run("CHOP(msg)", ImmutableMap.of("msg", "\n")));
-    assertEquals("",     run("CHOP('')", new HashedMap()));
+    assertEquals("abc", run("CHOP(msg)", ImmutableMap.of("msg", "abc\r\n")));
+    assertEquals("", run("CHOP(msg)", ImmutableMap.of("msg", "")));
+    assertEquals("", run("CHOP(msg)", ImmutableMap.of("msg", "\n")));
+    assertEquals("", run("CHOP('')", new HashedMap()));
 
     // No input
     boolean thrown = false;
@@ -285,7 +293,7 @@ public class StringFunctionsTest {
     thrown = false;
 
     // Variable missing
-    try{
+    try {
       run("CHOMP(msg)", new HashedMap());
     } catch (ParseException pe) {
       thrown = true;
@@ -309,11 +317,12 @@ public class StringFunctionsTest {
   @Test
   @SuppressWarnings("unchecked")
   public void testPrependIfMissing() throws Exception {
-    assertEquals("xyzabc",     run("PREPEND_IF_MISSING('abc', 'xyz')", new HashedMap()));
-    assertEquals("xyzXYZabc",  run("PREPEND_IF_MISSING('XYZabc', 'xyz', 'mno')", new HashedMap()));
-    assertEquals("mnoXYZabc",  run("PREPEND_IF_MISSING('mnoXYZabc', 'xyz', 'mno')", new HashedMap()));
+    assertEquals("xyzabc", run("PREPEND_IF_MISSING('abc', 'xyz')", new HashedMap()));
+    assertEquals("xyzXYZabc", run("PREPEND_IF_MISSING('XYZabc', 'xyz', 'mno')", new HashedMap()));
+    assertEquals("mnoXYZabc",
+        run("PREPEND_IF_MISSING('mnoXYZabc', 'xyz', 'mno')", new HashedMap()));
     assertNull(run("PREPEND_IF_MISSING(null, null, null)", new HashedMap()));
-    assertEquals("xyz",        run("PREPEND_IF_MISSING('', 'xyz', null)", new HashedMap()));
+    assertEquals("xyz", run("PREPEND_IF_MISSING('', 'xyz', null)", new HashedMap()));
 
     // No input
     boolean thrown = false;
@@ -363,10 +372,10 @@ public class StringFunctionsTest {
   @Test
   @SuppressWarnings("unchecked")
   public void testAppendIfMissing() {
-    assertEquals("apachemetron",   run("APPEND_IF_MISSING('apache', 'metron')", new HashedMap()));
-    assertEquals("abcXYZxyz",      run("APPEND_IF_MISSING('abcXYZ', 'xyz', 'mno')", new HashedMap()));
+    assertEquals("apachemetron", run("APPEND_IF_MISSING('apache', 'metron')", new HashedMap()));
+    assertEquals("abcXYZxyz", run("APPEND_IF_MISSING('abcXYZ', 'xyz', 'mno')", new HashedMap()));
     assertNull(run("APPEND_IF_MISSING(null, null, null)", new HashedMap()));
-    assertEquals("xyz",            run("APPEND_IF_MISSING('', 'xyz', null)", new HashedMap()));
+    assertEquals("xyz", run("APPEND_IF_MISSING('', 'xyz', null)", new HashedMap()));
 
     // No input
     boolean thrown = false;
@@ -493,33 +502,42 @@ public class StringFunctionsTest {
    */
 
   // Input strings to be used
+  // @formatter:off
   /**
    { "foo" : 2 }
    */
+  // @formatter:on
   @Multiline
   private String string1;
 
+  // @formatter:off
   /**
    {
      "foo" : "abc",
      "bar" : "def"
    }
    */
+  // @formatter:on
   @Multiline
   private String string2;
 
+  // @formatter:off
   /**
    [ "foo", 2 ]
    */
+  // @formatter:on
   @Multiline
   private String string3;
 
+  // @formatter:off
   /**
    [ "foo", "bar", "car" ]
    */
+  // @formatter:on
   @Multiline
   private String string4;
 
+  // @formatter:off
   /**
    [
      {
@@ -532,43 +550,44 @@ public class StringFunctionsTest {
      }
    ]
    */
+  // @formatter:on
   @Multiline
   private String string5;
 
   @Test
   @SuppressWarnings("unchecked")
   public void testToJsonObject() {
-    //JSON Object
+    // JSON Object
     Object ret1 = run("TO_JSON_OBJECT(msg)", ImmutableMap.of("msg", string1));
     assertNotNull(ret1);
-    assertTrue (ret1 instanceof HashMap);
+    assertTrue(ret1 instanceof HashMap);
 
     Object ret2 = run("TO_JSON_OBJECT(msg)", ImmutableMap.of("msg", string2));
     assertNotNull(ret2);
-    assertTrue (ret2 instanceof HashMap);
+    assertTrue(ret2 instanceof HashMap);
     assertEquals("def", run("MAP_GET( 'bar', returnval)", ImmutableMap.of("returnval", ret2)));
 
-    //Simple Arrays
+    // Simple Arrays
     Object ret3 = run("TO_JSON_OBJECT(msg)", ImmutableMap.of("msg", string3));
     assertNotNull(ret3);
-    assertTrue (ret3 instanceof ArrayList);
+    assertTrue(ret3 instanceof ArrayList);
     List<Object> result3 = (List<Object>) ret3;
     assertEquals(2, result3.get(1));
 
     Object ret4 = run("TO_JSON_OBJECT(msg)", ImmutableMap.of("msg", string4));
     assertNotNull(ret4);
-    assertTrue (ret4 instanceof ArrayList);
+    assertTrue(ret4 instanceof ArrayList);
     List<Object> result4 = (List<Object>) ret4;
     assertEquals("car", result4.get(2));
 
-    //JSON Array
-    Object ret5 = run( "TO_JSON_OBJECT(msg)", ImmutableMap.of("msg", string5));
+    // JSON Array
+    Object ret5 = run("TO_JSON_OBJECT(msg)", ImmutableMap.of("msg", string5));
     assertNotNull(ret5);
-    assertTrue (ret5 instanceof ArrayList);
+    assertTrue(ret5 instanceof ArrayList);
     List<List<Object>> result5 = (List<List<Object>>) ret5;
-    HashMap<String,String> results5Map1 = (HashMap) result5.get(0);
+    HashMap<String, String> results5Map1 = (HashMap) result5.get(0);
     assertEquals("def", results5Map1.get("bar1"));
-    HashMap<String,String> results5Map2 = (HashMap) result5.get(1);
+    HashMap<String, String> results5Map2 = (HashMap) result5.get(1);
     assertEquals("ghi", results5Map2.get("foo2"));
 
     // No input
@@ -605,17 +624,17 @@ public class StringFunctionsTest {
 
   @Test
   public void testToJsonMap() {
-    //JSON Object
+    // JSON Object
     Object ret1 = run("TO_JSON_MAP(msg)", ImmutableMap.of("msg", string1));
     assertNotNull(ret1);
-    assertTrue (ret1 instanceof HashMap);
+    assertTrue(ret1 instanceof HashMap);
 
     Object ret2 = run("TO_JSON_MAP(msg)", ImmutableMap.of("msg", string2));
     assertNotNull(ret2);
-    assertTrue (ret2 instanceof HashMap);
+    assertTrue(ret2 instanceof HashMap);
     assertEquals("def", run("MAP_GET( 'bar', returnval)", ImmutableMap.of("returnval", ret2)));
 
-    //Simple Arrays
+    // Simple Arrays
     boolean thrown = false;
     try {
       Object o = run("TO_JSON_MAP(msg)", ImmutableMap.of("msg", string3));
@@ -631,9 +650,9 @@ public class StringFunctionsTest {
     } catch (ParseException pe) {
       thrown = true;
     }
-    assertTrue (thrown);
+    assertTrue(thrown);
 
-    //JSON Array
+    // JSON Array
     thrown = false;
     try {
       run("TO_JSON_MAP(msg)", ImmutableMap.of("msg", string5));
@@ -677,30 +696,30 @@ public class StringFunctionsTest {
   @Test
   @SuppressWarnings("unchecked")
   public void testToJsonList() {
-    //Simple Arrays
+    // Simple Arrays
     Object ret3 = run("TO_JSON_LIST(msg)", ImmutableMap.of("msg", string3));
     assertNotNull(ret3);
-    assertTrue (ret3 instanceof ArrayList);
+    assertTrue(ret3 instanceof ArrayList);
     List<Object> result3 = (List<Object>) ret3;
     assertEquals(2, result3.get(1));
 
     Object ret4 = run("TO_JSON_LIST(msg)", ImmutableMap.of("msg", string4));
     assertNotNull(ret4);
-    assertTrue (ret4 instanceof ArrayList);
+    assertTrue(ret4 instanceof ArrayList);
     List<Object> result4 = (List<Object>) ret4;
     assertEquals("car", result4.get(2));
 
-    //JSON Array
-    Object ret5 = run( "TO_JSON_LIST(msg)", ImmutableMap.of("msg", string5));
+    // JSON Array
+    Object ret5 = run("TO_JSON_LIST(msg)", ImmutableMap.of("msg", string5));
     assertNotNull(ret5);
-    assertTrue (ret5 instanceof ArrayList);
+    assertTrue(ret5 instanceof ArrayList);
     List<List<Object>> result5 = (List<List<Object>>) ret5;
-    HashMap<String,String> results5Map1 = (HashMap) result5.get(0);
+    HashMap<String, String> results5Map1 = (HashMap) result5.get(0);
     assertEquals("def", results5Map1.get("bar1"));
-    HashMap<String,String> results5Map2 = (HashMap) result5.get(1);
+    HashMap<String, String> results5Map2 = (HashMap) result5.get(1);
     assertEquals("ghi", results5Map2.get("foo2"));
 
-    //JSON Object - throws exception
+    // JSON Object - throws exception
     boolean thrown = false;
     try {
       run("TO_JSON_LIST(msg)", ImmutableMap.of("msg", string1));
@@ -715,7 +734,7 @@ public class StringFunctionsTest {
     } catch (ParseException pe) {
       thrown = true;
     }
-    assertTrue (thrown);
+    assertTrue(thrown);
 
     // No input
     thrown = false;

@@ -1,19 +1,16 @@
 /**
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
+ * Licensed to the Apache Software Foundation (ASF) under one or more contributor license
+ * agreements. See the NOTICE file distributed with this work for additional information regarding
+ * copyright ownership. The ASF licenses this file to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the License. You may obtain a
+ * copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  */
 package com.caseystella.stellar.dsl.functions;
 
@@ -29,21 +26,17 @@ import java.util.Map;
 
 public class DataStructureFunctions {
 
-  @Stellar(name="ADD"
-          , namespace="BLOOM"
-          , description="Adds an element to the bloom filter passed in"
-          , params = { "bloom - The bloom filter"
-                     , "value(s) - The value(s) to add"
-                     }
-          , returns = "Bloom Filter"
-          )
+  @Stellar(name = "ADD", namespace = "BLOOM",
+      description = "Adds an element to the bloom filter passed in",
+      params = {"bloom - The bloom filter", "value(s) - The value(s) to add"},
+      returns = "Bloom Filter")
   public static class BloomAdd extends BaseStellarFunction {
 
     @Override
     @SuppressWarnings("unchecked")
     public Object apply(List<Object> args) {
-      BloomFilter<Object> filter = (BloomFilter)args.get(0);
-      for (int i = 1;i < args.size();++i) {
+      BloomFilter<Object> filter = (BloomFilter) args.get(0);
+      for (int i = 1; i < args.size(); ++i) {
         Object arg = args.get(i);
         if (arg != null) {
           filter.add(args.get(i));
@@ -53,14 +46,10 @@ public class DataStructureFunctions {
     }
   }
 
-  @Stellar(name = "EXISTS",
-            namespace = "BLOOM",
-            description = "If the bloom filter contains the value",
-            params = { "bloom - The bloom filter",
-                       "value - The value to check"
-                     },
-            returns = "True if the filter might contain the value and false otherwise"
-          )
+  @Stellar(name = "EXISTS", namespace = "BLOOM",
+      description = "If the bloom filter contains the value",
+      params = {"bloom - The bloom filter", "value - The value to check"},
+      returns = "True if the filter might contain the value and false otherwise")
   public static class BloomExists extends BaseStellarFunction {
 
     @Override
@@ -69,7 +58,7 @@ public class DataStructureFunctions {
       if (args.size() == 0) {
         return false;
       }
-      BloomFilter<Object> filter = (BloomFilter)args.get(0);
+      BloomFilter<Object> filter = (BloomFilter) args.get(0);
       if (args.size() > 1) {
         Object arg = args.get(1);
         if (arg == null) {
@@ -81,14 +70,10 @@ public class DataStructureFunctions {
     }
   }
 
-  @Stellar(name = "INIT",
-           namespace = "BLOOM",
-           description = "Returns an empty bloom filter",
-           params = { "expectedInsertions - The expected insertions",
-                      "falsePositiveRate - The false positive rate you are willing to tolerate"
-                     },
-           returns = "Bloom Filter"
-          )
+  @Stellar(name = "INIT", namespace = "BLOOM", description = "Returns an empty bloom filter",
+      params = {"expectedInsertions - The expected insertions",
+          "falsePositiveRate - The false positive rate you are willing to tolerate"},
+      returns = "Bloom Filter")
   public static class BloomInit extends BaseStellarFunction {
 
     @Override
@@ -105,13 +90,9 @@ public class DataStructureFunctions {
     }
   }
 
-  @Stellar( name="MERGE"
-          , namespace="BLOOM"
-          , description="Returns a merged bloom filter"
-          , params = { "bloomfilters - A list of bloom filters to merge"
-                     }
-          , returns = "Bloom Filter or null if the list is empty"
-          )
+  @Stellar(name = "MERGE", namespace = "BLOOM", description = "Returns a merged bloom filter",
+      params = {"bloomfilters - A list of bloom filters to merge"},
+      returns = "Bloom Filter or null if the list is empty")
   public static class BloomMerge extends BaseStellarFunction {
 
     @Override
@@ -121,18 +102,17 @@ public class DataStructureFunctions {
         Object firstArg = args.get(0);
         if (firstArg instanceof List) {
           BloomFilter ret = null;
-          for (Object bf : (List)firstArg) {
+          for (Object bf : (List) firstArg) {
             if (bf instanceof BloomFilter) {
               if (ret == null) {
-                ret = (BloomFilter)bf;
+                ret = (BloomFilter) bf;
               } else {
-                ret.merge((BloomFilter)bf);
+                ret.merge((BloomFilter) bf);
               }
             }
           }
           return ret;
-        }
-        else {
+        } else {
           return null;
         }
       }
@@ -140,42 +120,33 @@ public class DataStructureFunctions {
     }
   }
 
-  @Stellar(name="IS_EMPTY"
-          , description="Returns true if string or collection is empty or null and false if otherwise."
-          , params = { "input - Object of string or collection type (for example, list)"}
-          , returns = "True if the string or collection is empty or null and false if otherwise."
-          )
+  @Stellar(name = "IS_EMPTY",
+      description = "Returns true if string or collection is empty or null and false if otherwise.",
+      params = {"input - Object of string or collection type (for example, list)"},
+      returns = "True if the string or collection is empty or null and false if otherwise.")
   public static class IsEmpty extends BaseStellarFunction {
 
     @Override
     public Object apply(List<Object> list) {
-      if(null == list || list.size() == 0) {
+      if (null == list || list.size() == 0) {
         return true;
       }
       Object o = list.get(0);
-      if(o instanceof Collection) {
-        return ((Collection)o).isEmpty();
-      }
-      else if(o instanceof String) {
+      if (o instanceof Collection) {
+        return ((Collection) o).isEmpty();
+      } else if (o instanceof String) {
         String val = (String) list.get(0);
         return val == null || val.isEmpty() ? true : false;
-      }
-      else if(o instanceof Map) {
-        return (((Map)o).isEmpty());
-      }
-      else {
+      } else if (o instanceof Map) {
+        return (((Map) o).isEmpty());
+      } else {
         return o == null;
       }
     }
   }
-  @Stellar(name="ADD"
-          ,namespace="LIST"
-          , description="Adds an element to a list."
-          , params = { "list - List to add element to."
-                     , "element - Element to add to list"
-                     }
-          , returns = "Resulting list with the item added at the end."
-  )
+  @Stellar(name = "ADD", namespace = "LIST", description = "Adds an element to a list.",
+      params = {"list - List to add element to.", "element - Element to add to list"},
+      returns = "Resulting list with the item added at the end.")
 
   public static class ListAdd extends BaseStellarFunction {
     @Override
@@ -189,7 +160,7 @@ public class DataStructureFunctions {
         return o;
       }
       if (o instanceof List) {
-        List l = (List)o;
+        List l = (List) o;
         Object arg = list.get(1);
         l.add(arg);
         return l;
@@ -200,10 +171,8 @@ public class DataStructureFunctions {
   }
 
   @Stellar(name = "LENGTH",
-            description = "Returns the length of a string or size of a collection. Returns 0 for empty or null Strings",
-            params = { "input - Object of string or collection type (e.g. list)"},
-            returns = "Integer"
-  )
+      description = "Returns the length of a string or size of a collection. Returns 0 for empty or null Strings",
+      params = {"input - Object of string or collection type (e.g. list)"}, returns = "Integer")
   public static class Length extends BaseStellarFunction {
     @Override
     @SuppressWarnings("unchecked")
@@ -213,9 +182,9 @@ public class DataStructureFunctions {
       }
       Object o = list.get(0);
       if (o instanceof Collection) {
-        return ((Collection)o).size();
+        return ((Collection) o).size();
       } else if (o instanceof Map) {
-        return ((Map)o).size();
+        return ((Map) o).size();
       } else if (o instanceof String) {
         String val = (String) list.get(0);
         return val == null || val.isEmpty() ? 0 : val.length();

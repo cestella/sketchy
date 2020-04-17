@@ -1,19 +1,16 @@
 /**
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
+ * Licensed to the Apache Software Foundation (ASF) under one or more contributor license
+ * agreements. See the NOTICE file distributed with this work for additional information regarding
+ * copyright ownership. The ASF licenses this file to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the License. You may obtain a
+ * copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  */
 package com.caseystella.stellar.dsl;
 
@@ -27,60 +24,56 @@ public class Context implements Serializable {
   public interface Capability {
     Object get();
   }
-  
+
   public enum Capabilities {
-      HBASE_PROVIDER
-    ,
+    HBASE_PROVIDER,
     /**
      * This capability indicates that the global config is available.
      */
-    GLOBAL_CONFIG
-    ,
+    GLOBAL_CONFIG,
     /**
-     * This capability indicates that a zookeeper client (i.e. a Curator client, specifically) is available.
+     * This capability indicates that a zookeeper client (i.e. a Curator client, specifically) is
+     * available.
      */
-    ZOOKEEPER_CLIENT
-    ,
+    ZOOKEEPER_CLIENT,
     /**
      * This capability indicates that a MaaS service discoverer is available.
      */
-    SERVICE_DISCOVERER
-    ,
+    SERVICE_DISCOVERER,
     /**
-     * This capability indicates that a map configuring stellar is available.  Generally this is done within the global config
-     * inside of storm, but may be sourced elsewhere (e.g. the CLI when running the REPL).
+     * This capability indicates that a map configuring stellar is available. Generally this is done
+     * within the global config inside of storm, but may be sourced elsewhere (e.g. the CLI when
+     * running the REPL).
      */
-    STELLAR_CONFIG
-    ,
+    STELLAR_CONFIG,
     /**
-     * This capability indicates that the Console object is available.  This is available when run via the CLI (e.g. from the REPL).
+     * This capability indicates that the Console object is available. This is available when run
+     * via the CLI (e.g. from the REPL).
      */
-    CONSOLE
-    ,
+    CONSOLE,
     /**
-     * This capability indicates that shell variables are available.  This is available when run via the CLI (e.g. from the REPL).
+     * This capability indicates that shell variables are available. This is available when run via
+     * the CLI (e.g. from the REPL).
      */
-    SHELL_VARIABLES
-    ,
+    SHELL_VARIABLES,
     /**
-     * This capability indicates that the StellarProcessor should use a Caffeine cache to cache expression -{@literal >} results.  If an expression
-     * is in the cache, then the cached result will be returned instead of recomputing.
+     * This capability indicates that the StellarProcessor should use a Caffeine cache to cache
+     * expression -{@literal >} results. If an expression is in the cache, then the cached result
+     * will be returned instead of recomputing.
      */
-    CACHE
-    ,
+    CACHE,
     /**
-     * This capability indicates that a http client (i.e. a CloseableHttpClient, specifically) is available.
+     * This capability indicates that a http client (i.e. a CloseableHttpClient, specifically) is
+     * available.
      */
     HTTP_CLIENT
   }
 
   public enum ActivityType {
-    VALIDATION_ACTIVITY,
-    PARSE_ACTIVITY
+    VALIDATION_ACTIVITY, PARSE_ACTIVITY
   }
 
-  private static ThreadLocal<ActivityType> _activityType = ThreadLocal.withInitial(() ->
-      null);
+  private static ThreadLocal<ActivityType> _activityType = ThreadLocal.withInitial(() -> null);
 
   public static class Builder {
 
@@ -95,9 +88,9 @@ public class Context implements Serializable {
       capabilityMap.put(s.toString(), capability);
       return this;
     }
-    
+
     public Builder withAll(Map<String, Object> externalConfig) {
-      for(Map.Entry<String, Object> entry : externalConfig.entrySet()) {
+      for (Map.Entry<String, Object> entry : externalConfig.entrySet()) {
 
         capabilityMap.put(entry.getKey(), () -> entry.getValue());
       }
@@ -110,12 +103,12 @@ public class Context implements Serializable {
   }
 
   public static Context EMPTY_CONTEXT() {
-    return new Context(new HashMap<>()){};
+    return new Context(new HashMap<>()) {};
   }
 
   private Map<String, Capability> capabilities;
 
-  private Context( Map<String, Capability> capabilities) {
+  private Context(Map<String, Capability> capabilities) {
     this.capabilities = capabilities;
   }
 
@@ -133,10 +126,10 @@ public class Context implements Serializable {
 
   public Optional<Object> getCapability(String capability, boolean errorIfNotThere) {
     Capability c = capabilities.get(capability);
-    if(c == null && errorIfNotThere) {
-      throw new IllegalStateException("Unable to find capability " + capability + "; it may not be available in your context.");
-    }
-    else if(c == null) {
+    if (c == null && errorIfNotThere) {
+      throw new IllegalStateException(
+          "Unable to find capability " + capability + "; it may not be available in your context.");
+    } else if (c == null) {
       return Optional.empty();
     }
     return Optional.ofNullable(c.get());

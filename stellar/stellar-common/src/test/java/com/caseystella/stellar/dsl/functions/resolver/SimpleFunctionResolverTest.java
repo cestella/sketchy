@@ -1,19 +1,16 @@
 /**
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
+ * Licensed to the Apache Software Foundation (ASF) under one or more contributor license
+ * agreements. See the NOTICE file distributed with this work for additional information regarding
+ * copyright ownership. The ASF licenses this file to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the License. You may obtain a
+ * copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  */
 
 package com.caseystella.stellar.dsl.functions.resolver;
@@ -50,7 +47,8 @@ public class SimpleFunctionResolverTest {
   }
 
   /**
-   * The function resolver should be able to instantiate an instance of the function's implementation.
+   * The function resolver should be able to instantiate an instance of the function's
+   * implementation.
    */
   @Test
   public void testApply() {
@@ -82,13 +80,13 @@ public class SimpleFunctionResolverTest {
   }
 
   /**
-   * I am the real deal.  I am a Stellar function.
+   * I am the real deal. I am a Stellar function.
    */
-  @Stellar(namespace="namespace", name="function", description="description", returns="returns", params={"param1"})
+  @Stellar(namespace = "namespace", name = "function", description = "description",
+      returns = "returns", params = {"param1"})
   private static class IAmAFunction extends BaseStellarFunction {
 
-    public IAmAFunction() {
-    }
+    public IAmAFunction() {}
 
     @Override
     public Object apply(List<Object> args) {
@@ -97,12 +95,11 @@ public class SimpleFunctionResolverTest {
   }
 
   /**
-   * This is not a Stellar function.  It implements StellarFunction, but is not annotated.
+   * This is not a Stellar function. It implements StellarFunction, but is not annotated.
    */
   private static class MissingAnnotation implements StellarFunction {
 
-    public MissingAnnotation() {
-    }
+    public MissingAnnotation() {}
 
     @Override
     public Object apply(List<Object> args, Context context) throws ParseException {
@@ -110,8 +107,7 @@ public class SimpleFunctionResolverTest {
     }
 
     @Override
-    public void initialize(Context context) {
-    }
+    public void initialize(Context context) {}
 
     @Override
     public boolean isInitialized() {

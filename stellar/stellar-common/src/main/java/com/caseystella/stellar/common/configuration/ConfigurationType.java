@@ -1,19 +1,16 @@
 /**
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
+ * Licensed to the Apache Software Foundation (ASF) under one or more contributor license
+ * agreements. See the NOTICE file distributed with this work for additional information regarding
+ * copyright ownership. The ASF licenses this file to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the License. You may obtain a
+ * copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  */
 
 package com.caseystella.stellar.common.configuration;
@@ -26,7 +23,7 @@ import java.io.IOException;
 
 public enum ConfigurationType implements Function<String, Object> {
 
-  GLOBAL("global",".", s -> {
+  GLOBAL("global", ".", s -> {
     try {
       return JSONUtils.INSTANCE.load(s, JSONUtils.MAP_SUPPLIER);
     } catch (IOException e) {
@@ -37,7 +34,7 @@ public enum ConfigurationType implements Function<String, Object> {
   String name;
   String directory;
   String zookeeperRoot;
-  Function<String,?> deserializer;
+  Function<String, ?> deserializer;
 
   ConfigurationType(String name, String directory, Function<String, ?> deserializer) {
     this.name = name;

@@ -1,19 +1,16 @@
 /*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
+ * Licensed to the Apache Software Foundation (ASF) under one or more contributor license
+ * agreements. See the NOTICE file distributed with this work for additional information regarding
+ * copyright ownership. The ASF licenses this file to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the License. You may obtain a
+ * copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  */
 
 package com.caseystella.stellar.common.evaluators;
@@ -43,7 +40,8 @@ public class ArithmeticEvaluatorTest {
 
     Pair<Token<? extends Number>, Token<? extends Number>> p = Pair.of(l, r);
 
-    Token<? extends Number> evaluated = evaluator.evaluate(ArithmeticEvaluator.ArithmeticEvaluatorFunctions.addition(null), p);
+    Token<? extends Number> evaluated =
+        evaluator.evaluate(ArithmeticEvaluator.ArithmeticEvaluatorFunctions.addition(null), p);
 
     assertTrue(evaluated.getValue() instanceof Double);
     assertEquals(3.0D, evaluated.getValue());
@@ -59,7 +57,8 @@ public class ArithmeticEvaluatorTest {
 
     Pair<Token<? extends Number>, Token<? extends Number>> p = Pair.of(l, r);
 
-    Token<? extends Number> evaluated = evaluator.evaluate(ArithmeticEvaluator.ArithmeticEvaluatorFunctions.addition(null), p);
+    Token<? extends Number> evaluated =
+        evaluator.evaluate(ArithmeticEvaluator.ArithmeticEvaluatorFunctions.addition(null), p);
 
     assertTrue(evaluated.getValue() instanceof Integer);
     assertEquals(3, evaluated.getValue());
@@ -75,7 +74,8 @@ public class ArithmeticEvaluatorTest {
 
     Pair<Token<? extends Number>, Token<? extends Number>> p = Pair.of(l, r);
 
-    Token<? extends Number> evaluated = evaluator.evaluate(ArithmeticEvaluator.ArithmeticEvaluatorFunctions.addition(null), p);
+    Token<? extends Number> evaluated =
+        evaluator.evaluate(ArithmeticEvaluator.ArithmeticEvaluatorFunctions.addition(null), p);
 
     assertTrue(evaluated.getValue() instanceof Float);
     assertEquals(3F, evaluated.getValue());
@@ -91,7 +91,8 @@ public class ArithmeticEvaluatorTest {
 
     Pair<Token<? extends Number>, Token<? extends Number>> p = Pair.of(l, r);
 
-    Token<? extends Number> evaluated = evaluator.evaluate(ArithmeticEvaluator.ArithmeticEvaluatorFunctions.addition(null), p);
+    Token<? extends Number> evaluated =
+        evaluator.evaluate(ArithmeticEvaluator.ArithmeticEvaluatorFunctions.addition(null), p);
 
     assertTrue(evaluated.getValue() instanceof Long);
     assertEquals(3L, evaluated.getValue());
@@ -107,7 +108,8 @@ public class ArithmeticEvaluatorTest {
 
     Pair<Token<? extends Number>, Token<? extends Number>> p = Pair.of(l, r);
 
-    Token<? extends Number> evaluated = evaluator.evaluate(ArithmeticEvaluator.ArithmeticEvaluatorFunctions.multiplication(null), p);
+    Token<? extends Number> evaluated = evaluator
+        .evaluate(ArithmeticEvaluator.ArithmeticEvaluatorFunctions.multiplication(null), p);
 
     assertTrue(evaluated.getValue() instanceof Double);
     assertEquals(2.0D, evaluated.getValue());
@@ -123,7 +125,8 @@ public class ArithmeticEvaluatorTest {
 
     Pair<Token<? extends Number>, Token<? extends Number>> p = Pair.of(l, r);
 
-    Token<? extends Number> evaluated = evaluator.evaluate(ArithmeticEvaluator.ArithmeticEvaluatorFunctions.multiplication(null), p);
+    Token<? extends Number> evaluated = evaluator
+        .evaluate(ArithmeticEvaluator.ArithmeticEvaluatorFunctions.multiplication(null), p);
 
     assertTrue(evaluated.getValue() instanceof Integer);
     assertEquals(2, evaluated.getValue());
@@ -139,7 +142,8 @@ public class ArithmeticEvaluatorTest {
 
     Pair<Token<? extends Number>, Token<? extends Number>> p = Pair.of(l, r);
 
-    Token<? extends Number> evaluated = evaluator.evaluate(ArithmeticEvaluator.ArithmeticEvaluatorFunctions.multiplication(null), p);
+    Token<? extends Number> evaluated = evaluator
+        .evaluate(ArithmeticEvaluator.ArithmeticEvaluatorFunctions.multiplication(null), p);
 
     assertTrue(evaluated.getValue() instanceof Float);
     assertEquals(2F, evaluated.getValue());
@@ -155,7 +159,8 @@ public class ArithmeticEvaluatorTest {
 
     Pair<Token<? extends Number>, Token<? extends Number>> p = Pair.of(l, r);
 
-    Token<? extends Number> evaluated = evaluator.evaluate(ArithmeticEvaluator.ArithmeticEvaluatorFunctions.multiplication(null), p);
+    Token<? extends Number> evaluated = evaluator
+        .evaluate(ArithmeticEvaluator.ArithmeticEvaluatorFunctions.multiplication(null), p);
 
     assertTrue(evaluated.getValue() instanceof Long);
     assertEquals(2L, evaluated.getValue());
@@ -171,7 +176,8 @@ public class ArithmeticEvaluatorTest {
 
     Pair<Token<? extends Number>, Token<? extends Number>> p = Pair.of(l, r);
 
-    Token<? extends Number> evaluated = evaluator.evaluate(ArithmeticEvaluator.ArithmeticEvaluatorFunctions.subtraction(null), p);
+    Token<? extends Number> evaluated =
+        evaluator.evaluate(ArithmeticEvaluator.ArithmeticEvaluatorFunctions.subtraction(null), p);
 
     assertTrue(evaluated.getValue() instanceof Double);
     assertEquals(-1.0D, evaluated.getValue());
@@ -187,7 +193,8 @@ public class ArithmeticEvaluatorTest {
 
     Pair<Token<? extends Number>, Token<? extends Number>> p = Pair.of(l, r);
 
-    Token<? extends Number> evaluated = evaluator.evaluate(ArithmeticEvaluator.ArithmeticEvaluatorFunctions.subtraction(null), p);
+    Token<? extends Number> evaluated =
+        evaluator.evaluate(ArithmeticEvaluator.ArithmeticEvaluatorFunctions.subtraction(null), p);
 
     assertTrue(evaluated.getValue() instanceof Integer);
     assertEquals(-1, evaluated.getValue());
@@ -203,7 +210,8 @@ public class ArithmeticEvaluatorTest {
 
     Pair<Token<? extends Number>, Token<? extends Number>> p = Pair.of(l, r);
 
-    Token<? extends Number> evaluated = evaluator.evaluate(ArithmeticEvaluator.ArithmeticEvaluatorFunctions.subtraction(null), p);
+    Token<? extends Number> evaluated =
+        evaluator.evaluate(ArithmeticEvaluator.ArithmeticEvaluatorFunctions.subtraction(null), p);
 
     assertTrue(evaluated.getValue() instanceof Float);
     assertEquals(-1F, evaluated.getValue());
@@ -219,7 +227,8 @@ public class ArithmeticEvaluatorTest {
 
     Pair<Token<? extends Number>, Token<? extends Number>> p = Pair.of(l, r);
 
-    Token<? extends Number> evaluated = evaluator.evaluate(ArithmeticEvaluator.ArithmeticEvaluatorFunctions.subtraction(null), p);
+    Token<? extends Number> evaluated =
+        evaluator.evaluate(ArithmeticEvaluator.ArithmeticEvaluatorFunctions.subtraction(null), p);
 
     assertTrue(evaluated.getValue() instanceof Long);
     assertEquals(-1L, evaluated.getValue());
@@ -235,7 +244,8 @@ public class ArithmeticEvaluatorTest {
 
     Pair<Token<? extends Number>, Token<? extends Number>> p = Pair.of(l, r);
 
-    Token<? extends Number> evaluated = evaluator.evaluate(ArithmeticEvaluator.ArithmeticEvaluatorFunctions.division(null), p);
+    Token<? extends Number> evaluated =
+        evaluator.evaluate(ArithmeticEvaluator.ArithmeticEvaluatorFunctions.division(null), p);
 
     assertTrue(evaluated.getValue() instanceof Double);
     assertEquals(1 / 2D, evaluated.getValue());
@@ -251,7 +261,8 @@ public class ArithmeticEvaluatorTest {
 
     Pair<Token<? extends Number>, Token<? extends Number>> p = Pair.of(l, r);
 
-    Token<? extends Number> evaluated = evaluator.evaluate(ArithmeticEvaluator.ArithmeticEvaluatorFunctions.division(null), p);
+    Token<? extends Number> evaluated =
+        evaluator.evaluate(ArithmeticEvaluator.ArithmeticEvaluatorFunctions.division(null), p);
 
     assertTrue(evaluated.getValue() instanceof Integer);
     assertEquals(1 / 2, evaluated.getValue());
@@ -267,7 +278,8 @@ public class ArithmeticEvaluatorTest {
 
     Pair<Token<? extends Number>, Token<? extends Number>> p = Pair.of(l, r);
 
-    Token<? extends Number> evaluated = evaluator.evaluate(ArithmeticEvaluator.ArithmeticEvaluatorFunctions.division(null), p);
+    Token<? extends Number> evaluated =
+        evaluator.evaluate(ArithmeticEvaluator.ArithmeticEvaluatorFunctions.division(null), p);
 
     assertTrue(evaluated.getValue() instanceof Float);
     assertEquals(0.5F, evaluated.getValue());
@@ -283,7 +295,8 @@ public class ArithmeticEvaluatorTest {
 
     Pair<Token<? extends Number>, Token<? extends Number>> p = Pair.of(l, r);
 
-    Token<? extends Number> evaluated = evaluator.evaluate(ArithmeticEvaluator.ArithmeticEvaluatorFunctions.division(null), p);
+    Token<? extends Number> evaluated =
+        evaluator.evaluate(ArithmeticEvaluator.ArithmeticEvaluatorFunctions.division(null), p);
 
     assertTrue(evaluated.getValue() instanceof Long);
     assertEquals(0L, evaluated.getValue());
@@ -291,29 +304,22 @@ public class ArithmeticEvaluatorTest {
 
   @Test
   public void evaluateShouldThroughIllegalArgumentExceptionWhenInputIsNull() {
-    assertThrows(
-        IllegalArgumentException.class,
-        () ->
-            evaluator.evaluate(
-                ArithmeticEvaluator.ArithmeticEvaluatorFunctions.division(null), null));
+    assertThrows(IllegalArgumentException.class, () -> evaluator
+        .evaluate(ArithmeticEvaluator.ArithmeticEvaluatorFunctions.division(null), null));
   }
 
   @Test
   public void evaluateShouldThroughIllegalArgumentExceptionWhenInputsKeyIsNull() {
     Pair<Token<? extends Number>, Token<? extends Number>> p = Pair.of(null, mock(Token.class));
-    assertThrows(
-        IllegalArgumentException.class,
-        () ->
-            evaluator.evaluate(ArithmeticEvaluator.ArithmeticEvaluatorFunctions.division(null), p));
+    assertThrows(IllegalArgumentException.class, () -> evaluator
+        .evaluate(ArithmeticEvaluator.ArithmeticEvaluatorFunctions.division(null), p));
   }
 
   @Test
   public void evaluateShouldThroughIllegalArgumentExceptionWhenInputsValueIsNull() {
     Pair<Token<? extends Number>, Token<? extends Number>> p = Pair.of(mock(Token.class), null);
-    assertThrows(
-        IllegalArgumentException.class,
-        () ->
-            evaluator.evaluate(ArithmeticEvaluator.ArithmeticEvaluatorFunctions.division(null), p));
+    assertThrows(IllegalArgumentException.class, () -> evaluator
+        .evaluate(ArithmeticEvaluator.ArithmeticEvaluatorFunctions.division(null), p));
   }
 
   @Test
@@ -324,10 +330,14 @@ public class ArithmeticEvaluatorTest {
     Token<Short> r = mock(Token.class);
     when(r.getValue()).thenReturn((short) 3);
 
-    Token<? extends Number> evaluated0 = evaluator.evaluate(ArithmeticEvaluator.ArithmeticEvaluatorFunctions.addition(null), Pair.of(l, r));
-    Token<? extends Number> evaluated1 = evaluator.evaluate(ArithmeticEvaluator.ArithmeticEvaluatorFunctions.subtraction(null), Pair.of(l, r));
-    Token<? extends Number> evaluated2 = evaluator.evaluate(ArithmeticEvaluator.ArithmeticEvaluatorFunctions.multiplication(null), Pair.of(l, r));
-    Token<? extends Number> evaluated3 = evaluator.evaluate(ArithmeticEvaluator.ArithmeticEvaluatorFunctions.division(null), Pair.of(l, r));
+    Token<? extends Number> evaluated0 = evaluator
+        .evaluate(ArithmeticEvaluator.ArithmeticEvaluatorFunctions.addition(null), Pair.of(l, r));
+    Token<? extends Number> evaluated1 = evaluator.evaluate(
+        ArithmeticEvaluator.ArithmeticEvaluatorFunctions.subtraction(null), Pair.of(l, r));
+    Token<? extends Number> evaluated2 = evaluator.evaluate(
+        ArithmeticEvaluator.ArithmeticEvaluatorFunctions.multiplication(null), Pair.of(l, r));
+    Token<? extends Number> evaluated3 = evaluator
+        .evaluate(ArithmeticEvaluator.ArithmeticEvaluatorFunctions.division(null), Pair.of(l, r));
 
     assertTrue(evaluated0.getValue() instanceof Integer);
     assertEquals(5, evaluated0.getValue());
@@ -352,7 +362,8 @@ public class ArithmeticEvaluatorTest {
 
     Pair<Token<? extends Number>, Token<? extends Number>> p = Pair.of(l, r);
 
-    Token<? extends Number> evaluated = evaluator.evaluate(ArithmeticEvaluator.ArithmeticEvaluatorFunctions.addition(null), p);
+    Token<? extends Number> evaluated =
+        evaluator.evaluate(ArithmeticEvaluator.ArithmeticEvaluatorFunctions.addition(null), p);
 
     assertTrue(evaluated.getValue() instanceof Integer);
     assertEquals(2, evaluated.getValue());
@@ -368,7 +379,8 @@ public class ArithmeticEvaluatorTest {
 
     Pair<Token<? extends Number>, Token<? extends Number>> p = Pair.of(l, r);
 
-    Token<? extends Number> evaluated = evaluator.evaluate(ArithmeticEvaluator.ArithmeticEvaluatorFunctions.addition(null), p);
+    Token<? extends Number> evaluated =
+        evaluator.evaluate(ArithmeticEvaluator.ArithmeticEvaluatorFunctions.addition(null), p);
 
     assertTrue(evaluated.getValue() instanceof Integer);
     assertEquals(1, evaluated.getValue());
@@ -389,33 +401,43 @@ public class ArithmeticEvaluatorTest {
     when(flt.getValue()).thenReturn(1.0F);
 
     Map<Pair<Token<? extends Number>, Token<? extends Number>>, Class<? extends Number>> expectedReturnTypeMappings =
-        new HashMap<Pair<Token<? extends Number>, Token<? extends Number>>, Class<? extends Number>>() {{
-          put(Pair.of(flt, lng), Float.class);
-          put(Pair.of(flt, dbl), Double.class);
-          put(Pair.of(flt, flt), Float.class);
-          put(Pair.of(flt, integer), Float.class);
+        new HashMap<Pair<Token<? extends Number>, Token<? extends Number>>, Class<? extends Number>>() {
+          {
+            put(Pair.of(flt, lng), Float.class);
+            put(Pair.of(flt, dbl), Double.class);
+            put(Pair.of(flt, flt), Float.class);
+            put(Pair.of(flt, integer), Float.class);
 
-          put(Pair.of(lng, lng), Long.class);
-          put(Pair.of(lng, dbl), Double.class);
-          put(Pair.of(lng, flt), Float.class);
-          put(Pair.of(lng, integer), Long.class);
+            put(Pair.of(lng, lng), Long.class);
+            put(Pair.of(lng, dbl), Double.class);
+            put(Pair.of(lng, flt), Float.class);
+            put(Pair.of(lng, integer), Long.class);
 
-          put(Pair.of(dbl, lng), Double.class);
-          put(Pair.of(dbl, dbl), Double.class);
-          put(Pair.of(dbl, flt), Double.class);
-          put(Pair.of(dbl, integer), Double.class);
+            put(Pair.of(dbl, lng), Double.class);
+            put(Pair.of(dbl, dbl), Double.class);
+            put(Pair.of(dbl, flt), Double.class);
+            put(Pair.of(dbl, integer), Double.class);
 
-          put(Pair.of(integer, lng), Long.class);
-          put(Pair.of(integer, dbl), Double.class);
-          put(Pair.of(integer, flt), Float.class);
-          put(Pair.of(integer, integer), Integer.class);
-    }};
+            put(Pair.of(integer, lng), Long.class);
+            put(Pair.of(integer, dbl), Double.class);
+            put(Pair.of(integer, flt), Float.class);
+            put(Pair.of(integer, integer), Integer.class);
+          }
+        };
 
-    expectedReturnTypeMappings.forEach( (pair, expectedClass) -> {
-      assertTrue(evaluator.evaluate(ArithmeticEvaluator.ArithmeticEvaluatorFunctions.addition(null), pair).getValue().getClass() == expectedClass);
-      assertTrue(evaluator.evaluate(ArithmeticEvaluator.ArithmeticEvaluatorFunctions.division(null), pair).getValue().getClass() == expectedClass);
-      assertTrue(evaluator.evaluate(ArithmeticEvaluator.ArithmeticEvaluatorFunctions.subtraction(null), pair).getValue().getClass() == expectedClass);
-      assertTrue(evaluator.evaluate(ArithmeticEvaluator.ArithmeticEvaluatorFunctions.multiplication(null), pair).getValue().getClass() == expectedClass);
+    expectedReturnTypeMappings.forEach((pair, expectedClass) -> {
+      assertTrue(
+          evaluator.evaluate(ArithmeticEvaluator.ArithmeticEvaluatorFunctions.addition(null), pair)
+              .getValue().getClass() == expectedClass);
+      assertTrue(
+          evaluator.evaluate(ArithmeticEvaluator.ArithmeticEvaluatorFunctions.division(null), pair)
+              .getValue().getClass() == expectedClass);
+      assertTrue(evaluator
+          .evaluate(ArithmeticEvaluator.ArithmeticEvaluatorFunctions.subtraction(null), pair)
+          .getValue().getClass() == expectedClass);
+      assertTrue(evaluator
+          .evaluate(ArithmeticEvaluator.ArithmeticEvaluatorFunctions.multiplication(null), pair)
+          .getValue().getClass() == expectedClass);
     });
   }
 }

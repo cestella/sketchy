@@ -1,19 +1,16 @@
 /**
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
+ * Licensed to the Apache Software Foundation (ASF) under one or more contributor license
+ * agreements. See the NOTICE file distributed with this work for additional information regarding
+ * copyright ownership. The ASF licenses this file to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the License. You may obtain a
+ * copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  */
 
 package com.caseystella.stellar.dsl.functions;
@@ -42,14 +39,17 @@ public class OrdinalFunctionsTest {
   public void setup() throws Exception {
     context = new Context.Builder().build();
   }
+
   @Test
   public void testMaxOfMixedNumerical() {
 
-    List<Object> inputList = new ArrayList<Object>(){{
-      add(12L);
-      add(56.0);
-      add(56.3);
-    }};
+    List<Object> inputList = new ArrayList<Object>() {
+      {
+        add(12L);
+        add(56.0);
+        add(56.3);
+      }
+    };
 
     Object res = run("MAX(input_list)", ImmutableMap.of("input_list", inputList));
     assertNotNull(res);
@@ -59,25 +59,30 @@ public class OrdinalFunctionsTest {
   @Test
   public void testMinOfMixedNumerical() {
 
-    List<Object> inputList = new ArrayList<Object>(){{
-      add(12L);
-      add(56.0);
-      add(457L);
-    }};
+    List<Object> inputList = new ArrayList<Object>() {
+      {
+        add(12L);
+        add(56.0);
+        add(457L);
+      }
+    };
 
     Object res = run("MIN(input_list)", ImmutableMap.of("input_list", inputList));
     assertNotNull(res);
     assertEquals(res, 12L);
   }
+
   @Test
   public void testMaxOfStringList() {
 
-    List<Object> inputList = new ArrayList<Object>(){{
-      add("value3");
-      add("value1");
-      add("23");
-      add("value2");
-    }};
+    List<Object> inputList = new ArrayList<Object>() {
+      {
+        add("value3");
+        add("value1");
+        add("23");
+        add("value2");
+      }
+    };
 
     Object res = run("MAX(input_list)", ImmutableMap.of("input_list", inputList));
     assertNotNull(res);
@@ -87,10 +92,12 @@ public class OrdinalFunctionsTest {
   @Test
   public void testMaxOfIntegerList() {
 
-    List<Object> inputList = new ArrayList<Object>(){{
-      add(12);
-      add(56);
-    }};
+    List<Object> inputList = new ArrayList<Object>() {
+      {
+        add(12);
+        add(56);
+      }
+    };
 
     Object res = run("MAX(input_list)", ImmutableMap.of("input_list", inputList));
     assertNotNull(res);
@@ -100,7 +107,7 @@ public class OrdinalFunctionsTest {
   @Test
   public void testMaxWithVarList() {
 
-    Object res = run("MAX([string1,string2])", ImmutableMap.of("string1","abc","string2","def"));
+    Object res = run("MAX([string1,string2])", ImmutableMap.of("string1", "abc", "string2", "def"));
     assertNotNull(res);
     assertEquals("def", res);
   }
@@ -108,10 +115,12 @@ public class OrdinalFunctionsTest {
   @Test
   public void testMinWithNullInList() {
 
-    List<Object> inputList = new ArrayList<Object>(){{
-      add(145);
-      add(null);
-    }};
+    List<Object> inputList = new ArrayList<Object>() {
+      {
+        add(145);
+        add(null);
+      }
+    };
 
     Object res = run("MIN(input_list)", ImmutableMap.of("input_list", inputList));
     assertNotNull(res);
@@ -121,10 +130,12 @@ public class OrdinalFunctionsTest {
   @Test
   public void testAllNullList() {
 
-    List<Object> inputList = new ArrayList<Object>(){{
-      add(null);
-      add(null);
-    }};
+    List<Object> inputList = new ArrayList<Object>() {
+      {
+        add(null);
+        add(null);
+      }
+    };
 
     Object res = run("MAX(input_list)", ImmutableMap.of("input_list", inputList));
     assertNull(res);
@@ -133,12 +144,14 @@ public class OrdinalFunctionsTest {
   @Test
   public void testMinOfIntegerList() {
 
-    List<Object> inputList = new ArrayList<Object>(){{
-      add(56);
-      add(12);
-      add(23);
-      add(null);
-    }};
+    List<Object> inputList = new ArrayList<Object>() {
+      {
+        add(56);
+        add(12);
+        add(23);
+        add(null);
+      }
+    };
 
     Object res = run("MIN(input_list)", ImmutableMap.of("input_list", inputList));
     assertNotNull(res);
@@ -149,11 +162,13 @@ public class OrdinalFunctionsTest {
   @Test
   public void testMaxOfLongList() {
 
-    List<Object> inputList = new ArrayList<Object>(){{
-      add(12L);
-      add(56L);
-      add(457L);
-    }};
+    List<Object> inputList = new ArrayList<Object>() {
+      {
+        add(12L);
+        add(56L);
+        add(457L);
+      }
+    };
 
     Object res = run("MAX(input_list)", ImmutableMap.of("input_list", inputList));
     assertNotNull(res);
@@ -162,27 +177,32 @@ public class OrdinalFunctionsTest {
 
   @Test
   public void testMaxOfMixedList() {
-    List<Object> inputList = new ArrayList<Object>(){{
-      add(12);
-      add("string");
-      add(457L);
-    }};
+    List<Object> inputList = new ArrayList<Object>() {
+      {
+        add(12);
+        add("string");
+        add(457L);
+      }
+    };
 
     ParseException e = assertThrows(ParseException.class, () -> {
       Object res = run("MAX(input_list)", ImmutableMap.of("input_list", inputList));
       assertNull(res);
     });
-    assertTrue(e.getMessage().contains("Incomparable objects were submitted to MAX: class java.lang.String is incomparable to class java.lang.Long"));
+    assertTrue(e.getMessage().contains(
+        "Incomparable objects were submitted to MAX: class java.lang.String is incomparable to class java.lang.Long"));
   }
 
   @Test
   public void testSetInput() {
 
-    Set<Object> inputSet = new HashSet<Object>(){{
-      add(14L);
-      add(15.3d);
-      add(15);
-    }};
+    Set<Object> inputSet = new HashSet<Object>() {
+      {
+        add(14L);
+        add(15.3d);
+        add(15);
+      }
+    };
 
     Object res = run("MAX(input_set)", ImmutableMap.of("input_set", inputSet));
     assertNotNull(res);
@@ -194,22 +214,26 @@ public class OrdinalFunctionsTest {
 
     class TestObject {
       private String arg;
+
       public TestObject(String arg) {
         this.arg = arg;
       }
     }
 
-    List<Object> inputList = new ArrayList<Object>(){{
-      add(new TestObject("one"));
-      add(new TestObject("two"));
-      add(new TestObject("three"));
-    }};
+    List<Object> inputList = new ArrayList<Object>() {
+      {
+        add(new TestObject("one"));
+        add(new TestObject("two"));
+        add(new TestObject("three"));
+      }
+    };
 
     ParseException e = assertThrows(ParseException.class, () -> {
       Object res = run("MIN(input_list)", ImmutableMap.of("input_list", inputList));
       assertNull(res);
     });
-    assertTrue(e.getMessage().contains("Noncomparable object type com.caseystella.stellar.dsl.functions.OrdinalFunctionsTest$1TestObject submitted to MIN"));
+    assertTrue(e.getMessage().contains(
+        "Noncomparable object type com.caseystella.stellar.dsl.functions.OrdinalFunctionsTest$1TestObject submitted to MIN"));
   }
 
   @Test
@@ -252,6 +276,8 @@ public class OrdinalFunctionsTest {
 
   public Object run(String rule, Map<String, Object> variables) {
     StellarProcessor processor = new StellarProcessor();
-    return processor.parse(rule, new DefaultVariableResolver(x -> variables.get(x), x -> variables.containsKey(x)), StellarFunctions.FUNCTION_RESOLVER(), context);
+    return processor.parse(rule,
+        new DefaultVariableResolver(x -> variables.get(x), x -> variables.containsKey(x)),
+        StellarFunctions.FUNCTION_RESOLVER(), context);
   }
 }
