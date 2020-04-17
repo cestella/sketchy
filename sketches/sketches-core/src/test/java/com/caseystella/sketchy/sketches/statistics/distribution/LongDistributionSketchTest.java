@@ -1,10 +1,10 @@
-package com.caseystella.sketchy.sketches;
+package com.caseystella.sketchy.sketches.statistics.distribution;
 
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import com.caseystella.stellar.common.utils.SerDeUtils;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
-import org.apache.datasketches.quantiles.DoublesSketchBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,12 +53,12 @@ public class LongDistributionSketchTest {
     private void validateEquality(Iterable<Long> values) {
         DescriptiveStatistics stats = new DescriptiveStatistics();
         SummaryStatistics summaryStats = new SummaryStatistics();
-        DoublesSketchBuilder builder = new DoublesSketchBuilder().setK(512);
-        LongDistributionSketch statsProvider = new LongDistributionSketch(builder);
+        int k = 512;
+        DistributionSketch<Long> statsProvider = DistributionSketches.LONG.create(k, Long.class);
         //Test that the aggregated provider gives the same results as the provider that is shown all the data.
         List<DistributionSketch<Long>> providers = new ArrayList<>();
         for(int i = 0;i < 10;++i) {
-            providers.add(new LongDistributionSketch(builder));
+            providers.add(DistributionSketches.LONG.create(k, Long.class));
         }
         int i = 0;
         for(long d : values) {
@@ -78,8 +78,8 @@ public class LongDistributionSketchTest {
 
     DistributionSketch<Long> cloneSketch(DistributionSketch<Long> sketch) {
         byte[] ser = SerDeUtils.toBytes(sketch);
-        LongDistributionSketch ret = (LongDistributionSketch) SerDeUtils.fromBytes(ser, sketch.getClass());
-        assertEquals(ret.getK(), ((LongDistributionSketch)sketch).getK());
+        DistributionSketch<Long> ret = (DistributionSketch<Long>) SerDeUtils.fromBytes(ser, sketch.getClass());
+        assertEquals(ret.getK(), sketch.getK());
         return ret;
     }
 
