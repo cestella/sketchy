@@ -41,6 +41,7 @@ import org.apache.commons.math3.util.FastMath;
  */
 public abstract class DistributionSketchImpl<T extends Number, S> implements DistributionSketch<T>,
     Serializable {
+  private static final long serialVersionUID = 1L;
   transient protected SketchType<S> sketchType;
   transient protected NumberType<T> numberType;
   protected S sketch;
