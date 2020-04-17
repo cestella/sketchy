@@ -9,7 +9,7 @@
   <description>Sketchy Top Level Project</description>
   <modules>
     <module>stellar</module>
-    <module>ts</module>
+    <module>time_series</module>
     <module>sketches</module>
   </modules>
 

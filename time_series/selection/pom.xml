@@ -3,14 +3,14 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 <modelVersion>4.0.0</modelVersion>
 <parent>
-	<groupId>com.caseystella.sketchy</groupId>
-	<artifactId>sketchy</artifactId>
+	<groupId>com.caseystella.sketchy.time_series</groupId>
+	<artifactId>time_series</artifactId>
 	<version>0.0.1</version>
 </parent>
-<groupId>com.caseystella.sketchy</groupId>
-<artifactId>ts</artifactId>
+<groupId>com.caseystella.sketchy.time_series</groupId>
+<artifactId>selection</artifactId>
 <version>0.0.1</version>
-<name>ts</name>
+<name>Time Series Selection Interfaces</name>
 <dependencies>
 	<dependency>
 		<groupId>org.antlr</groupId>
