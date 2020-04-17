@@ -1,10 +1,12 @@
-package com.caseystella.sketchy.sketches;
+package com.caseystella.sketchy.sketches.statistics.distribution;
 
 import com.esotericsoftware.kryo.KryoSerializable;
 
 import java.util.Optional;
 
 public interface DistributionSketch<T extends Number> extends KryoSerializable {
+    int getK();
+
     void addValue(T value);
 
     long getCount();

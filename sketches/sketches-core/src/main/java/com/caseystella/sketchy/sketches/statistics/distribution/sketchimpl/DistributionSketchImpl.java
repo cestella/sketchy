@@ -18,15 +18,17 @@
  *
  */
 
-package com.caseystella.sketchy.sketches;
+package com.caseystella.sketchy.sketches.statistics.distribution.sketchimpl;
 
+import com.caseystella.sketchy.sketches.statistics.distribution.DistributionSketch;
+import com.caseystella.sketchy.sketches.statistics.distribution.types.number.NumberType;
+import com.caseystella.sketchy.sketches.statistics.distribution.types.sketch.SketchType;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
-import org.apache.commons.math3.util.FastMath;
-
 import java.util.Objects;
 import java.util.Optional;
+import org.apache.commons.math3.util.FastMath;
 
 /**
  * A (near) constant memory implementation of a statistics provider.
@@ -34,7 +36,7 @@ import java.util.Optional;
  * to return the statistics results.  This is intended to provide a
  * mergeable implementation for a statistics provider.
  */
-public class DistributionSketchImpl<T extends Number, S> implements  DistributionSketch<T> {
+public abstract class DistributionSketchImpl<T extends Number, S> implements DistributionSketch<T> {
   protected SketchType<S> sketchType;
   protected NumberType<T> numberType;
   protected S sketch;
@@ -53,10 +55,17 @@ public class DistributionSketchImpl<T extends Number, S> implements  Distributio
   protected double M3 = 0;
   //\mu_4: E[(X - \mu)^4]
   protected double M4 = 0;
+  //almost sensible default k
+  int k = 128;
 
-  public DistributionSketchImpl(NumberType<T> numberType, SketchType<S> sketchType) {
-    this.numberType = numberType;
-    this.sketchType = sketchType;
+  public DistributionSketchImpl() {
+    this(128);
+  }
+
+  public DistributionSketchImpl(int k) {
+    this.k = k;
+    this.numberType = createNumberType();
+    this.sketchType = createSketchType(k);
     sketch = sketchType.createSketch();
     sum = numberType.zero();
     sumOfSquares = numberType.zero();
@@ -64,6 +73,13 @@ public class DistributionSketchImpl<T extends Number, S> implements  Distributio
     max = numberType.minValue();
   }
 
+  abstract protected NumberType<T> createNumberType();
+  abstract protected SketchType<S> createSketchType(int k);
+  abstract protected DistributionSketchImpl<T, S> createNew();
+
+  public int getK() {
+    return k;
+  }
   /**
    * Add a value.
    * NOTE: This does not store the point, but only updates internal state.
@@ -212,7 +228,7 @@ public class DistributionSketchImpl<T extends Number, S> implements  Distributio
 
   @Override
   public DistributionSketch<T> merge(DistributionSketch<T> provider) {
-    DistributionSketchImpl<T, S> combined = new DistributionSketchImpl<T, S>(numberType, sketchType) ;
+    DistributionSketchImpl<T, S> combined = createNew();
     DistributionSketchImpl<T, S> a = this;
     DistributionSketchImpl<T, S> b = (DistributionSketchImpl<T, S>)provider;
 
@@ -258,7 +274,7 @@ public class DistributionSketchImpl<T extends Number, S> implements  Distributio
 
   @Override
   public void write(Kryo kryo, Output output) {
-    sketchType.write(kryo, output);
+    output.writeInt(k);
     sketchType.serialize(sketch, output);
     output.writeLong(n);
     numberType.serialize(sum, output);
@@ -274,7 +290,9 @@ public class DistributionSketchImpl<T extends Number, S> implements  Distributio
 
   @Override
   public void read(Kryo kryo, Input input) {
-    sketchType.read(kryo, input);
+    k = input.readInt();
+    sketchType = createSketchType(k);
+    numberType = createNumberType();
     sketch = sketchType.materialize(input);
     n = input.readLong();
     sum = numberType.materialize(input);

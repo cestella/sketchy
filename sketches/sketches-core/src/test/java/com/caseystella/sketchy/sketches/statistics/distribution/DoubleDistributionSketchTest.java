@@ -17,14 +17,14 @@
  *  limitations under the License.
  *
  */
-package com.caseystella.sketchy.sketches;
+package com.caseystella.sketchy.sketches.statistics.distribution;
 
 import com.caseystella.stellar.common.utils.SerDeUtils;
+import java.util.Optional;
 import org.apache.commons.math3.random.GaussianRandomGenerator;
 import org.apache.commons.math3.random.MersenneTwister;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
-import org.apache.datasketches.quantiles.DoublesSketchBuilder;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -84,12 +84,12 @@ public class DoubleDistributionSketchTest {
   private void validateEquality(Iterable<Double> values) {
     DescriptiveStatistics stats = new DescriptiveStatistics();
     SummaryStatistics summaryStats = new SummaryStatistics();
-    DoublesSketchBuilder builder = new DoublesSketchBuilder().setK(512);
-    DoubleDistributionSketch statsProvider = new DoubleDistributionSketch(builder);
+    int k = 512;
+    DistributionSketch<Double> statsProvider = DistributionSketches.DOUBLES.create(k, Double.class);
     //Test that the aggregated provider gives the same results as the provider that is shown all the data.
     List<DistributionSketch<Double>> providers = new ArrayList<>();
     for(int i = 0;i < 10;++i) {
-      providers.add(new DoubleDistributionSketch(builder));
+      providers.add(DistributionSketches.DOUBLES.create(k, Double.class));
     }
     int i = 0;
     for(double d : values) {
@@ -109,8 +109,8 @@ public class DoubleDistributionSketchTest {
 
   DistributionSketch<Double> cloneSketch(DistributionSketch<Double> sketch) {
     byte[] ser = SerDeUtils.toBytes(sketch);
-    DoubleDistributionSketch ret = (DoubleDistributionSketch) SerDeUtils.fromBytes(ser, sketch.getClass());
-    assertEquals(ret.getK(), ((DoubleDistributionSketch)sketch).getK());
+    DistributionSketch<Double> ret = (DistributionSketch<Double>) SerDeUtils.fromBytes(ser, sketch.getClass());
+    assertEquals(ret.getK(), sketch.getK());
     return ret;
   }
 

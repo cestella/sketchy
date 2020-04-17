@@ -1,6 +1,5 @@
-package com.caseystella.sketchy.sketches;
+package com.caseystella.sketchy.sketches.statistics.distribution.types.number;
 
-import com.esotericsoftware.kryo.KryoSerializable;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 
