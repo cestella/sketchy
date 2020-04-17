@@ -1,20 +1,17 @@
 /*
  *
- *  Licensed to the Apache Software Foundation (ASF) under one
- *  or more contributor license agreements.  See the NOTICE file
- *  distributed with this work for additional information
- *  regarding copyright ownership.  The ASF licenses this file
- *  to you under the Apache License, Version 2.0 (the
- *  "License"); you may not use this file except in compliance
- *  with the License.  You may obtain a copy of the License at
+ * Licensed to the Apache Software Foundation (ASF) under one or more contributor license
+ * agreements. See the NOTICE file distributed with this work for additional information regarding
+ * copyright ownership. The ASF licenses this file to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the License. You may obtain a
+ * copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  *
  */
 
@@ -65,208 +62,216 @@ import org.slf4j.LoggerFactory;
 import static com.esotericsoftware.kryo.util.Util.className;
 
 /**
- * Provides basic functionality to serialize and deserialize the allowed value types for a ProfileMeasurement.
+ * Provides basic functionality to serialize and deserialize the allowed value types for a
+ * ProfileMeasurement.
  */
 public class SerDeUtils {
-    protected static final Logger LOG = LoggerFactory.getLogger(SerDeUtils.class);
-    private static ThreadLocal<Kryo> kryo = new ThreadLocal<Kryo>() {
-        @Override
-        protected Kryo initialValue() {
-            Kryo ret = new Kryo();
-            ret.setReferences(true);
-            ret.setInstantiatorStrategy(new DefaultInstantiatorStrategy(new StdInstantiatorStrategy()));
+  protected static final Logger LOG = LoggerFactory.getLogger(SerDeUtils.class);
+  private static ThreadLocal<Kryo> kryo = new ThreadLocal<Kryo>() {
+    @Override
+    protected Kryo initialValue() {
+      Kryo ret = new Kryo();
+      ret.setReferences(true);
+      ret.setInstantiatorStrategy(new DefaultInstantiatorStrategy(new StdInstantiatorStrategy()));
 
-            ret.register(Arrays.asList("").getClass(), new ArraysAsListSerializer());
-            ret.register(Collections.EMPTY_LIST.getClass(), new CollectionsEmptyListSerializer());
-            ret.register(Collections.EMPTY_MAP.getClass(), new CollectionsEmptyMapSerializer());
-            ret.register(Collections.EMPTY_SET.getClass(), new CollectionsEmptySetSerializer());
-            ret.register(Collections.singletonList("").getClass(), new CollectionsSingletonListSerializer());
-            ret.register(Collections.singleton("").getClass(), new CollectionsSingletonSetSerializer());
-            ret.register(Collections.singletonMap("", "").getClass(), new CollectionsSingletonMapSerializer());
-            ret.register(GregorianCalendar.class, new GregorianCalendarSerializer());
-            ret.register(InvocationHandler.class, new JdkProxySerializer());
-            UnmodifiableCollectionsSerializer.registerSerializers(ret);
-            SynchronizedCollectionsSerializer.registerSerializers(ret);
+      ret.register(Arrays.asList("").getClass(), new ArraysAsListSerializer());
+      ret.register(Collections.EMPTY_LIST.getClass(), new CollectionsEmptyListSerializer());
+      ret.register(Collections.EMPTY_MAP.getClass(), new CollectionsEmptyMapSerializer());
+      ret.register(Collections.EMPTY_SET.getClass(), new CollectionsEmptySetSerializer());
+      ret.register(Collections.singletonList("").getClass(),
+          new CollectionsSingletonListSerializer());
+      ret.register(Collections.singleton("").getClass(), new CollectionsSingletonSetSerializer());
+      ret.register(Collections.singletonMap("", "").getClass(),
+          new CollectionsSingletonMapSerializer());
+      ret.register(GregorianCalendar.class, new GregorianCalendarSerializer());
+      ret.register(InvocationHandler.class, new JdkProxySerializer());
+      UnmodifiableCollectionsSerializer.registerSerializers(ret);
+      SynchronizedCollectionsSerializer.registerSerializers(ret);
 
-            // custom serializers for non-jdk libs
+      // custom serializers for non-jdk libs
 
-            // register CGLibProxySerializer, works in combination with the appropriate action in
-            // handleUnregisteredClass (see below)
-            ret.register(CGLibProxySerializer.CGLibProxyMarker.class, new CGLibProxySerializer());
+      // register CGLibProxySerializer, works in combination with the appropriate action in
+      // handleUnregisteredClass (see below)
+      ret.register(CGLibProxySerializer.CGLibProxyMarker.class, new CGLibProxySerializer());
 
-            // joda DateTime, LocalDate and LocalDateTime
-            ret.register(LocalDate.class, new JodaLocalDateSerializer());
-            ret.register(LocalDateTime.class, new JodaLocalDateTimeSerializer());
+      // joda DateTime, LocalDate and LocalDateTime
+      ret.register(LocalDate.class, new JodaLocalDateSerializer());
+      ret.register(LocalDateTime.class, new JodaLocalDateTimeSerializer());
 
-            // guava ImmutableList, ImmutableSet, ImmutableMap, ImmutableMultimap, UnmodifiableNavigableSet
-            ImmutableListSerializer.registerSerializers(ret);
-            ImmutableSetSerializer.registerSerializers(ret);
-            ImmutableMapSerializer.registerSerializers(ret);
-            ImmutableMultimapSerializer.registerSerializers(ret);
-            return ret;
-        }
-    };
+      // guava ImmutableList, ImmutableSet, ImmutableMap, ImmutableMultimap,
+      // UnmodifiableNavigableSet
+      ImmutableListSerializer.registerSerializers(ret);
+      ImmutableSetSerializer.registerSerializers(ret);
+      ImmutableMapSerializer.registerSerializers(ret);
+      ImmutableMultimapSerializer.registerSerializers(ret);
+      return ret;
+    }
+  };
 
-    /**
-     * This was backported from a more recent version of kryo than we currently run. The reason why it exists is that we
-     * want a strategy for instantiation of classes which attempts a no-arg constructor first and THEN falls back to
-     * reflection for performance reasons alone (this is, after all, in the critical path).
-     *
-     */
-    static private class DefaultInstantiatorStrategy implements org.objenesis.strategy.InstantiatorStrategy {
-        private InstantiatorStrategy fallbackStrategy;
+  /**
+   * This was backported from a more recent version of kryo than we currently run. The reason why it
+   * exists is that we want a strategy for instantiation of classes which attempts a no-arg
+   * constructor first and THEN falls back to reflection for performance reasons alone (this is,
+   * after all, in the critical path).
+   *
+   */
+  static private class DefaultInstantiatorStrategy
+      implements org.objenesis.strategy.InstantiatorStrategy {
+    private InstantiatorStrategy fallbackStrategy;
 
-        public DefaultInstantiatorStrategy() {
-        }
+    public DefaultInstantiatorStrategy() {}
 
-        public DefaultInstantiatorStrategy(InstantiatorStrategy fallbackStrategy) {
-            this.fallbackStrategy = fallbackStrategy;
-        }
+    public DefaultInstantiatorStrategy(InstantiatorStrategy fallbackStrategy) {
+      this.fallbackStrategy = fallbackStrategy;
+    }
 
-        public void setFallbackInstantiatorStrategy(final InstantiatorStrategy fallbackStrategy) {
-            this.fallbackStrategy = fallbackStrategy;
-        }
+    public void setFallbackInstantiatorStrategy(final InstantiatorStrategy fallbackStrategy) {
+      this.fallbackStrategy = fallbackStrategy;
+    }
 
-        public InstantiatorStrategy getFallbackInstantiatorStrategy() {
-            return fallbackStrategy;
-        }
+    public InstantiatorStrategy getFallbackInstantiatorStrategy() {
+      return fallbackStrategy;
+    }
 
-        @Override
-        @SuppressWarnings("unchecked")
-        public ObjectInstantiator newInstantiatorOf(final Class type) {
-            if (!Util.isAndroid) {
-                // Use ReflectASM if the class is not a non-static member class.
-                Class enclosingType = type.getEnclosingClass();
-                boolean isNonStaticMemberClass = enclosingType != null && type.isMemberClass()
-                        && !Modifier.isStatic(type.getModifiers());
-                if (!isNonStaticMemberClass) {
-                    try {
-                        final ConstructorAccess access = ConstructorAccess.get(type);
-                        return new ObjectInstantiator() {
-                            @Override
-                            public Object newInstance() {
-                                try {
-                                    return access.newInstance();
-                                } catch (Exception ex) {
-                                    throw new KryoException("Error constructing instance of class: " + className(type),
-                                            ex);
-                                }
-                            }
-                        };
-                    } catch (Exception ignored) {
-                    }
-                }
-            }
-            // Reflection.
-            try {
-                Constructor ctor;
+    @Override
+    @SuppressWarnings("unchecked")
+    public ObjectInstantiator newInstantiatorOf(final Class type) {
+      if (!Util.isAndroid) {
+        // Use ReflectASM if the class is not a non-static member class.
+        Class enclosingType = type.getEnclosingClass();
+        boolean isNonStaticMemberClass = enclosingType != null && type.isMemberClass()
+            && !Modifier.isStatic(type.getModifiers());
+        if (!isNonStaticMemberClass) {
+          try {
+            final ConstructorAccess access = ConstructorAccess.get(type);
+            return new ObjectInstantiator() {
+              @Override
+              public Object newInstance() {
                 try {
-                    ctor = type.getConstructor((Class[]) null);
+                  return access.newInstance();
                 } catch (Exception ex) {
-                    ctor = type.getDeclaredConstructor((Class[]) null);
-                    ctor.setAccessible(true);
+                  throw new KryoException(
+                      "Error constructing instance of class: " + className(type), ex);
                 }
-                final Constructor constructor = ctor;
-                return new ObjectInstantiator() {
-                    @Override
-                    public Object newInstance() {
-                        try {
-                            return constructor.newInstance();
-                        } catch (Exception ex) {
-                            throw new KryoException("Error constructing instance of class: " + className(type), ex);
-                        }
-                    }
-                };
-            } catch (Exception ignored) {
+              }
+            };
+          } catch (Exception ignored) {
+          }
+        }
+      }
+      // Reflection.
+      try {
+        Constructor ctor;
+        try {
+          ctor = type.getConstructor((Class[]) null);
+        } catch (Exception ex) {
+          ctor = type.getDeclaredConstructor((Class[]) null);
+          ctor.setAccessible(true);
+        }
+        final Constructor constructor = ctor;
+        return new ObjectInstantiator() {
+          @Override
+          public Object newInstance() {
+            try {
+              return constructor.newInstance();
+            } catch (Exception ex) {
+              throw new KryoException("Error constructing instance of class: " + className(type),
+                  ex);
             }
-            if (fallbackStrategy == null) {
-                if (type.isMemberClass() && !Modifier.isStatic(type.getModifiers()))
-                    throw new KryoException("Class cannot be created (non-static member class): " + className(type));
-                else
-                    throw new KryoException("Class cannot be created (missing no-arg constructor): " + className(type));
-            }
-            // InstantiatorStrategy.
-            return fallbackStrategy.newInstantiatorOf(type);
-        }
+          }
+        };
+      } catch (Exception ignored) {
+      }
+      if (fallbackStrategy == null) {
+        if (type.isMemberClass() && !Modifier.isStatic(type.getModifiers()))
+          throw new KryoException(
+              "Class cannot be created (non-static member class): " + className(type));
+        else
+          throw new KryoException(
+              "Class cannot be created (missing no-arg constructor): " + className(type));
+      }
+      // InstantiatorStrategy.
+      return fallbackStrategy.newInstantiatorOf(type);
     }
+  }
 
-    public static Serializer SERIALIZER = new Serializer();
+  public static Serializer SERIALIZER = new Serializer();
 
-    private static class Serializer implements Function<Object, byte[]>, Serializable {
-        /**
-         * Serializes the given Object into bytes.
-         *
-         */
-        @Override
-        public byte[] apply(Object o) {
-            return toBytes(o);
-        }
+  private static class Serializer implements Function<Object, byte[]>, Serializable {
+    /**
+     * Serializes the given Object into bytes.
+     *
+     */
+    @Override
+    public byte[] apply(Object o) {
+      return toBytes(o);
     }
+  }
 
-    public static class Deserializer<T> implements Function<byte[], T>, Serializable {
+  public static class Deserializer<T> implements Function<byte[], T>, Serializable {
 
-        private Class<T> clazz;
+    private Class<T> clazz;
 
-        public Deserializer(Class<T> clazz) {
-            this.clazz = clazz;
-        }
-
-        /**
-         * Deserializes the given bytes.
-         *
-         * @param bytes
-         *            the function argument
-         * @return the function result
-         */
-        @Override
-        public T apply(byte[] bytes) {
-            return fromBytes(bytes, clazz);
-        }
-    }
-
-    private SerDeUtils() {
-        // do not instantiate
+    public Deserializer(Class<T> clazz) {
+      this.clazz = clazz;
     }
 
     /**
-     * Serialize a profile measurement's value.
+     * Deserializes the given bytes.
      *
-     * The value produced by a Profile definition can be any numeric data type. The data type depends on how the profile
-     * is defined by the user. The user should be able to choose the data type that is most suitable for their use case.
-     *
-     * @param value
-     *            The value to serialize.
+     * @param bytes the function argument
+     * @return the function result
      */
-    public static byte[] toBytes(Object value) {
-        try {
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            Output output = new Output(bos);
-            kryo.get().writeClassAndObject(output, value);
-            output.flush();
-            bos.flush();
-            return bos.toByteArray();
-        } catch (Throwable t) {
-            LOG.error("Unable to serialize: " + value + " because " + t.getMessage(), t);
-            throw new IllegalStateException("Unable to serialize " + value + " because " + t.getMessage(), t);
-        }
+    @Override
+    public T apply(byte[] bytes) {
+      return fromBytes(bytes, clazz);
     }
+  }
 
-    /**
-     * Deserialize a profile measurement's value.
-     *
-     * The value produced by a Profile definition can be any numeric data type. The data type depends on how the profile
-     * is defined by the user. The user should be able to choose the data type that is most suitable for their use case.
-     *
-     * @param value
-     *            The value to deserialize.
-     */
-    public static <T> T fromBytes(byte[] value, Class<T> clazz) {
-        try {
-            Input input = new Input(new ByteArrayInputStream(value));
-            return clazz.cast(kryo.get().readClassAndObject(input));
-        } catch (Throwable t) {
-            LOG.error("Unable to deserialize  because " + t.getMessage(), t);
-            throw t;
-        }
+  private SerDeUtils() {
+    // do not instantiate
+  }
+
+  /**
+   * Serialize a profile measurement's value.
+   *
+   * The value produced by a Profile definition can be any numeric data type. The data type depends
+   * on how the profile is defined by the user. The user should be able to choose the data type that
+   * is most suitable for their use case.
+   *
+   * @param value The value to serialize.
+   */
+  public static byte[] toBytes(Object value) {
+    try {
+      ByteArrayOutputStream bos = new ByteArrayOutputStream();
+      Output output = new Output(bos);
+      kryo.get().writeClassAndObject(output, value);
+      output.flush();
+      bos.flush();
+      return bos.toByteArray();
+    } catch (Throwable t) {
+      LOG.error("Unable to serialize: " + value + " because " + t.getMessage(), t);
+      throw new IllegalStateException("Unable to serialize " + value + " because " + t.getMessage(),
+          t);
     }
+  }
+
+  /**
+   * Deserialize a profile measurement's value.
+   *
+   * The value produced by a Profile definition can be any numeric data type. The data type depends
+   * on how the profile is defined by the user. The user should be able to choose the data type that
+   * is most suitable for their use case.
+   *
+   * @param value The value to deserialize.
+   */
+  public static <T> T fromBytes(byte[] value, Class<T> clazz) {
+    try {
+      Input input = new Input(new ByteArrayInputStream(value));
+      return clazz.cast(kryo.get().readClassAndObject(input));
+    } catch (Throwable t) {
+      LOG.error("Unable to deserialize  because " + t.getMessage(), t);
+      throw t;
+    }
+  }
 }

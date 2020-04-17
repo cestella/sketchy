@@ -1,20 +1,17 @@
 /*
  *
- *  Licensed to the Apache Software Foundation (ASF) under one
- *  or more contributor license agreements.  See the NOTICE file
- *  distributed with this work for additional information
- *  regarding copyright ownership.  The ASF licenses this file
- *  to you under the Apache License, Version 2.0 (the
- *  "License"); you may not use this file except in compliance
- *  with the License.  You may obtain a copy of the License at
+ * Licensed to the Apache Software Foundation (ASF) under one or more contributor license
+ * agreements. See the NOTICE file distributed with this work for additional information regarding
+ * copyright ownership. The ASF licenses this file to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the License. You may obtain a
+ * copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  *
  */
 package com.caseystella.stellar.common.shell.specials;
@@ -39,178 +36,178 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class AssignmentCommandTest {
 
-    AssignmentCommand command;
-    StellarShellExecutor executor;
+  AssignmentCommand command;
+  StellarShellExecutor executor;
 
-    @BeforeEach
-    public void setup() throws Exception {
-        command = new AssignmentCommand();
+  @BeforeEach
+  public void setup() throws Exception {
+    command = new AssignmentCommand();
 
-        // setup the executor
-        Properties props = new Properties();
-        executor = new DefaultStellarShellExecutor(props, Optional.empty());
-        executor.init();
+    // setup the executor
+    Properties props = new Properties();
+    executor = new DefaultStellarShellExecutor(props, Optional.empty());
+    executor.init();
+  }
+
+  @Test
+  public void testGetCommand() {
+    assertEquals(":=", command.getCommand());
+  }
+
+  @Test
+  public void testShouldMatch() {
+    List<String> inputs =
+        Arrays.asList("x := 2 + 2", "   x      :=      2     +  2   ", "  x    :=    2", " x := ");
+    for (String in : inputs) {
+      assertTrue(command.getMatcher().apply(in), "failed: " + in);
     }
+  }
 
-    @Test
-    public void testGetCommand() {
-        assertEquals(":=", command.getCommand());
+  @Test
+  public void testShouldNotMatch() {
+    List<String> inputs = Arrays.asList("2+2", " %define x := 2", "x");
+    for (String in : inputs) {
+      assertFalse(command.getMatcher().apply(in), "failed: " + in);
     }
+  }
 
-    @Test
-    public void testShouldMatch() {
-        List<String> inputs = Arrays.asList("x := 2 + 2", "   x      :=      2     +  2   ", "  x    :=    2",
-                " x := ");
-        for (String in : inputs) {
-            assertTrue(command.getMatcher().apply(in), "failed: " + in);
-        }
-    }
+  @Test
+  public void testAssignment() {
+    StellarResult result = command.execute("x := 2 + 2", executor);
 
-    @Test
-    public void testShouldNotMatch() {
-        List<String> inputs = Arrays.asList("2+2", " %define x := 2", "x");
-        for (String in : inputs) {
-            assertFalse(command.getMatcher().apply(in), "failed: " + in);
-        }
-    }
+    // validate the result
+    assertTrue(result.isSuccess());
+    assertTrue(result.getValue().isPresent());
+    assertEquals(4, result.getValue().get());
 
-    @Test
-    public void testAssignment() {
-        StellarResult result = command.execute("x := 2 + 2", executor);
+    // validate assignment
+    assertEquals(4, executor.getState().get("x").getResult());
+  }
 
-        // validate the result
-        assertTrue(result.isSuccess());
-        assertTrue(result.getValue().isPresent());
-        assertEquals(4, result.getValue().get());
+  @Test
+  public void testAssignments() {
 
-        // validate assignment
-        assertEquals(4, executor.getState().get("x").getResult());
-    }
+    // execute a series of assignments
+    Assertions.assertTrue(command.execute("x := 2 + 2", executor).isSuccess());
+    Assertions.assertTrue(command.execute("y := 2 + x", executor).isSuccess());
+    Assertions.assertTrue(command.execute("z := x + y", executor).isSuccess());
 
-    @Test
-    public void testAssignments() {
+    // validate assignment
+    assertEquals(4, executor.getState().get("x").getResult());
+    assertEquals(6, executor.getState().get("y").getResult());
+    assertEquals(10, executor.getState().get("z").getResult());
+  }
 
-        // execute a series of assignments
-        Assertions.assertTrue(command.execute("x := 2 + 2", executor).isSuccess());
-        Assertions.assertTrue(command.execute("y := 2 + x", executor).isSuccess());
-        Assertions.assertTrue(command.execute("z := x + y", executor).isSuccess());
+  @Test
+  public void testReassignment() {
 
-        // validate assignment
-        assertEquals(4, executor.getState().get("x").getResult());
-        assertEquals(6, executor.getState().get("y").getResult());
-        assertEquals(10, executor.getState().get("z").getResult());
-    }
+    // execute a series of assignments
+    Assertions.assertTrue(command.execute("x := 2 + 2", executor).isSuccess());
+    Assertions.assertTrue(command.execute("x := 5 + 5", executor).isSuccess());
 
-    @Test
-    public void testReassignment() {
+    // validate assignment
+    assertEquals(10, executor.getState().get("x").getResult());
+  }
 
-        // execute a series of assignments
-        Assertions.assertTrue(command.execute("x := 2 + 2", executor).isSuccess());
-        Assertions.assertTrue(command.execute("x := 5 + 5", executor).isSuccess());
+  @Test
+  public void testAssignmentOfEmptyVar() {
 
-        // validate assignment
-        assertEquals(10, executor.getState().get("x").getResult());
-    }
+    // z is not defined
+    StellarResult result = command.execute("x := z", executor);
 
-    @Test
-    public void testAssignmentOfEmptyVar() {
+    // validate the result
+    assertTrue(result.isSuccess());
+    assertTrue(result.isValueNull());
+    assertFalse(result.getValue().isPresent());
 
-        // z is not defined
-        StellarResult result = command.execute("x := z", executor);
+    // the value of x is null
+    assertNull(executor.getState().get("x").getResult());
+  }
 
-        // validate the result
-        assertTrue(result.isSuccess());
-        assertTrue(result.isValueNull());
-        assertFalse(result.getValue().isPresent());
+  @Test
+  public void testBadAssignmentExpr() {
+    StellarResult result = command.execute("x := 2 + ", executor);
 
-        // the value of x is null
-        assertNull(executor.getState().get("x").getResult());
-    }
+    // validate the result
+    assertTrue(result.isError());
+    assertTrue(result.getException().isPresent());
 
-    @Test
-    public void testBadAssignmentExpr() {
-        StellarResult result = command.execute("x := 2 + ", executor);
+    // no assignment should have happened
+    assertFalse(executor.getState().containsKey("x"));
+  }
 
-        // validate the result
-        assertTrue(result.isError());
-        assertTrue(result.getException().isPresent());
+  /**
+   * If an assignment expression fails, the error message should explain why the expression fails.
+   */
+  @Test
+  public void testErrorMessageWhenAssignmentFails() {
+    String stmt = "0/0";
+    StellarResult result = command.execute("x := " + stmt, executor);
 
-        // no assignment should have happened
-        assertFalse(executor.getState().containsKey("x"));
-    }
+    // validate the result
+    assertTrue(result.isError());
+    assertTrue(result.getException().isPresent());
+    assertEquals(ParseException.class, result.getException().get().getClass());
+    assertTrue(result.getException().get().getMessage().contains(stmt));
+  }
 
-    /**
-     * If an assignment expression fails, the error message should explain why the expression fails.
-     */
-    @Test
-    public void testErrorMessageWhenAssignmentFails() {
-        String stmt = "0/0";
-        StellarResult result = command.execute("x := " + stmt, executor);
+  @Test
+  public void testAssignNull() {
+    StellarResult result = command.execute("x := NULL", executor);
 
-        // validate the result
-        assertTrue(result.isError());
-        assertTrue(result.getException().isPresent());
-        assertEquals(ParseException.class, result.getException().get().getClass());
-        assertTrue(result.getException().get().getMessage().contains(stmt));
-    }
+    // validate the result
+    assertTrue(result.isSuccess());
+    assertTrue(result.isValueNull());
 
-    @Test
-    public void testAssignNull() {
-        StellarResult result = command.execute("x := NULL", executor);
+    // validate assignment
+    assertNull(executor.getState().get("x").getResult());
+  }
 
-        // validate the result
-        assertTrue(result.isSuccess());
-        assertTrue(result.isValueNull());
+  /**
+   * Assignment with no expression results in an empty string. Is this what we would expect?
+   */
+  @Test
+  public void testNoAssignmentExpr() {
+    StellarResult result = command.execute("x := ", executor);
 
-        // validate assignment
-        assertNull(executor.getState().get("x").getResult());
-    }
+    // validate the result
+    assertTrue(result.isSuccess());
+    assertTrue(result.getValue().isPresent());
 
-    /**
-     * Assignment with no expression results in an empty string. Is this what we would expect?
-     */
-    @Test
-    public void testNoAssignmentExpr() {
-        StellarResult result = command.execute("x := ", executor);
+    // validate assignment
+    assertEquals("", executor.getState().get("x").getResult());
+  }
 
-        // validate the result
-        assertTrue(result.isSuccess());
-        assertTrue(result.getValue().isPresent());
+  @Test
+  public void testAssignmentWithVar() {
 
-        // validate assignment
-        assertEquals("", executor.getState().get("x").getResult());
-    }
+    // define a variable
+    executor.assign("x", 10, Optional.empty());
 
-    @Test
-    public void testAssignmentWithVar() {
+    // execute the assignment expression
+    StellarResult result = command.execute("y := x + 2", executor);
 
-        // define a variable
-        executor.assign("x", 10, Optional.empty());
+    // validate the result
+    assertTrue(result.isSuccess());
+    assertTrue(result.getValue().isPresent());
+    assertEquals(12, result.getValue().get());
 
-        // execute the assignment expression
-        StellarResult result = command.execute("y := x + 2", executor);
+    // validate assignment
+    assertEquals(10, executor.getState().get("x").getResult());
+    assertEquals(12, executor.getState().get("y").getResult());
+  }
 
-        // validate the result
-        assertTrue(result.isSuccess());
-        assertTrue(result.getValue().isPresent());
-        assertEquals(12, result.getValue().get());
+  @Test
+  public void testAssignmentWithOddWhitespace() {
 
-        // validate assignment
-        assertEquals(10, executor.getState().get("x").getResult());
-        assertEquals(12, executor.getState().get("y").getResult());
-    }
+    StellarResult result = command.execute("        x   :=    2 +      2", executor);
 
-    @Test
-    public void testAssignmentWithOddWhitespace() {
+    // validate the result
+    assertTrue(result.isSuccess());
+    assertTrue(result.getValue().isPresent());
+    assertEquals(4, result.getValue().get());
 
-        StellarResult result = command.execute("        x   :=    2 +      2", executor);
-
-        // validate the result
-        assertTrue(result.isSuccess());
-        assertTrue(result.getValue().isPresent());
-        assertEquals(4, result.getValue().get());
-
-        // validate assignment
-        assertEquals(4, executor.getState().get("x").getResult());
-    }
+    // validate assignment
+    assertEquals(4, executor.getState().get("x").getResult());
+  }
 }

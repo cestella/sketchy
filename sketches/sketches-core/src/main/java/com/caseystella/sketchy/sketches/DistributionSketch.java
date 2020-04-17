@@ -5,37 +5,37 @@ import com.esotericsoftware.kryo.KryoSerializable;
 import java.util.Optional;
 
 public interface DistributionSketch<T extends Number> extends KryoSerializable {
-    void addValue(T value);
+  void addValue(T value);
 
-    long getCount();
+  long getCount();
 
-    Optional<T> getMin();
+  Optional<T> getMin();
 
-    Optional<T> getMax();
+  Optional<T> getMax();
 
-    double getMean();
+  double getMean();
 
-    T getSum();
+  T getSum();
 
-    double getVariance();
+  double getVariance();
 
-    double getStandardDeviation();
+  double getStandardDeviation();
 
-    double getGeometricMean();
+  double getGeometricMean();
 
-    double getPopulationVariance();
+  double getPopulationVariance();
 
-    double getQuadraticMean();
+  double getQuadraticMean();
 
-    double getSumLogs();
+  double getSumLogs();
 
-    T getSumSquares();
+  T getSumSquares();
 
-    double getKurtosis();
+  double getKurtosis();
 
-    double getSkewness();
+  double getSkewness();
 
-    double getPercentile(double p);
+  double getPercentile(double p);
 
-    DistributionSketch<T> merge(DistributionSketch<T> sketch);
+  DistributionSketch<T> merge(DistributionSketch<T> sketch);
 }

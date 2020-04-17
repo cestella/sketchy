@@ -5,15 +5,15 @@ import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 
 public interface SketchType<S> extends KryoSerializable {
-    S createSketch();
+  S createSketch();
 
-    void addValue(S sketch, Number value);
+  void addValue(S sketch, Number value);
 
-    S merge(S s1, S s2);
+  S merge(S s1, S s2);
 
-    void serialize(S v, Output output);
+  void serialize(S v, Output output);
 
-    S materialize(Input input);
+  S materialize(Input input);
 
-    double getPercentile(S sketch, double pctile);
+  double getPercentile(S sketch, double pctile);
 }
