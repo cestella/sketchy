@@ -5,7 +5,8 @@ import com.esotericsoftware.kryo.KryoSerializable;
 import java.util.Optional;
 
 public interface DistributionSketch<T extends Number> extends KryoSerializable {
-  int getK();
+  int getK()
+      ;
 
   void addValue(T value);
 
