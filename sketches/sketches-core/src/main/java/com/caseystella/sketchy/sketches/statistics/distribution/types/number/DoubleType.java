@@ -2,6 +2,9 @@ package com.caseystella.sketchy.sketches.statistics.distribution.types.number;
 
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 public class DoubleType implements NumberType<Double> {
 
@@ -47,6 +50,16 @@ public class DoubleType implements NumberType<Double> {
 
     @Override
     public Double materialize(Input input) {
+        return input.readDouble();
+    }
+
+    @Override
+    public void serialize(Double v, ObjectOutputStream output) throws IOException {
+        output.writeDouble(v);
+    }
+
+    @Override
+    public Double materialize(ObjectInputStream input) throws IOException {
         return input.readDouble();
     }
 }

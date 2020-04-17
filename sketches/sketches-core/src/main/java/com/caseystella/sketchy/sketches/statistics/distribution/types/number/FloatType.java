@@ -2,6 +2,9 @@ package com.caseystella.sketchy.sketches.statistics.distribution.types.number;
 
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 public class FloatType implements NumberType<Float> {
 
@@ -47,6 +50,16 @@ public class FloatType implements NumberType<Float> {
 
   @Override
   public Float materialize(Input input) {
+    return input.readFloat();
+  }
+
+  @Override
+  public void serialize(Float v, ObjectOutputStream output) throws IOException {
+    output.writeFloat(v);
+  }
+
+  @Override
+  public Float materialize(ObjectInputStream input) throws IOException {
     return input.readFloat();
   }
 }

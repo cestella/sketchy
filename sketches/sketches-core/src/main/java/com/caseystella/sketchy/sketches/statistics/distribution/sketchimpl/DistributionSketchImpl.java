@@ -23,9 +23,12 @@ package com.caseystella.sketchy.sketches.statistics.distribution.sketchimpl;
 import com.caseystella.sketchy.sketches.statistics.distribution.DistributionSketch;
 import com.caseystella.sketchy.sketches.statistics.distribution.types.number.NumberType;
 import com.caseystella.sketchy.sketches.statistics.distribution.types.sketch.SketchType;
+import com.caseystella.stellar.common.utils.SerDeUtils;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
+import java.io.IOException;
+import java.io.Serializable;
 import java.util.Objects;
 import java.util.Optional;
 import org.apache.commons.math3.util.FastMath;
@@ -36,9 +39,10 @@ import org.apache.commons.math3.util.FastMath;
  * to return the statistics results.  This is intended to provide a
  * mergeable implementation for a statistics provider.
  */
-public abstract class DistributionSketchImpl<T extends Number, S> implements DistributionSketch<T> {
-  protected SketchType<S> sketchType;
-  protected NumberType<T> numberType;
+public abstract class DistributionSketchImpl<T extends Number, S> implements DistributionSketch<T>,
+    Serializable {
+  transient protected SketchType<S> sketchType;
+  transient protected NumberType<T> numberType;
   protected S sketch;
   protected long n = 0;
   protected T sum;
@@ -76,6 +80,23 @@ public abstract class DistributionSketchImpl<T extends Number, S> implements Dis
   abstract protected NumberType<T> createNumberType();
   abstract protected SketchType<S> createSketchType(int k);
   abstract protected DistributionSketchImpl<T, S> createNew();
+
+  private void copyFrom(DistributionSketchImpl<T, S> s) {
+    this.sketchType = s.sketchType;
+    this.numberType = s.numberType;
+    this.sketch = s.sketch;
+    this.n = s.n;
+    this.sum = s.sum;
+    this.sumOfSquares = s.sumOfSquares;
+    this.sumOfLogs = s.sumOfLogs;
+    this.min = s.min;
+    this.max = s.max;
+    this.M1 = s.M1;
+    this.M2 = s.M2;
+    this.M3 = s.M3;
+    this.M4 = s.M4;
+    this.k = s.k;
+  }
 
   public int getK() {
     return k;
@@ -288,6 +309,22 @@ public abstract class DistributionSketchImpl<T extends Number, S> implements Dis
     output.writeDouble(M4);
   }
 
+  private void writeObject(java.io.ObjectOutputStream output)
+      throws IOException {
+    byte[] ser = SerDeUtils.toBytes(this);
+    output.writeInt(ser.length);
+    output.write(ser);
+  }
+
+  private void readObject(java.io.ObjectInputStream input)
+      throws IOException, ClassNotFoundException {
+    int len = input.readInt();
+    byte[] ser = new byte[len];
+    input.readFully(ser);
+    DistributionSketchImpl<T, S> s = SerDeUtils.fromBytes(ser, this.getClass());
+    copyFrom(s);
+  }
+
   @Override
   public void read(Kryo kryo, Input input) {
     k = input.readInt();
@@ -304,5 +341,50 @@ public abstract class DistributionSketchImpl<T extends Number, S> implements Dis
     M2 = input.readDouble();
     M3 = input.readDouble();
     M4 = input.readDouble();
+  }
+
+  @Override
+  public String toString() {
+    return "DistributionSketchImpl{" +
+        "sketch=" + sketch +
+        ", n=" + n +
+        ", sum=" + sum +
+        ", sumOfSquares=" + sumOfSquares +
+        ", sumOfLogs=" + sumOfLogs +
+        ", min=" + min +
+        ", max=" + max +
+        ", M1=" + M1 +
+        ", M2=" + M2 +
+        ", M3=" + M3 +
+        ", M4=" + M4 +
+        ", k=" + k +
+        '}';
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    DistributionSketchImpl<?, ?> that = (DistributionSketchImpl<?, ?>) o;
+    return n == that.n &&
+        Double.compare(that.sumOfLogs, sumOfLogs) == 0 &&
+        Double.compare(that.M1, M1) == 0 &&
+        Double.compare(that.M2, M2) == 0 &&
+        Double.compare(that.M3, M3) == 0 &&
+        Double.compare(that.M4, M4) == 0 &&
+        k == that.k &&
+        Objects.equals(sum, that.sum) &&
+        Objects.equals(sumOfSquares, that.sumOfSquares) &&
+        Objects.equals(min, that.min) &&
+        Objects.equals(max, that.max);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(n, sum, sumOfSquares, sumOfLogs, min, max, M1, M2, M3, M4, k);
   }
 }

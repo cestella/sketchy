@@ -1,5 +1,7 @@
 package com.caseystella.sketchy.sketches.statistics.distribution.types.sketch;
 
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import org.apache.datasketches.kll.KllFloatsSketch;
 import org.apache.datasketches.memory.Memory;
 
@@ -35,6 +37,8 @@ public class FloatsSketchType extends AbstractDistributionSketchType<KllFloatsSk
     s.merge(s2);
     return s;
   }
+
+
 
   @Override
   public double getPercentile(KllFloatsSketch sketch, double pctile) {

@@ -9,6 +9,7 @@ import org.apache.datasketches.kll.KllFloatsSketch;
 public class FloatDistributionSketch extends DistributionSketchImpl<Double, KllFloatsSketch> {
 
   public FloatDistributionSketch() {
+    super();
   }
 
   public FloatDistributionSketch(int k) {

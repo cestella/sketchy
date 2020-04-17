@@ -19,19 +19,22 @@
  */
 package com.caseystella.sketchy.sketches.statistics.distribution;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+
 import com.caseystella.stellar.common.utils.SerDeUtils;
-import java.util.Optional;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 import org.apache.commons.math3.random.GaussianRandomGenerator;
 import org.apache.commons.math3.random.MersenneTwister;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
 import org.junit.jupiter.api.Test;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public abstract class AbstractFloatingPointDistributionSketchTest<T extends Number> {
 
@@ -91,7 +94,7 @@ public abstract class AbstractFloatingPointDistributionSketchTest<T extends Numb
     }
   }
 
-  private void validateEquality(Iterable<Double> values) {
+  private void validateEquality(Iterable<Double> values) throws IOException, ClassNotFoundException {
     DescriptiveStatistics stats = new DescriptiveStatistics();
     SummaryStatistics summaryStats = new SummaryStatistics();
     DistributionSketch<T> statsProvider = createSketch();
@@ -108,23 +111,38 @@ public abstract class AbstractFloatingPointDistributionSketchTest<T extends Numb
       providers.get(i % providers.size()).addValue(convert(d));
       statsProvider.addValue(convert(d));
     }
-    DistributionSketch<T> aggregatedProvider = cloneSketch(providers.get(0));
+    DistributionSketch<T> aggregatedProvider = cloneSketch(providers.get(0), 0);
     for(int j = 1;j < providers.size();++j) {
-      aggregatedProvider = aggregatedProvider.merge(cloneSketch(providers.get(j)));
+      aggregatedProvider = aggregatedProvider.merge(cloneSketch(providers.get(j), j));
     }
     validateStatisticsProvider(statsProvider, summaryStats, stats, getDelta(), getPercentileDelta());
     validateStatisticsProvider(aggregatedProvider, summaryStats, stats, getDelta(), getPercentileDelta());
   }
 
-  DistributionSketch<T> cloneSketch(DistributionSketch<T> sketch) {
-    byte[] ser = SerDeUtils.toBytes(sketch);
-    DistributionSketch<T> ret = (DistributionSketch<T>) SerDeUtils.fromBytes(ser, sketch.getClass());
-    assertEquals(ret.getK(), sketch.getK());
-    return ret;
+  DistributionSketch<T> cloneSketch(DistributionSketch<T> sketch, int index)
+      throws IOException, ClassNotFoundException {
+    if(index % 2 == 0) {
+      byte[] ser = SerDeUtils.toBytes(sketch);
+      DistributionSketch<T> ret = (DistributionSketch<T>) SerDeUtils
+          .fromBytes(ser, sketch.getClass());
+      assertEquals(ret, sketch);
+      return ret;
+    }
+    else {
+      ByteArrayOutputStream bos = new ByteArrayOutputStream();
+      ObjectOutputStream out = new ObjectOutputStream(bos);
+      out.writeObject(sketch);
+      //De-serialization of object
+      ByteArrayInputStream bis = new ByteArrayInputStream(bos.toByteArray());
+      ObjectInputStream in = new ObjectInputStream(bis);
+      DistributionSketch<T> ret = (DistributionSketch<T>)in.readObject();
+      assertEquals(ret, sketch);
+      return ret;
+    }
   }
 
   @Test
-  public void testNormallyDistributedRandomData() {
+  public void testNormallyDistributedRandomData() throws IOException, ClassNotFoundException {
     List<Double> values = new ArrayList<>();
     GaussianRandomGenerator gaussian = new GaussianRandomGenerator(new MersenneTwister(0L));
     for(int i = 0;i < 1000000;++i) {
@@ -135,7 +153,8 @@ public abstract class AbstractFloatingPointDistributionSketchTest<T extends Numb
   }
 
   @Test
-  public void testNormallyDistributedRandomDataShifted() {
+  public void testNormallyDistributedRandomDataShifted()
+      throws IOException, ClassNotFoundException {
     List<Double> values = new ArrayList<>();
     GaussianRandomGenerator gaussian = new GaussianRandomGenerator(new MersenneTwister(0L));
     for(int i = 0;i < 1000000;++i) {
@@ -146,7 +165,8 @@ public abstract class AbstractFloatingPointDistributionSketchTest<T extends Numb
   }
 
   @Test
-  public void testNormallyDistributedRandomDataShiftedBackwards() {
+  public void testNormallyDistributedRandomDataShiftedBackwards()
+      throws IOException, ClassNotFoundException {
     List<Double> values = new ArrayList<>();
     GaussianRandomGenerator gaussian = new GaussianRandomGenerator(new MersenneTwister(0L));
     for(int i = 0;i < 1000000;++i) {
@@ -156,7 +176,7 @@ public abstract class AbstractFloatingPointDistributionSketchTest<T extends Numb
     validateEquality(values);
   }
   @Test
-  public void testNormallyDistributedRandomDataSkewed() {
+  public void testNormallyDistributedRandomDataSkewed() throws IOException, ClassNotFoundException {
     List<Double> values = new ArrayList<>();
     GaussianRandomGenerator gaussian = new GaussianRandomGenerator(new MersenneTwister(0L));
     for(int i = 0;i < 1000000;++i) {
@@ -167,7 +187,8 @@ public abstract class AbstractFloatingPointDistributionSketchTest<T extends Numb
   }
 
   @Test
-  public void testNormallyDistributedRandomDataAllNegative() {
+  public void testNormallyDistributedRandomDataAllNegative()
+      throws IOException, ClassNotFoundException {
     List<Double> values = new ArrayList<>();
     GaussianRandomGenerator gaussian = new GaussianRandomGenerator(new MersenneTwister(0L));
     for(int i = 0;i < 1000000;++i) {
@@ -177,7 +198,7 @@ public abstract class AbstractFloatingPointDistributionSketchTest<T extends Numb
     validateEquality(values);
   }
   @Test
-  public void testUniformlyDistributedRandomData() {
+  public void testUniformlyDistributedRandomData() throws IOException, ClassNotFoundException {
     List<Double> values = new ArrayList<>();
     for(int i = 0;i < 100000;++i) {
       double d = Math.random();

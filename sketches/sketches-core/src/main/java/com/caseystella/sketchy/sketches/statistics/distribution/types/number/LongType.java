@@ -2,6 +2,9 @@ package com.caseystella.sketchy.sketches.statistics.distribution.types.number;
 
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 public class LongType implements NumberType<Long> {
 
@@ -47,6 +50,16 @@ public class LongType implements NumberType<Long> {
 
     @Override
     public Long materialize(Input input) {
+        return input.readLong();
+    }
+
+    @Override
+    public void serialize(Long v, ObjectOutputStream output) throws IOException {
+        output.writeLong(v);
+    }
+
+    @Override
+    public Long materialize(ObjectInputStream input) throws IOException {
         return input.readLong();
     }
 }
