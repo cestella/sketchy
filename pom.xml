@@ -81,6 +81,27 @@
     <pluginManagement>
       <plugins>
         <plugin>
+          <groupId>org.commonjava.maven.plugins</groupId>
+          <artifactId>directory-maven-plugin</artifactId>
+          <version>0.1</version>
+          <executions>
+            <execution>
+              <id>directories</id>
+              <goals>
+                <goal>directory-of</goal>
+              </goals>
+              <phase>initialize</phase>
+              <configuration>
+                <property>sketchy.basedir</property>
+                <project>
+                  <groupId>com.caseystella.sketchy</groupId>
+                  <artifactId>sketchy</artifactId>
+                </project>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
           <groupId>net.revelc.code.formatter</groupId>
           <artifactId>formatter-maven-plugin</artifactId>
           <executions>
@@ -89,8 +110,12 @@
                 <goal>format</goal>
               </goals>
               <configuration>
-                <configFile>eclipse-java-google-style.xml</configFile>
+                <configFile>${sketchy.basedir}/eclipse-java-google-style.xml</configFile>
                 <encoding>UTF-8</encoding>
+                <overrideConfigCompilerVersion>true</overrideConfigCompilerVersion>
+                <compilerSource>${global_java_version}</compilerSource>
+                <compilerCompliance>${global_java_version}</compilerCompliance>
+                <compilerTargetPlatform>${global_java_version}</compilerTargetPlatform>
               </configuration>
             </execution>
           </executions>
