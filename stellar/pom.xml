@@ -83,13 +83,6 @@ the specific language governing permissions and limitations under the License.
 			<plugin>
 				<groupId>net.revelc.code.formatter</groupId>
 				<artifactId>formatter-maven-plugin</artifactId>
-				<dependencies>
-					<dependency>
-						<groupId>com.caseystella.sketchy</groupId>
-						<artifactId>build-tools</artifactId>
-						<version>${project.version}</version>
-					</dependency>
-				</dependencies>
 			</plugin>
 		</plugins>
 	</pluginManagement>
