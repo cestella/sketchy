@@ -1,37 +1,54 @@
 <?xml version="1.0"?>
 <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>com.caseystella.sketchy.sketches</groupId>
-    <artifactId>sketches</artifactId>
-    <version>0.0.1</version>
-  </parent>
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<modelVersion>4.0.0</modelVersion>
+<parent>
   <groupId>com.caseystella.sketchy.sketches</groupId>
-  <artifactId>sketches-core</artifactId>
+  <artifactId>sketches</artifactId>
   <version>0.0.1</version>
-  <name>sketches-core</name>
-  <url>http://maven.apache.org</url>
-  <dependencies>
-    <dependency>
-      <groupId>org.apache.datasketches</groupId>
-      <artifactId>datasketches-java</artifactId>
-      <version>${global_datasketches_version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.datasketches</groupId>
-      <artifactId>datasketches-memory</artifactId>
-      <version>${global_datasketches_version}</version>
-      </dependency>
-    <dependency>
-      <groupId>com.caseystella.sketchy.stellar</groupId>
-      <artifactId>stellar-common</artifactId>
-      <version>0.0.1</version>
-    </dependency>
-    <dependency>
-      <groupId>de.javakaffee</groupId>
-      <artifactId>kryo-serializers</artifactId>
-      <version>${global_kryo_serializers_version}</version>
-    </dependency>
-  </dependencies>
+</parent>
+<groupId>com.caseystella.sketchy.sketches</groupId>
+<artifactId>sketches-core</artifactId>
+<version>0.0.1</version>
+<name>sketches-core</name>
+<url>http://maven.apache.org</url>
+<dependencies>
+  <dependency>
+    <groupId>org.apache.datasketches</groupId>
+    <artifactId>datasketches-java</artifactId>
+    <version>${global_datasketches_version}</version>
+  </dependency>
+  <dependency>
+    <groupId>org.apache.datasketches</groupId>
+    <artifactId>datasketches-memory</artifactId>
+    <version>${global_datasketches_version}</version>
+  </dependency>
+  <dependency>
+    <groupId>com.caseystella.sketchy.stellar</groupId>
+    <artifactId>stellar-common</artifactId>
+    <version>0.0.1</version>
+  </dependency>
+  <dependency>
+    <groupId>de.javakaffee</groupId>
+    <artifactId>kryo-serializers</artifactId>
+    <version>${global_kryo_serializers_version}</version>
+  </dependency>
+</dependencies>
+<build>
+  <pluginManagement>
+    <plugins>
+      <plugin>
+        <groupId>net.revelc.code.formatter</groupId>
+        <artifactId>formatter-maven-plugin</artifactId>
+        <dependencies>
+          <dependency>
+            <groupId>com.caseystella.sketchy</groupId>
+            <artifactId>build-tools</artifactId>
+            <version>${project.version}</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+    </plugins>
+  </pluginManagement>
+</build>
 </project>
