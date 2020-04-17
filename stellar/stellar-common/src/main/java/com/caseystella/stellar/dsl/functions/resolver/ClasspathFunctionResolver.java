@@ -1,19 +1,16 @@
 /**
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
+ * Licensed to the Apache Software Foundation (ASF) under one or more contributor license
+ * agreements. See the NOTICE file distributed with this work for additional information regarding
+ * copyright ownership. The ASF licenses this file to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the License. You may obtain a
+ * copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  */
 
 package com.caseystella.stellar.dsl.functions.resolver;
@@ -44,54 +41,56 @@ import org.reflections.util.FilterBuilder;
 /**
  * Performs function resolution for Stellar by searching the classpath.
  *
- * By default, the entire classpath will be searched for Stellar functions.  At times,
- * this can take quite a while.  To shorten the search time, a property can be
- * defined to either include or exclude certain packages.  The fewer packages there are
- * to search, the quicker the search will be.
+ * By default, the entire classpath will be searched for Stellar functions. At times, this can take
+ * quite a while. To shorten the search time, a property can be defined to either include or exclude
+ * certain packages. The fewer packages there are to search, the quicker the search will be.
  *
- * The properties are pulled from the Context's 'STELLAR_CONFIG'. In the REPL, this
- * is defined in a file called 'stellar.properties' on the classpath.
+ * The properties are pulled from the Context's 'STELLAR_CONFIG'. In the REPL, this is defined in a
+ * file called 'stellar.properties' on the classpath.
  *
- * The following property definition will include only Stellar functions that are
- * part of Apache Metron.
+ * The following property definition will include only Stellar functions that are part of Apache
+ * Metron.
  *
- *   stellar.function.resolver.includes = org.apache.metron.*
+ * stellar.function.resolver.includes = org.apache.metron.*
  *
- * The following property definition will exclude Stellar functions that are part of
- * Metron's management suite of function.
+ * The following property definition will exclude Stellar functions that are part of Metron's
+ * management suite of function.
  *
- *   stellar.function.resolver.excludes = org.apache.metron.management.*
+ * stellar.function.resolver.excludes = org.apache.metron.management.*
  *
- * The following property definition would also exclude the Stellar functions that are
- * part of the management suite of functions.  Of course, this may also exclude other
- * packages, but this serves as an example of the types of expression that can be used.
+ * The following property definition would also exclude the Stellar functions that are part of the
+ * management suite of functions. Of course, this may also exclude other packages, but this serves
+ * as an example of the types of expression that can be used.
  *
- *   stellar.function.resolver.excludes = org\\.management.*
+ * stellar.function.resolver.excludes = org\\.management.*
  *
  */
 public class ClasspathFunctionResolver extends BaseFunctionResolver {
   public enum Config {
     /**
-     * The set of paths.  These paths are comma separated URLs with optional regex patterns at the end.
-     * e.g. hdfs://node1:8020/apps/metron/stellar/.*.jar,hdfs://node1:8020/apps/metron/my_org/.*.jar
+     * The set of paths. These paths are comma separated URLs with optional regex patterns at the
+     * end. e.g.
+     * hdfs://node1:8020/apps/metron/stellar/.*.jar,hdfs://node1:8020/apps/metron/my_org/.*.jar
      * would signify all the jars under /apps/metron/stellar and /apps/metron/my_org in HDFS.
      */
     STELLAR_VFS_PATHS("stellar.function.paths", ""),
     /**
-     * The key for a global property that defines one or more regular expressions
-     * that specify what should be included when searching for Stellar functions.
+     * The key for a global property that defines one or more regular expressions that specify what
+     * should be included when searching for Stellar functions.
      */
     STELLAR_SEARCH_INCLUDES_KEY("stellar.function.resolver.includes", ""),
     /**
-     * The key for a global property that defines one or more regular expressions
-     * that specify what should be excluded when searching for Stellar functions.
+     * The key for a global property that defines one or more regular expressions that specify what
+     * should be excluded when searching for Stellar functions.
      */
     STELLAR_SEARCH_EXCLUDES_KEY("stellar.function.resolver.excludes", ""),
 
 
     ;
+
     String param;
     Object defaultValue;
+
     Config(String param, String defaultValue) {
       this.param = param;
       this.defaultValue = defaultValue;
@@ -112,21 +111,21 @@ public class ClasspathFunctionResolver extends BaseFunctionResolver {
 
 
   /**
-   * The includes and excludes can include a list of multiple includes or excludes that
-   * are delimited by these values.
+   * The includes and excludes can include a list of multiple includes or excludes that are
+   * delimited by these values.
    */
   private static final String STELLAR_SEARCH_DELIMS = "[,:]";
 
 
   /**
-   * Regular expressions defining packages that should be included in the Stellar function resolution
-   * process.
+   * Regular expressions defining packages that should be included in the Stellar function
+   * resolution process.
    */
   private List<String> includes;
 
   /**
-   * Regular expressions defining packages that should be excluded from the Stellar function resolution
-   * process.
+   * Regular expressions defining packages that should be excluded from the Stellar function
+   * resolution process.
    */
   private List<String> excludes;
 
@@ -143,6 +142,7 @@ public class ClasspathFunctionResolver extends BaseFunctionResolver {
 
   /**
    * Use one or more classloaders
+   * 
    * @param classloaders
    */
   public void classLoaders(ClassLoader... classloaders) {
@@ -151,23 +151,25 @@ public class ClasspathFunctionResolver extends BaseFunctionResolver {
   }
 
   /**
-   * Includes one or more packages in the Stellar function resolution process.  The packages
-   * to include can be specified with a regular expression.
+   * Includes one or more packages in the Stellar function resolution process. The packages to
+   * include can be specified with a regular expression.
+   * 
    * @param toInclude The regular expressions.
    */
   public void include(String... toInclude) {
-    for(String incl : toInclude) {
+    for (String incl : toInclude) {
       includes.add(incl);
     }
   }
 
   /**
-   * Excludes one or more packages from the Stellar function resolution process.  The packages
-   * to exclude can be specified with a regular expression.
+   * Excludes one or more packages from the Stellar function resolution process. The packages to
+   * exclude can be specified with a regular expression.
+   * 
    * @param toExclude The regular expressions defining packages that should be excluded.
    */
   public void exclude(String... toExclude) {
-    for(String excl : toExclude) {
+    for (String excl : toExclude) {
       excludes.add(excl);
     }
   }
@@ -181,18 +183,22 @@ public class ClasspathFunctionResolver extends BaseFunctionResolver {
       Optional<Object> optional = context.getCapability(Context.Capabilities.STELLAR_CONFIG, false);
       if (optional.isPresent()) {
         Map<String, Object> stellarConfig = (Map<String, Object>) optional.get();
-        if(LOG.isDebugEnabled()) {
+        if (LOG.isDebugEnabled()) {
           LOG.debug("Setting up classloader using the following config: {}", stellarConfig);
         }
 
-        include(STELLAR_SEARCH_INCLUDES_KEY.get(stellarConfig, String.class).split(STELLAR_SEARCH_DELIMS));
-        exclude(STELLAR_SEARCH_EXCLUDES_KEY.get(stellarConfig, String.class).split(STELLAR_SEARCH_DELIMS));
+        include(STELLAR_SEARCH_INCLUDES_KEY.get(stellarConfig, String.class)
+            .split(STELLAR_SEARCH_DELIMS));
+        exclude(STELLAR_SEARCH_EXCLUDES_KEY.get(stellarConfig, String.class)
+            .split(STELLAR_SEARCH_DELIMS));
         Optional<ClassLoader> vfsLoader = Optional.empty();
         try {
-          vfsLoader = VFSClassloaderUtil.configureClassloader(STELLAR_VFS_PATHS.get(stellarConfig, String.class));
+          vfsLoader = VFSClassloaderUtil
+              .configureClassloader(STELLAR_VFS_PATHS.get(stellarConfig, String.class));
           if (vfsLoader.isPresent()) {
-            LOG.debug("CLASSLOADER LOADED WITH: {}", STELLAR_VFS_PATHS.get(stellarConfig, String.class));
-            if(LOG.isDebugEnabled()) {
+            LOG.debug("CLASSLOADER LOADED WITH: {}",
+                STELLAR_VFS_PATHS.get(stellarConfig, String.class));
+            if (LOG.isDebugEnabled()) {
               for (FileObject fo : ((VFSClassLoader) vfsLoader.get()).getFileObjects()) {
                 LOG.error("{} - {}", fo.getURL(), fo.exists());
               }
@@ -203,7 +209,8 @@ public class ClasspathFunctionResolver extends BaseFunctionResolver {
           LOG.error("Unable to process filesystem: {}", e.getMessage(), e);
         }
       } else {
-        LOG.info("No stellar config set; I'm reverting to the context classpath with no restrictions.");
+        LOG.info(
+            "No stellar config set; I'm reverting to the context classpath with no restrictions.");
         if (LOG.isDebugEnabled()) {
           try {
             throw new IllegalStateException("No config set, stacktrace follows.");
@@ -221,16 +228,15 @@ public class ClasspathFunctionResolver extends BaseFunctionResolver {
     return ClassIndex.getAnnotated(Stellar.class, cl);
   }
 
-  protected boolean includeClass(Class<?> c, FilterBuilder filterBuilder)
-  {
+  protected boolean includeClass(Class<?> c, FilterBuilder filterBuilder) {
     boolean isAssignable = StellarFunction.class.isAssignableFrom(c);
     boolean isFiltered = filterBuilder.apply(c.getCanonicalName());
     return isAssignable && isFiltered;
   }
 
   /**
-   * Returns a set of classes that should undergo further interrogation for resolution
-   * (aka discovery) of Stellar functions.
+   * Returns a set of classes that should undergo further interrogation for resolution (aka
+   * discovery) of Stellar functions.
    */
   @Override
   @SuppressWarnings("unchecked")
@@ -239,7 +245,7 @@ public class ClasspathFunctionResolver extends BaseFunctionResolver {
     ClassLoader[] cls = null;
     if (this.classLoaders.size() == 0) {
       LOG.warn("Using System classloader");
-      cls = new ClassLoader[]{getClass().getClassLoader()};
+      cls = new ClassLoader[] {getClass().getClassLoader()};
     } else {
       List<ClassLoader> classLoaderList = new ArrayList<>();
       for (int i = 0; i < this.classLoaders.size(); ++i) {
@@ -282,15 +288,17 @@ public class ClasspathFunctionResolver extends BaseFunctionResolver {
             }
           }
         } catch (Error le) {
-          //we have had some error loading a stellar function.  This could mean that
-          //the classpath is unstable (e.g. old copies of jars are on the classpath).
+          // we have had some error loading a stellar function. This could mean that
+          // the classpath is unstable (e.g. old copies of jars are on the classpath).
           try {
             LOG.error("Skipping class " + c.getName() + ": " + le.getMessage()
-                    + ", please check that there are not old versions of stellar functions on the classpath.", le);
+                + ", please check that there are not old versions of stellar functions on the classpath.",
+                le);
           } catch (Error ie) {
-            //it's possible that getName() will throw an exception if the class is VERY malformed.
+            // it's possible that getName() will throw an exception if the class is VERY malformed.
             LOG.error("Skipping class: " + le.getMessage()
-                    + ", please check that there are not old versions of stellar functions on the classpath.", le);
+                + ", please check that there are not old versions of stellar functions on the classpath.",
+                le);
           }
         }
       }

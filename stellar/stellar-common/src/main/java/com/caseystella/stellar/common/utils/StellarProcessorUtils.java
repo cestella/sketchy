@@ -1,19 +1,16 @@
 /**
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
+ * Licensed to the Apache Software Foundation (ASF) under one or more contributor license
+ * agreements. See the NOTICE file distributed with this work for additional information regarding
+ * copyright ownership. The ASF licenses this file to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the License. You may obtain a
+ * copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  */
 
 package com.caseystella.stellar.common.utils;
@@ -52,8 +49,9 @@ public class StellarProcessorUtils {
   /**
    * Execute and validate a Stellar expression.
    *
-   * <p>This is intended for use while unit testing Stellar expressions.  This ensures that the expression
-   * validates successfully and produces a result that can be serialized correctly.
+   * <p>
+   * This is intended for use while unit testing Stellar expressions. This ensures that the
+   * expression validates successfully and produces a result that can be serialized correctly.
    *
    * @param expression The expression to execute.
    * @param varResolver The variable resolver to use
@@ -73,8 +71,9 @@ public class StellarProcessorUtils {
   /**
    * Execute and validate a Stellar expression.
    *
-   * <p>This is intended for use while unit testing Stellar expressions.  This ensures that the expression
-   * validates successfully and produces a result that can be serialized correctly.
+   * <p>
+   * This is intended for use while unit testing Stellar expressions. This ensures that the
+   * expression validates successfully and produces a result that can be serialized correctly.
    *
    * @param expression The expression to execute.
    * @param variables The variables to expose to the expression.
@@ -82,15 +81,12 @@ public class StellarProcessorUtils {
    * @return The result of executing the expression.
    */
   public static Object run(String expression, Map<String, Object> variables, Context context) {
-    VariableResolver varResolver = new DefaultVariableResolver(
-            x -> {
-              if(x.equals(MapVariableResolver.ALL_FIELDS)) {
-                return variables;
-              }
-              return variables.get(x);
-            }
-            ,x-> x.equals(MapVariableResolver.ALL_FIELDS) || variables.containsKey(x)
-    );
+    VariableResolver varResolver = new DefaultVariableResolver(x -> {
+      if (x.equals(MapVariableResolver.ALL_FIELDS)) {
+        return variables;
+      }
+      return variables.get(x);
+    }, x -> x.equals(MapVariableResolver.ALL_FIELDS) || variables.containsKey(x));
     return run(expression, varResolver, context);
   }
 
@@ -102,15 +98,13 @@ public class StellarProcessorUtils {
    * @param context The execution context.
    * @return The result of executing the expression.
    */
-  private static Object execute(String expression, VariableResolver variableResolver, Context context) {
+  private static Object execute(String expression, VariableResolver variableResolver,
+      Context context) {
 
     StellarProcessor processor = new StellarProcessor();
 
-    Object result = processor.parse(
-            expression,
-            variableResolver,
-            StellarFunctions.FUNCTION_RESOLVER(),
-            context);
+    Object result = processor.parse(expression, variableResolver,
+        StellarFunctions.FUNCTION_RESOLVER(), context);
 
     return result;
   }
@@ -118,22 +112,24 @@ public class StellarProcessorUtils {
   /**
    * Ensure that a value can be serialized and deserialized using Kryo.
    *
-   * <p>When a Stellar function is used in a Storm topology there are cases when the result
-   * needs to be serializable, like when using the Profiler.  Storm can use either Kryo or
-   * basic Java serialization.  It is highly recommended that all Stellar functions return a
-   * result that is Kryo serializable to allow for the broadest possible use of the function.
+   * <p>
+   * When a Stellar function is used in a Storm topology there are cases when the result needs to be
+   * serializable, like when using the Profiler. Storm can use either Kryo or basic Java
+   * serialization. It is highly recommended that all Stellar functions return a result that is Kryo
+   * serializable to allow for the broadest possible use of the function.
    *
    * @param value The value to validate.
    */
   private static void ensureKryoSerializable(Object value, String expression) {
 
-    String msg = String.format("Expression result is not Kryo serializable. It is highly recommended for all " +
-            "functions to return a result that is Kryo serializable to allow for their broadest possible use. " +
-            "expr=%s, value=%s", expression, value);
+    String msg = String
+        .format("Expression result is not Kryo serializable. It is highly recommended for all "
+            + "functions to return a result that is Kryo serializable to allow for their broadest possible use. "
+            + "expr=%s, value=%s", expression, value);
 
     byte[] raw = SerDeUtils.toBytes(value);
     Object actual = SerDeUtils.fromBytes(raw, Object.class);
-    if((value == null && actual != null) || (value != null && !value.equals(actual))) {
+    if ((value == null && actual != null) || (value != null && !value.equals(actual))) {
       throw new AssertionError(msg);
     }
   }
@@ -141,18 +137,20 @@ public class StellarProcessorUtils {
   /**
    * Ensure a value can be serialized and deserialized using Java serialization.
    *
-   * <p>When a Stellar function is used in a Storm topology there are cases when the result
-   * needs to be serializable, like when using the Profiler.  Storm can use either Kryo or
-   * basic Java serialization.  It is highly recommended that all Stellar functions return a
-   * result that is Java serializable to allow for the broadest possible use of the function.
+   * <p>
+   * When a Stellar function is used in a Storm topology there are cases when the result needs to be
+   * serializable, like when using the Profiler. Storm can use either Kryo or basic Java
+   * serialization. It is highly recommended that all Stellar functions return a result that is Java
+   * serializable to allow for the broadest possible use of the function.
    *
    * @param value The value to serialize
    */
   private static void ensureJavaSerializable(Object value, String expression) {
 
-    String msg = String.format("Expression result is not Java serializable. It is highly recommended for all " +
-            "functions to return a result that is Java serializable to allow for their broadest possible use. " +
-            "expr=%s, value=%s", expression, value);
+    String msg = String
+        .format("Expression result is not Java serializable. It is highly recommended for all "
+            + "functions to return a result that is Java serializable to allow for their broadest possible use. "
+            + "expr=%s, value=%s", expression, value);
 
     try {
       // serialize using java
@@ -162,7 +160,7 @@ public class StellarProcessorUtils {
 
       // the serialized bits
       byte[] raw = bytes.toByteArray();
-      if(!(raw.length > 0)) {
+      if (!(raw.length > 0)) {
         throw new AssertionError("Serialized byte length not greater than 0");
       }
 
@@ -171,15 +169,17 @@ public class StellarProcessorUtils {
       Object actual = in.readObject();
 
       // ensure that the round-trip was successful
-      if((value == null && actual != null) || (value != null && !value.equals(actual))) {
+      if ((value == null && actual != null) || (value != null && !value.equals(actual))) {
         throw new AssertionError(msg);
       }
 
-    } catch(IOException | ClassNotFoundException e) {
+    } catch (IOException | ClassNotFoundException e) {
 
-      String error = String.format("Expression result is not Java serializable. It is highly recommended for all " +
-              "functions to return a result that is Java serializable to allow for their broadest possible use. " +
-              "expr=%s, value=%s, error=%s", expression, value, ExceptionUtils.getRootCauseMessage(e));
+      String error = String.format(
+          "Expression result is not Java serializable. It is highly recommended for all "
+              + "functions to return a result that is Java serializable to allow for their broadest possible use. "
+              + "expr=%s, value=%s, error=%s",
+          expression, value, ExceptionUtils.getRootCauseMessage(e));
       throw new AssertionError(error);
     }
   }
@@ -187,8 +187,9 @@ public class StellarProcessorUtils {
   /**
    * Execute and validate a Stellar expression.
    *
-   * <p>This is intended for use while unit testing Stellar expressions.  This ensures that the expression
-   * validates successfully and produces a result that can be serialized correctly.
+   * <p>
+   * This is intended for use while unit testing Stellar expressions. This ensures that the
+   * expression validates successfully and produces a result that can be serialized correctly.
    *
    * @param expression The expression to execute.
    * @param variables The variables to expose to the expression.
@@ -201,8 +202,9 @@ public class StellarProcessorUtils {
   /**
    * Execute and validate a Stellar expression.
    *
-   * <p>This is intended for use while unit testing Stellar expressions.  This ensures that the expression
-   * validates successfully and produces a result that can be serialized correctly.
+   * <p>
+   * This is intended for use while unit testing Stellar expressions. This ensures that the
+   * expression validates successfully and produces a result that can be serialized correctly.
    *
    * @param expression The expression to execute.
    * @param variables The variables to expose to the expression.
@@ -215,8 +217,9 @@ public class StellarProcessorUtils {
   /**
    * Execute and validate a Stellar expression.
    *
-   * <p>This is intended for use while unit testing Stellar expressions.  This ensures that the expression
-   * validates successfully and produces a result that can be serialized correctly.
+   * <p>
+   * This is intended for use while unit testing Stellar expressions. This ensures that the
+   * expression validates successfully and produces a result that can be serialized correctly.
    *
    * @param expression The expression to execute.
    * @param context The execution context.
@@ -228,7 +231,7 @@ public class StellarProcessorUtils {
 
   public static void validate(String expression, Context context) {
     StellarProcessor processor = new StellarProcessor();
-    if(!processor.validate(expression, context)) {
+    if (!processor.validate(expression, context)) {
       throw new AssertionError("Invalid expression; expr=" + expression);
     }
   }
@@ -251,7 +254,7 @@ public class StellarProcessorUtils {
 
   public static boolean runPredicate(String rule, VariableResolver resolver, Context context) {
     StellarPredicateProcessor processor = new StellarPredicateProcessor();
-    if(!processor.validate(rule)) {
+    if (!processor.validate(rule)) {
       throw new AssertionError(rule + " not valid.");
     }
     return processor.parse(rule, resolver, StellarFunctions.FUNCTION_RESOLVER(), context);
@@ -262,21 +265,22 @@ public class StellarProcessorUtils {
   }
 
   public static void runWithArguments(String function, List<Object> arguments, Object expected) {
-    Supplier<Stream<Map.Entry<String, Object>>> kvStream = () -> StreamSupport
-            .stream(new XRange(arguments.size()), false)
+    Supplier<Stream<Map.Entry<String, Object>>> kvStream =
+        () -> StreamSupport.stream(new XRange(arguments.size()), false)
             .map(i -> new AbstractMap.SimpleImmutableEntry<>("var" + i, arguments.get(i)));
 
     String args = kvStream.get().map(kv -> kv.getKey()).collect(Collectors.joining(","));
-    Map<String, Object> variables = kvStream.get().collect(Collectors.toMap(kv -> kv.getKey(), kv -> kv.getValue()));
+    Map<String, Object> variables =
+        kvStream.get().collect(Collectors.toMap(kv -> kv.getKey(), kv -> kv.getValue()));
     String stellarStatement = function + "(" + args + ")";
     String reason = stellarStatement + " != " + expected + " with variables: " + variables;
 
     if (expected instanceof Double) {
-      if(!(Math.abs((Double) expected - (Double) run(stellarStatement, variables)) < 1e-6)) {
+      if (!(Math.abs((Double) expected - (Double) run(stellarStatement, variables)) < 1e-6)) {
         throw new AssertionError(reason);
       }
     } else {
-      if(!expected.equals(run(stellarStatement, variables))) {
+      if (!expected.equals(run(stellarStatement, variables))) {
         throw new AssertionError(reason);
       }
     }
@@ -312,8 +316,8 @@ public class StellarProcessorUtils {
      * {@inheritDoc}
      *
      * @param action to {@code IntConsumer} and passed to {@link #tryAdvance(IntConsumer)};
-     *     otherwise the action is adapted to an instance of {@code IntConsumer}, by boxing the
-     *     argument of {@code IntConsumer}, and then passed to {@link #tryAdvance(IntConsumer)}.
+     *        otherwise the action is adapted to an instance of {@code IntConsumer}, by boxing the
+     *        argument of {@code IntConsumer}, and then passed to {@link #tryAdvance(IntConsumer)}.
      */
     @Override
     public boolean tryAdvance(Consumer<? super Integer> action) {

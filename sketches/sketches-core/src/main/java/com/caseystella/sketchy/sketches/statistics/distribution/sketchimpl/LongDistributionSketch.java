@@ -7,26 +7,27 @@ import com.caseystella.sketchy.sketches.statistics.distribution.types.number.Num
 import org.apache.datasketches.kll.KllFloatsSketch;
 
 public class LongDistributionSketch extends DistributionSketchImpl<Long, KllFloatsSketch> {
-    public LongDistributionSketch() {
-       super();
-    }
-    public LongDistributionSketch(int k) {
-        super(k);
-    }
+  public LongDistributionSketch() {
+    super();
+  }
 
-    @Override
-    protected NumberType<Long> createNumberType() {
-        return NumberTypes.LONG.get();
-    }
+  public LongDistributionSketch(int k) {
+    super(k);
+  }
 
-    @Override
-    protected SketchType<KllFloatsSketch> createSketchType(int k) {
-        return SketchTypes.FLOATS_SKETCH.create(k);
-    }
+  @Override
+  protected NumberType<Long> createNumberType() {
+    return NumberTypes.LONG.get();
+  }
 
-    @Override
-    protected DistributionSketchImpl<Long, KllFloatsSketch> createNew() {
-        return new LongDistributionSketch(getK());
-    }
+  @Override
+  protected SketchType<KllFloatsSketch> createSketchType(int k) {
+    return SketchTypes.FLOATS_SKETCH.create(k);
+  }
+
+  @Override
+  protected DistributionSketchImpl<Long, KllFloatsSketch> createNew() {
+    return new LongDistributionSketch(getK());
+  }
 }
 

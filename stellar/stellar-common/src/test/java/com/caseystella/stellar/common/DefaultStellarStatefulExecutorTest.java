@@ -1,20 +1,17 @@
 /*
  *
- *  Licensed to the Apache Software Foundation (ASF) under one
- *  or more contributor license agreements.  See the NOTICE file
- *  distributed with this work for additional information
- *  regarding copyright ownership.  The ASF licenses this file
- *  to you under the Apache License, Version 2.0 (the
- *  "License"); you may not use this file except in compliance
- *  with the License.  You may obtain a copy of the License at
+ * Licensed to the Apache Software Foundation (ASF) under one or more contributor license
+ * agreements. See the NOTICE file distributed with this work for additional information regarding
+ * copyright ownership. The ASF licenses this file to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the License. You may obtain a
+ * copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  *
  */
 
@@ -49,12 +46,14 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 // Suppressing on the class level, given that every test is a typical example of use pattern.
 public class DefaultStellarStatefulExecutorTest {
 
+  // @formatter:off
   /**
    * {
    *   "ip_src_addr": "10.0.0.1",
    *   "ip_dst_addr": "10.0.0.20"
    * }
    */
+  // @formatter:on
   @Multiline
   private String input;
 
@@ -131,8 +130,8 @@ public class DefaultStellarStatefulExecutorTest {
   /**
    * Ensure that a Transformation function can be executed.
    *
-   * There are two sets of functions in Stellar currently.  One can be executed with
-   * a PredicateProcessor and the other a TransformationProcessor.  The StellarStatefulExecutor
+   * There are two sets of functions in Stellar currently. One can be executed with a
+   * PredicateProcessor and the other a TransformationProcessor. The StellarStatefulExecutor
    * abstracts away that complication.
    */
   @Test
@@ -144,11 +143,11 @@ public class DefaultStellarStatefulExecutorTest {
   /**
    * Ensure that a Predicate function can be executed.
    *
-   * There are two sets of functions in Stellar currently.  One can be executed with
-   * a PredicateProcessor and the other a TransformationProcessor.  The StellarStatefulExecutor
+   * There are two sets of functions in Stellar currently. One can be executed with a
+   * PredicateProcessor and the other a TransformationProcessor. The StellarStatefulExecutor
    * abstracts away that complication.
    */
-  @Disabled  //until field validations avail to Stellar
+  @Disabled // until field validations avail to Stellar
   @Test
   public void testExecutePredicate() {
     boolean actual = executor.execute("IS_INTEGER(2)", message, Boolean.class);

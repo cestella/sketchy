@@ -7,27 +7,27 @@ import com.caseystella.sketchy.sketches.statistics.distribution.types.number.Num
 import org.apache.datasketches.quantiles.DoublesSketch;
 
 public class DoubleDistributionSketch extends DistributionSketchImpl<Double, DoublesSketch> {
-    public DoubleDistributionSketch() {
-        super();
-    }
+  public DoubleDistributionSketch() {
+    super();
+  }
 
-    public DoubleDistributionSketch(int k) {
-        super(k);
-    }
+  public DoubleDistributionSketch(int k) {
+    super(k);
+  }
 
-    @Override
-    protected NumberType<Double> createNumberType() {
-        return NumberTypes.DOUBLE.get();
-    }
+  @Override
+  protected NumberType<Double> createNumberType() {
+    return NumberTypes.DOUBLE.get();
+  }
 
-    @Override
-    protected SketchType<DoublesSketch> createSketchType(int k) {
-        return SketchTypes.DOUBLES_SKETCH.create(k);
-    }
+  @Override
+  protected SketchType<DoublesSketch> createSketchType(int k) {
+    return SketchTypes.DOUBLES_SKETCH.create(k);
+  }
 
-    @Override
-    protected DistributionSketchImpl<Double, DoublesSketch> createNew() {
-        return new DoubleDistributionSketch(this.getK());
-    }
+  @Override
+  protected DistributionSketchImpl<Double, DoublesSketch> createNew() {
+    return new DoubleDistributionSketch(this.getK());
+  }
 
 }

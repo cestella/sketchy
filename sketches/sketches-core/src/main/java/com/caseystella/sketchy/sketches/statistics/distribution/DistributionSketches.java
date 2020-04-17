@@ -7,12 +7,12 @@ import java.util.Optional;
 import java.util.function.Function;
 
 public enum DistributionSketches {
-  DOUBLES(k -> new DoubleDistributionSketch(k)),
-  LONG(k -> new LongDistributionSketch(k)),
-  FLOAT(k -> new FloatDistributionSketch(k))
-  ;
+  DOUBLES(k -> new DoubleDistributionSketch(k)), LONG(k -> new LongDistributionSketch(k)), FLOAT(
+      k -> new FloatDistributionSketch(k));
+
   public static final int DEFAULT_K = 128;
   Function<Integer, DistributionSketch<? extends Number>> creator;
+
   DistributionSketches(Function<Integer, DistributionSketch<? extends Number>> creator) {
     this.creator = creator;
   }

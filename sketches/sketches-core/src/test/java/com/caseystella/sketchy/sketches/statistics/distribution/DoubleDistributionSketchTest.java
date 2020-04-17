@@ -1,6 +1,7 @@
 package com.caseystella.sketchy.sketches.statistics.distribution;
 
-public class DoubleDistributionSketchTest extends AbstractFloatingPointDistributionSketchTest<Double>{
+public class DoubleDistributionSketchTest
+    extends AbstractFloatingPointDistributionSketchTest<Double> {
 
   @Override
   DistributionSketch<Double> createSketch() {

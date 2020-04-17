@@ -1,19 +1,16 @@
 /**
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
+ * Licensed to the Apache Software Foundation (ASF) under one or more contributor license
+ * agreements. See the NOTICE file distributed with this work for additional information regarding
+ * copyright ownership. The ASF licenses this file to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the License. You may obtain a
+ * copy of the License at
  *
  * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  */
 
 package com.caseystella.stellar.dsl.functions;
@@ -32,9 +29,7 @@ public class EncodingFunctions {
 
   @Stellar(name = "GET_SUPPORTED_ENCODINGS",
       description = "Returns a list of the encodings that are currently supported as a list",
-      params = {},
-      returns = "A list of supported encodings"
-  )
+      params = {}, returns = "A list of supported encodings")
   public static class GetSupportedEncodings extends BaseStellarFunction {
 
     @Override
@@ -47,10 +42,8 @@ public class EncodingFunctions {
       description = "Returns if the passed string is encoded in one of the supported encodings",
       params = {"string - the string to test",
           "encoding - the encoding to test, must be one of encodings returned from "
-              + "LIST_SUPPORTED_ENCODINGS"
-      },
-      returns = "true if it is encoded, false if not"
-  )
+              + "LIST_SUPPORTED_ENCODINGS"},
+      returns = "true if it is encoded, false if not")
   public static class IsEncoding extends BaseStellarFunction {
 
     @Override
@@ -83,28 +76,23 @@ public class EncodingFunctions {
           "encoding - the encoding to use, must be one of encodings returned from "
               + "LIST_SUPPORTED_ENCODINGS",
           "verify - (optional), true or false to determine if string should be verified as being "
-              + "encoded with the passed encoding"
-      },
+              + "encoded with the passed encoding"},
       returns = "The decoded string on success\n"
-       + "The original string the string cannot be decoded\n"
-       + "null on usage error"
-  )
+          + "The original string the string cannot be decoded\n" + "null on usage error")
   public static class Decode extends BaseStellarFunction {
 
     @Override
     public Object apply(List<Object> list) {
       if (list.size() != 2 && list.size() != 3) {
-        throw new IllegalStateException(
-            "DECODE expects two or three args: [string, encoding] or "
-                + "[string, encoding, verify] where encoding is one from "
-                + "the supported list");
+        throw new IllegalStateException("DECODE expects two or three args: [string, encoding] or "
+            + "[string, encoding, verify] where encoding is one from " + "the supported list");
       }
       Boolean verify = false;
       String str = (String) list.get(0);
       String encoding = (String) list.get(1);
 
       if (list.size() == 3) {
-        verify = (Boolean)list.get(2);
+        verify = (Boolean) list.get(2);
       }
       if (StringUtils.isEmpty(str) || StringUtils.isEmpty(encoding)) {
         return null;
@@ -125,10 +113,8 @@ public class EncodingFunctions {
           + " must be one of the encodings returned from LIST_SUPPORTED_ENCODINGS",
       params = {"string - the string to encode",
           "encoding - the encoding to use, must be one of encodings returned from "
-              + "LIST_SUPPORTED_ENCODINGS"
-      },
-      returns = "The encoded string or null on error"
-  )
+              + "LIST_SUPPORTED_ENCODINGS"},
+      returns = "The encoded string or null on error")
   public static class Encode extends BaseStellarFunction {
 
     @Override

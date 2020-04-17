@@ -1,19 +1,16 @@
 /*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
+ * Licensed to the Apache Software Foundation (ASF) under one or more contributor license
+ * agreements. See the NOTICE file distributed with this work for additional information regarding
+ * copyright ownership. The ASF licenses this file to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the License. You may obtain a
+ * copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  */
 package com.caseystella.stellar.dsl.functions;
 
@@ -34,7 +31,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class HashFunctionsTest {
   static final Hex HEX = new Hex(StandardCharsets.UTF_8);
-  final HashFunctions.ListSupportedHashTypes listSupportedHashTypes = new HashFunctions.ListSupportedHashTypes();
+  final HashFunctions.ListSupportedHashTypes listSupportedHashTypes =
+      new HashFunctions.ListSupportedHashTypes();
   final HashFunctions.Hash hash = new HashFunctions.Hash();
 
   @Test
@@ -44,13 +42,25 @@ public class HashFunctionsTest {
 
   @Test
   public void getSupportedHashAlgorithmsCalledWithParametersShouldFail() {
-    assertThrows(IllegalArgumentException.class, () -> listSupportedHashTypes.apply(Collections.singletonList("bogus")));
+    assertThrows(IllegalArgumentException.class,
+        () -> listSupportedHashTypes.apply(Collections.singletonList("bogus")));
   }
 
   @Test
   public void listSupportedHashTypesReturnsAtMinimumTheHashingAlgorithmsThatMustBeSupported() {
-    final List<String> requiredAlgorithmsByJava = Arrays.asList("MD5", "SHA", "SHA-256"); // These are required for all Java platforms (see java.security.MessageDigest). Note: SHA is SHA-1
-    final Collection<String> supportedHashes = listSupportedHashTypes.apply(Collections.emptyList());
+    final List<String> requiredAlgorithmsByJava = Arrays.asList("MD5", "SHA", "SHA-256"); // These
+                                                                                          // are
+                                                                                          // required
+                                                                                          // for all
+                                                                                          // Java
+                                                                                          // platforms
+                                                                                          // (see
+                                                                                          // java.security.MessageDigest).
+                                                                                          // Note:
+                                                                                          // SHA is
+                                                                                          // SHA-1
+    final Collection<String> supportedHashes =
+        listSupportedHashTypes.apply(Collections.emptyList());
     requiredAlgorithmsByJava.forEach(a -> assertTrue(supportedHashes.contains(a)));
   }
 
@@ -66,7 +76,8 @@ public class HashFunctionsTest {
 
   @Test
   public void singleArgumentListShouldThrowException() {
-    assertThrows(IllegalArgumentException.class, () -> hash.apply(Collections.singletonList("some value.")));
+    assertThrows(IllegalArgumentException.class,
+        () -> hash.apply(Collections.singletonList("some value.")));
   }
 
   @Test
@@ -76,12 +87,14 @@ public class HashFunctionsTest {
 
   @Test
   public void argumentListWithMoreThanTwoValuesShouldThrowException4() {
-    assertThrows(IllegalArgumentException.class, () -> hash.apply(Arrays.asList("1", "2", "3", "4")));
+    assertThrows(IllegalArgumentException.class,
+        () -> hash.apply(Arrays.asList("1", "2", "3", "4")));
   }
 
   @Test
   public void invalidAlgorithmArgumentShouldThrowException() {
-    assertThrows(IllegalArgumentException.class, () -> hash.apply(Arrays.asList("value to hash", "invalidAlgorithm")));
+    assertThrows(IllegalArgumentException.class,
+        () -> hash.apply(Arrays.asList("value to hash", "invalidAlgorithm")));
   }
 
   @Test
@@ -113,7 +126,8 @@ public class HashFunctionsTest {
         final MessageDigest expected = MessageDigest.getInstance(algorithm);
         expected.update(valueToHash.getBytes(StandardCharsets.UTF_8));
 
-        assertEquals(expectedHexString(expected), hash.apply(Arrays.asList(valueToHash, algorithm)));
+        assertEquals(expectedHexString(expected),
+            hash.apply(Arrays.asList(valueToHash, algorithm)));
       } catch (NoSuchAlgorithmException e) {
         throw new RuntimeException(e);
       }
@@ -127,7 +141,8 @@ public class HashFunctionsTest {
 
     algorithms.forEach(algorithm -> {
       try {
-        final Object actual = run("HASH('" + valueToHash + "', '" + algorithm + "')", Collections.emptyMap());
+        final Object actual =
+            run("HASH('" + valueToHash + "', '" + algorithm + "')", Collections.emptyMap());
 
         final MessageDigest expected = MessageDigest.getInstance(algorithm);
         expected.update(valueToHash.getBytes(StandardCharsets.UTF_8));
@@ -181,7 +196,8 @@ public class HashFunctionsTest {
     final Map<String, Object> variables = new HashMap<>();
     variables.put("hashType", algorithm);
 
-    assertEquals(expectedHexString(expected), run("HASH(" + valueToHash + ", hashType)", variables));
+    assertEquals(expectedHexString(expected),
+        run("HASH(" + valueToHash + ", hashType)", variables));
   }
 
   @Test

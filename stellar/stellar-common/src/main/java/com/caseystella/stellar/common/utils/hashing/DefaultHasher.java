@@ -1,19 +1,16 @@
 /*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
+ * Licensed to the Apache Software Foundation (ASF) under one or more contributor license
+ * agreements. See the NOTICE file distributed with this work for additional information regarding
+ * copyright ownership. The ASF licenses this file to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the License. You may obtain a
+ * copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  */
 package com.caseystella.stellar.common.utils.hashing;
 
@@ -35,9 +32,10 @@ import java.util.*;
 public class DefaultHasher implements Hasher {
 
   public enum Config implements EnumConfigurable {
-    CHARSET("charset"),
-    ;
+    CHARSET("charset"),;
+
     private String key;
+
     Config(String key) {
       this.key = key;
     }
@@ -55,6 +53,7 @@ public class DefaultHasher implements Hasher {
 
   /**
    * Builds a utility to hash values based on a given algorithm.
+   * 
    * @param algorithm The algorithm used when hashing a value.
    * @param encoder The encoder to use to encode the hashed value.
    * @param charset The charset that will be used during hashing and encoding.
@@ -68,7 +67,9 @@ public class DefaultHasher implements Hasher {
   }
 
   /**
-   * Builds a utility to hash values based on a given algorithm. Uses {@link StandardCharsets#UTF_8} for encoding.
+   * Builds a utility to hash values based on a given algorithm. Uses {@link StandardCharsets#UTF_8}
+   * for encoding.
+   * 
    * @param algorithm The algorithm used when hashing a value.
    * @param encoder The encoder to use to encode the hashed value.
    * @see java.security.Security
@@ -81,7 +82,9 @@ public class DefaultHasher implements Hasher {
   }
 
   /**
-   * Builds a utility to hash values based on a given algorithm. Uses {@link StandardCharsets#UTF_8} for encoding.
+   * Builds a utility to hash values based on a given algorithm. Uses {@link StandardCharsets#UTF_8}
+   * for encoding.
+   * 
    * @param algorithm The algorithm used when hashing a value.
    * @see java.security.Security
    * @see java.security.MessageDigest
@@ -93,9 +96,10 @@ public class DefaultHasher implements Hasher {
   /**
    * {@inheritDoc}
    *
-   * Returns a hash which has been encoded using the supplied encoder. If input is null then a string
-   * containing all '0' will be returned. The length of the string is determined by the hashing algorithm
-   * used.
+   * Returns a hash which has been encoded using the supplied encoder. If input is null then a
+   * string containing all '0' will be returned. The length of the string is determined by the
+   * hashing algorithm used.
+   * 
    * @param toHash The value to hash.
    * @return A hash of {@code toHash} that has been encoded.
    * @throws EncoderException If unable to encode the hash then this exception occurs.
@@ -117,7 +121,8 @@ public class DefaultHasher implements Hasher {
     return null;
   }
 
-  private String getHash(final MessageDigest messageDigest, final byte[] toHash) throws EncoderException {
+  private String getHash(final MessageDigest messageDigest, final byte[] toHash)
+      throws EncoderException {
     messageDigest.update(toHash);
     final byte[] encode = encoder.encode(messageDigest.digest());
 
@@ -126,17 +131,15 @@ public class DefaultHasher implements Hasher {
 
   @Override
   public void configure(Optional<Map<String, Object>> config) {
-    if(config.isPresent() && !config.get().isEmpty()) {
-      charset = Config.CHARSET.get(config.get()
-              , o -> {
-                String charset = ConversionUtils.convert(o, String.class);
-                if(charset != null) {
-                  Charset set = Charset.forName(charset);
-                  return set;
-                }
-                return null;
-              }
-      ).orElse(charset);
+    if (config.isPresent() && !config.get().isEmpty()) {
+      charset = Config.CHARSET.get(config.get(), o -> {
+        String charset = ConversionUtils.convert(o, String.class);
+        if (charset != null) {
+          Charset set = Charset.forName(charset);
+          return set;
+        }
+        return null;
+      }).orElse(charset);
     }
   }
 

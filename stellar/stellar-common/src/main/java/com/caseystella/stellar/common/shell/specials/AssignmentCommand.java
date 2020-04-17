@@ -1,19 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one
- *  or more contributor license agreements.  See the NOTICE file
- *  distributed with this work for additional information
- *  regarding copyright ownership.  The ASF licenses this file
- *  to you under the Apache License, Version 2.0 (the
- *  "License"); you may not use this file except in compliance
- *  with the License.  You may obtain a copy of the License at
+ * Licensed to the Apache Software Foundation (ASF) under one or more contributor license
+ * agreements. See the NOTICE file distributed with this work for additional information regarding
+ * copyright ownership. The ASF licenses this file to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the License. You may obtain a
+ * copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  *
  */
 package com.caseystella.stellar.common.shell.specials;
@@ -28,10 +25,10 @@ import java.util.function.Function;
 import static com.caseystella.stellar.common.shell.StellarResult.error;
 
 /**
- * A special command that allows for variable assignment.  Variable
- * assignment is not implemented directly within Stellar.
+ * A special command that allows for variable assignment. Variable assignment is not implemented
+ * directly within Stellar.
  *
- *    x := 2 + 2
+ * x := 2 + 2
  */
 public class AssignmentCommand implements SpecialCommand {
 
@@ -49,6 +46,7 @@ public class AssignmentCommand implements SpecialCommand {
 
   /**
    * Handles variable assignment.
+   * 
    * @param input The assignment expression to execute.
    * @param executor A stellar execution environment.
    * @return
@@ -64,13 +62,13 @@ public class AssignmentCommand implements SpecialCommand {
 
     // execute the stellar expression
     StellarResult result = executor.execute(varExpr);
-    if(result.isSuccess()) {
+    if (result.isSuccess()) {
 
       Object value = null;
-      if(result.getValue().isPresent()) {
+      if (result.getValue().isPresent()) {
         value = result.getValue().get();
 
-      } else if(result.isValueNull()) {
+      } else if (result.isValueNull()) {
         value = null;
       }
 

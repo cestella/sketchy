@@ -1,19 +1,16 @@
 /**
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
+ * Licensed to the Apache Software Foundation (ASF) under one or more contributor license
+ * agreements. See the NOTICE file distributed with this work for additional information regarding
+ * copyright ownership. The ASF licenses this file to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the License. You may obtain a
+ * copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  */
 
 package com.caseystella.stellar.common.utils;
@@ -35,15 +32,16 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * ConcatMap is a lazy concatenation of a list of Maps.  It is lazy in that it does not construct
- * a union of all of the maps, but rather keeps the maps separate.  Key/Value resolution is
- * done via a first-wins strategy (i.e. the first map which has a key will be used).
+ * ConcatMap is a lazy concatenation of a list of Maps. It is lazy in that it does not construct a
+ * union of all of the maps, but rather keeps the maps separate. Key/Value resolution is done via a
+ * first-wins strategy (i.e. the first map which has a key will be used).
  *
  * Also, note, that this is an immutable map, so operations which require mutation will have
  * UnsupportedOperationException thrown.
  */
 public class ConcatMap implements Map<String, Object>, Serializable, KryoSerializable {
   List<Map> variableMappings = new ArrayList<>();
+
   public ConcatMap(List<Map> variableMappings) {
     this.variableMappings = variableMappings;
   }
@@ -51,7 +49,7 @@ public class ConcatMap implements Map<String, Object>, Serializable, KryoSeriali
   @Override
   public int size() {
     int size = 0;
-    for(Map m : variableMappings) {
+    for (Map m : variableMappings) {
       size += m.size();
     }
     return size;
@@ -60,7 +58,7 @@ public class ConcatMap implements Map<String, Object>, Serializable, KryoSeriali
   @Override
   public boolean isEmpty() {
     boolean isEmpty = true;
-    for(Map m : variableMappings) {
+    for (Map m : variableMappings) {
       isEmpty &= m.isEmpty();
     }
     return isEmpty;
@@ -68,13 +66,14 @@ public class ConcatMap implements Map<String, Object>, Serializable, KryoSeriali
 
   /**
    * If any maps contains the key, then this will return true.
+   * 
    * @param key
    * @return
    */
   @Override
   public boolean containsKey(Object key) {
-    for(Map m : variableMappings) {
-      if(m.containsKey(key)) {
+    for (Map m : variableMappings) {
+      if (m.containsKey(key)) {
         return true;
       }
     }
@@ -84,13 +83,14 @@ public class ConcatMap implements Map<String, Object>, Serializable, KryoSeriali
   /**
    *
    * If any maps contains the value, then this will return true.
+   * 
    * @param value
    * @return
    */
   @Override
   public boolean containsValue(Object value) {
-    for(Map m : variableMappings) {
-      if(m.containsValue(value)) {
+    for (Map m : variableMappings) {
+      if (m.containsValue(value)) {
         return true;
       }
     }
@@ -99,15 +99,16 @@ public class ConcatMap implements Map<String, Object>, Serializable, KryoSeriali
 
   /**
    * The first map which contains the key will have the associated value returned.
+   * 
    * @param key
    * @return
    */
   @Override
   public Object get(Object key) {
     Object ret = null;
-    for(Map m : variableMappings) {
+    for (Map m : variableMappings) {
       ret = m.get(key);
-      if(ret != null) {
+      if (ret != null) {
         break;
       }
     }
@@ -116,6 +117,7 @@ public class ConcatMap implements Map<String, Object>, Serializable, KryoSeriali
 
   /**
    * This is an immutable map and this operation is not supported.
+   * 
    * @param key
    * @param value
    * @return
@@ -128,6 +130,7 @@ public class ConcatMap implements Map<String, Object>, Serializable, KryoSeriali
   /**
    *
    * This is an immutable map and this operation is not supported.
+   * 
    * @param key
    * @return
    */
@@ -139,6 +142,7 @@ public class ConcatMap implements Map<String, Object>, Serializable, KryoSeriali
   /**
    *
    * This is an immutable map and this operation is not supported.
+   * 
    * @param m
    */
   @Override
@@ -162,8 +166,7 @@ public class ConcatMap implements Map<String, Object>, Serializable, KryoSeriali
     for (Map m : variableMappings) {
       if (ret == null) {
         ret = m.keySet();
-      }
-      else {
+      } else {
         ret = Sets.union(ret, m.keySet());
       }
     }
@@ -172,6 +175,7 @@ public class ConcatMap implements Map<String, Object>, Serializable, KryoSeriali
 
   /**
    * Note: this makes a copy of the values, so it is not fundamentally lazy.
+   * 
    * @return
    */
   @Override
@@ -185,8 +189,9 @@ public class ConcatMap implements Map<String, Object>, Serializable, KryoSeriali
   }
 
   /**
-   * This is a lazy entry collection of the associated maps.  If there are duplicate keys, they will appear
-   * twice here, so be careful.
+   * This is a lazy entry collection of the associated maps. If there are duplicate keys, they will
+   * appear twice here, so be careful.
+   * 
    * @return
    */
   @Override
@@ -207,21 +212,23 @@ public class ConcatMap implements Map<String, Object>, Serializable, KryoSeriali
   @SuppressWarnings("unchecked")
   public String toString() {
     Iterable<Iterable<Map.Entry<Object, Object>>> transformed =
-            Iterables.transform(variableMappings, x -> x.entrySet());
-    Iterable<Map.Entry<Object, Object>> it = Iterables.filter( Iterables.concat(transformed)
-                                                             , x -> x.getValue() != null
-                                                             );
+        Iterables.transform(variableMappings, x -> x.entrySet());
+    Iterable<Map.Entry<Object, Object>> it =
+        Iterables.filter(Iterables.concat(transformed), x -> x.getValue() != null);
     return "{" + Joiner.on(", ").join(it) + "}";
   }
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (this == o)
+      return true;
+    if (o == null || getClass() != o.getClass())
+      return false;
 
     ConcatMap concatMap = (ConcatMap) o;
 
-    return variableMappings != null ? variableMappings.equals(concatMap.variableMappings) : concatMap.variableMappings == null;
+    return variableMappings != null ? variableMappings.equals(concatMap.variableMappings)
+        : concatMap.variableMappings == null;
 
   }
 
@@ -232,12 +239,12 @@ public class ConcatMap implements Map<String, Object>, Serializable, KryoSeriali
 
   @Override
   public void write(Kryo kryo, Output output) {
-    int numVariableMappings = variableMappings.isEmpty()?0:variableMappings.size();
+    int numVariableMappings = variableMappings.isEmpty() ? 0 : variableMappings.size();
     output.writeShort(numVariableMappings);
-    for(Map m : variableMappings) {
-      byte[] b = m == null?new byte[]{}:SerDeUtils.toBytes(m);
+    for (Map m : variableMappings) {
+      byte[] b = m == null ? new byte[] {} : SerDeUtils.toBytes(m);
       output.writeInt(b.length);
-      if(b.length > 0) {
+      if (b.length > 0) {
         output.writeBytes(b);
       }
     }
@@ -247,9 +254,9 @@ public class ConcatMap implements Map<String, Object>, Serializable, KryoSeriali
   public void read(Kryo kryo, Input input) {
     int numVariableMappings = input.readShort();
     variableMappings = new ArrayList<>(numVariableMappings);
-    for(int i = 0;i < numVariableMappings;++i) {
+    for (int i = 0; i < numVariableMappings; ++i) {
       int size = input.readInt();
-      if(size > 0) {
+      if (size > 0) {
         byte[] bytes = input.readBytes(size);
         Map m = SerDeUtils.fromBytes(bytes, Map.class);
         variableMappings.add(m);

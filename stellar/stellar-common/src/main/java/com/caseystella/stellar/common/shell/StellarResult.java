@@ -1,20 +1,17 @@
 /*
  *
- *  Licensed to the Apache Software Foundation (ASF) under one
- *  or more contributor license agreements.  See the NOTICE file
- *  distributed with this work for additional information
- *  regarding copyright ownership.  The ASF licenses this file
- *  to you under the Apache License, Version 2.0 (the
- *  "License"); you may not use this file except in compliance
- *  with the License.  You may obtain a copy of the License at
+ * Licensed to the Apache Software Foundation (ASF) under one or more contributor license
+ * agreements. See the NOTICE file distributed with this work for additional information regarding
+ * copyright ownership. The ASF licenses this file to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the License. You may obtain a
+ * copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  *
  */
 package com.caseystella.stellar.common.shell;
@@ -27,13 +24,10 @@ import java.util.Optional;
 public class StellarResult {
 
   /**
-   * Indicates that a Stellar expression resulted in either
-   * success or an error.
+   * Indicates that a Stellar expression resulted in either success or an error.
    */
   enum Status {
-    SUCCESS,
-    ERROR,
-    TERMINATE
+    SUCCESS, ERROR, TERMINATE
   }
 
   /**
@@ -42,20 +36,21 @@ public class StellarResult {
   private Status status;
 
   /**
-   * The result of executing the expression.  Only valid when execution is successful.
+   * The result of executing the expression. Only valid when execution is successful.
    */
   private Optional<Object> value;
 
   /**
-   * The error that occurred when executing the expression.  Only valid when execution results in an error.
+   * The error that occurred when executing the expression. Only valid when execution results in an
+   * error.
    */
   private Optional<Throwable> exception;
 
   /**
    * Indicates if the value is null;
    *
-   * A null is a valid result, but cannot be unwrapped from an Optional.  Because of this
-   * a boolean is used to indicate if the result is a success and the value is null.
+   * A null is a valid result, but cannot be unwrapped from an Optional. Because of this a boolean
+   * is used to indicate if the result is a success and the value is null.
    */
   private boolean isValueNull;
 
@@ -73,7 +68,8 @@ public class StellarResult {
   }
 
   /**
-   * Private constructor to construct a result indicating an error occurred. Use the static method; error.
+   * Private constructor to construct a result indicating an error occurred. Use the static method;
+   * error.
    *
    * @param status Indicates success or failure.
    * @param exception The exception that occurred when executing the expression.
@@ -116,8 +112,8 @@ public class StellarResult {
   }
 
   /**
-   * Indicates an empty result; one that is successful yet has no result.  For example,
-   * executing a comment.
+   * Indicates an empty result; one that is successful yet has no result. For example, executing a
+   * comment.
    *
    * @return An empty result.
    */
@@ -135,28 +131,28 @@ public class StellarResult {
   }
 
   /**
-   * @return True, if the result indicates success.  Otherwise, false.
+   * @return True, if the result indicates success. Otherwise, false.
    */
   public boolean isSuccess() {
     return status == Status.SUCCESS;
   }
 
   /**
-   * @return True, if the result indicates an error.  Otherwise, false.
+   * @return True, if the result indicates an error. Otherwise, false.
    */
   public boolean isError() {
     return status == Status.ERROR;
   }
 
   /**
-   * @return True, if status indicates terminate was requested.  Otherwise, false.
+   * @return True, if status indicates terminate was requested. Otherwise, false.
    */
   public boolean isTerminate() {
     return status == Status.TERMINATE;
   }
 
   /**
-   * @return True, if the value is null.  Otherwise, false.
+   * @return True, if the value is null. Otherwise, false.
    */
   public boolean isValueNull() {
     return isValueNull;
@@ -185,11 +181,7 @@ public class StellarResult {
 
   @Override
   public String toString() {
-    return "StellarResult{" +
-            "status=" + status +
-            ", value=" + value +
-            ", exception=" + exception +
-            ", isValueNull=" + isValueNull +
-            '}';
+    return "StellarResult{" + "status=" + status + ", value=" + value + ", exception=" + exception
+        + ", isValueNull=" + isValueNull + '}';
   }
 }

@@ -1,20 +1,17 @@
 /*
  *
- *  Licensed to the Apache Software Foundation (ASF) under one
- *  or more contributor license agreements.  See the NOTICE file
- *  distributed with this work for additional information
- *  regarding copyright ownership.  The ASF licenses this file
- *  to you under the Apache License, Version 2.0 (the
- *  "License"); you may not use this file except in compliance
- *  with the License.  You may obtain a copy of the License at
+ * Licensed to the Apache Software Foundation (ASF) under one or more contributor license
+ * agreements. See the NOTICE file distributed with this work for additional information regarding
+ * copyright ownership. The ASF licenses this file to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the License. You may obtain a
+ * copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  *
  */
 package com.caseystella.stellar.common.shell;
@@ -65,7 +62,7 @@ import static com.caseystella.stellar.common.shell.StellarResult.success;
  */
 public class DefaultStellarShellExecutor implements StellarShellExecutor {
 
-  private static final Logger LOG =  LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+  private static final Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
   public static final String SHELL_VARIABLES = "shellVariables";
 
   /**
@@ -109,11 +106,8 @@ public class DefaultStellarShellExecutor implements StellarShellExecutor {
   private List<StellarExecutionListeners.SpecialDefinedListener> specialListeners;
 
 
-  public DefaultStellarShellExecutor(
-          FunctionResolver functionResolver,
-          Properties properties,
-          Optional<String> zookeeperUrl,
-          List<SpecialCommand> specials) throws Exception {
+  public DefaultStellarShellExecutor(FunctionResolver functionResolver, Properties properties,
+      Optional<String> zookeeperUrl, List<SpecialCommand> specials) throws Exception {
 
     this.functionListeners = new ArrayList<>();
     this.variableListeners = new ArrayList<>();
@@ -125,37 +119,27 @@ public class DefaultStellarShellExecutor implements StellarShellExecutor {
     this.specials = specials;
   }
 
-  public DefaultStellarShellExecutor(
-          FunctionResolver functionResolver,
-          Properties properties,
-          Optional<String> zookeeperUrl) throws Exception {
+  public DefaultStellarShellExecutor(FunctionResolver functionResolver, Properties properties,
+      Optional<String> zookeeperUrl) throws Exception {
 
     this(functionResolver, properties, zookeeperUrl, defaultSpecials());
   }
 
-  public DefaultStellarShellExecutor(
-          Properties properties,
-          Optional<String> zookeeperUrl) throws Exception {
+  public DefaultStellarShellExecutor(Properties properties, Optional<String> zookeeperUrl)
+      throws Exception {
 
     this(StellarFunctions.FUNCTION_RESOLVER(), properties, zookeeperUrl);
   }
 
   /**
    * The default specials that will be made available, if none are specified otherwise.
+   * 
    * @return The default special commands.
    */
   public static List<SpecialCommand> defaultSpecials() {
-    return Arrays.asList(
-            new AssignmentCommand(),
-            new DocCommand(),
-            new QuitCommand(),
-            new Comment(),
-            new MagicListFunctions(),
-            new MagicListVariables(),
-            new MagicDefineGlobal(),
-            new MagicUndefineGlobal(),
-            new MagicListGlobals()
-    );
+    return Arrays.asList(new AssignmentCommand(), new DocCommand(), new QuitCommand(),
+        new Comment(), new MagicListFunctions(), new MagicListVariables(), new MagicDefineGlobal(),
+        new MagicUndefineGlobal(), new MagicListGlobals());
   }
 
   @Override
@@ -163,18 +147,19 @@ public class DefaultStellarShellExecutor implements StellarShellExecutor {
     StellarFunctions.initialize(this.context);
 
     // notify listeners about the available specials
-    for(SpecialCommand command : specials) {
+    for (SpecialCommand command : specials) {
       notifySpecialListeners(command);
     }
 
     // notify listeners about the available functions
-    for(StellarFunctionInfo fn : functionResolver.getFunctionInfo()) {
+    for (StellarFunctionInfo fn : functionResolver.getFunctionInfo()) {
       notifyFunctionListeners(fn);
     }
   }
 
   /**
    * Add a listener that will be notified when a function is defined.
+   * 
    * @param listener The listener to notify.
    */
   @Override
@@ -184,16 +169,18 @@ public class DefaultStellarShellExecutor implements StellarShellExecutor {
 
   /**
    * Notify function listeners that a function has been defined.
+   * 
    * @param functionInfo The function that was defined.
    */
   private void notifyFunctionListeners(StellarFunctionInfo functionInfo) {
-    for(StellarExecutionListeners.FunctionDefinedListener listener : functionListeners) {
+    for (StellarExecutionListeners.FunctionDefinedListener listener : functionListeners) {
       listener.whenFunctionDefined(functionInfo);
     }
   }
 
   /**
    * Add a listener that will be notified when a variable is defined.
+   * 
    * @param listener The listener to notify.
    */
   @Override
@@ -203,17 +190,19 @@ public class DefaultStellarShellExecutor implements StellarShellExecutor {
 
   /**
    * Notify variable listeners that a variable has been (re)defined.
+   * 
    * @param variableName The variable name.
    * @param result The variable result.
    */
   private void notifyVariableListeners(String variableName, VariableResult result) {
-    for(StellarExecutionListeners.VariableDefinedListener listener : variableListeners) {
+    for (StellarExecutionListeners.VariableDefinedListener listener : variableListeners) {
       listener.whenVariableDefined(variableName, result);
     }
   }
 
   /**
    * Add a listener that will be notified when a magic command is defined.
+   * 
    * @param listener The listener to notify.
    */
   @Override
@@ -223,10 +212,11 @@ public class DefaultStellarShellExecutor implements StellarShellExecutor {
 
   /**
    * Notify listeners that a magic command has been defined.
+   * 
    * @param specialCommand The magic command.
    */
   private void notifySpecialListeners(SpecialCommand specialCommand) {
-    for(StellarExecutionListeners.SpecialDefinedListener listener : specialListeners) {
+    for (StellarExecutionListeners.SpecialDefinedListener listener : specialListeners) {
       listener.whenSpecialDefined(specialCommand);
     }
   }
@@ -236,13 +226,13 @@ public class DefaultStellarShellExecutor implements StellarShellExecutor {
 
     // if only whitespace, there is nothing to do
     expression = StringUtils.trimToEmpty(expression);
-    if(StringUtils.isBlank(expression)) {
+    if (StringUtils.isBlank(expression)) {
       return noop();
     }
 
     // is this a special command?
-    for(SpecialCommand command : specials) {
-      if(command.getMatcher().apply(expression)) {
+    for (SpecialCommand command : specials) {
+      if (command.getMatcher().apply(expression)) {
         return command.execute(expression, this);
       }
     }
@@ -252,8 +242,8 @@ public class DefaultStellarShellExecutor implements StellarShellExecutor {
   }
 
   /**
-   * Retrieves the GLOBAL_CONFIG, if it exists.  If it does not, it creates the GLOBAL_CONFIG
-   * and adds it to the Stellar execution context.
+   * Retrieves the GLOBAL_CONFIG, if it exists. If it does not, it creates the GLOBAL_CONFIG and
+   * adds it to the Stellar execution context.
    *
    * @return The global configuration.
    */
@@ -261,7 +251,8 @@ public class DefaultStellarShellExecutor implements StellarShellExecutor {
   @SuppressWarnings("unchecked")
   public Map<String, Object> getGlobalConfig() {
     Map<String, Object> globals;
-    Optional<Object> capability = getContext().getCapability(Context.Capabilities.GLOBAL_CONFIG, false);
+    Optional<Object> capability =
+        getContext().getCapability(Context.Capabilities.GLOBAL_CONFIG, false);
     if (capability.isPresent()) {
       globals = (Map<String, Object>) capability.get();
 
@@ -295,8 +286,8 @@ public class DefaultStellarShellExecutor implements StellarShellExecutor {
   }
 
   /**
-   * Returns all variables that have been defined.  Unlike 'getState' this unwraps
-   * the VariableResult so that we have the actual value.
+   * Returns all variables that have been defined. Unlike 'getState' this unwraps the VariableResult
+   * so that we have the actual value.
    *
    * @return All variables that have been defined.
    */
@@ -311,13 +302,14 @@ public class DefaultStellarShellExecutor implements StellarShellExecutor {
 
   /**
    * Creates a Zookeeper client.
+   * 
    * @param zookeeperUrl The Zookeeper URL.
    */
   private Optional<CuratorFramework> createZookeeperClient(Optional<String> zookeeperUrl) {
     Optional<CuratorFramework> client = Optional.empty();
 
     // can only create client, if have valid zookeeper URL
-    if(zookeeperUrl.isPresent()) {
+    if (zookeeperUrl.isPresent()) {
       String url = zookeeperUrl.get();
       if (StringUtils.isNotBlank(url)) {
 
@@ -333,10 +325,12 @@ public class DefaultStellarShellExecutor implements StellarShellExecutor {
 
   /**
    * Creates a Context initialized with configuration stored in Zookeeper.
+   * 
    * @param properties Properties to configure the context.
    * @param zkClient An optional Zookeeper client.
    */
-  private Context createContext(Properties properties, Optional<CuratorFramework> zkClient) throws Exception {
+  private Context createContext(Properties properties, Optional<CuratorFramework> zkClient)
+      throws Exception {
 
     Context.Builder contextBuilder = new Context.Builder();
     Map<String, Object> globals;
@@ -354,22 +348,22 @@ public class DefaultStellarShellExecutor implements StellarShellExecutor {
       globals = new HashMap<>();
     }
 
-    return contextBuilder
-            .with(SHELL_VARIABLES, () -> variables)
-            .with(Context.Capabilities.GLOBAL_CONFIG, () -> globals)
-            .with(Context.Capabilities.STELLAR_CONFIG, () -> getStellarConfig(globals, properties))
-            .build();
+    return contextBuilder.with(SHELL_VARIABLES, () -> variables)
+        .with(Context.Capabilities.GLOBAL_CONFIG, () -> globals)
+        .with(Context.Capabilities.STELLAR_CONFIG, () -> getStellarConfig(globals, properties))
+        .build();
   }
 
   /**
    * Fetches the global configuration from Zookeeper.
+   * 
    * @param zkClient The Zookeeper client.
    * @return The global configuration retrieved from Zookeeper.
    * @throws Exception
    */
   private Map<String, Object> fetchGlobalConfig(CuratorFramework zkClient) throws Exception {
     byte[] raw = readGlobalConfigBytesFromZookeeper(zkClient);
-    return JSONUtils.INSTANCE.load( new ByteArrayInputStream(raw), JSONUtils.MAP_SUPPLIER);
+    return JSONUtils.INSTANCE.load(new ByteArrayInputStream(raw), JSONUtils.MAP_SUPPLIER);
   }
 
   /**
@@ -380,7 +374,7 @@ public class DefaultStellarShellExecutor implements StellarShellExecutor {
   private Map<String, Object> getStellarConfig(Map<String, Object> globalConfig, Properties props) {
     Map<String, Object> stellarConfig = new HashMap<>();
     stellarConfig.putAll(globalConfig);
-    if(props != null) {
+    if (props != null) {
       for (Map.Entry<Object, Object> kv : props.entrySet()) {
         stellarConfig.put(kv.getKey().toString(), kv.getValue());
       }
@@ -390,6 +384,7 @@ public class DefaultStellarShellExecutor implements StellarShellExecutor {
 
   /**
    * Executes Stellar expressions.
+   * 
    * @param expression The expression to execute.
    */
   private StellarResult executeStellar(String expression) {
@@ -398,7 +393,8 @@ public class DefaultStellarShellExecutor implements StellarShellExecutor {
     try {
       // execute the stellar expression
       VariableResolver variableResolver = new MapVariableResolver(getVariables());
-      Object exprResult = new StellarProcessor().parse(expression, variableResolver, functionResolver, context);
+      Object exprResult =
+          new StellarProcessor().parse(expression, variableResolver, functionResolver, context);
       result = success(exprResult);
 
     } catch (Throwable t) {

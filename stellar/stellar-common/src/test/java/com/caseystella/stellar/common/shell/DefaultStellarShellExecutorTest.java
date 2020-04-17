@@ -1,20 +1,17 @@
 /*
  *
- *  Licensed to the Apache Software Foundation (ASF) under one
- *  or more contributor license agreements.  See the NOTICE file
- *  distributed with this work for additional information
- *  regarding copyright ownership.  The ASF licenses this file
- *  to you under the Apache License, Version 2.0 (the
- *  "License"); you may not use this file except in compliance
- *  with the License.  You may obtain a copy of the License at
+ * Licensed to the Apache Software Foundation (ASF) under one or more contributor license
+ * agreements. See the NOTICE file distributed with this work for additional information regarding
+ * copyright ownership. The ASF licenses this file to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the License. You may obtain a
+ * copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  *
  */
 package com.caseystella.stellar.common.shell;
@@ -76,7 +73,7 @@ public class DefaultStellarShellExecutorTest {
   @Test
   @SuppressWarnings("unchecked")
   public void testAssignmentOfLists() {
-    List<Integer> expected = Arrays.asList(1,2,3,4,5);
+    List<Integer> expected = Arrays.asList(1, 2, 3, 4, 5);
 
     // assign a list to a variable
     StellarResult result = executor.execute("x := [1,2,3,4,5]");
@@ -94,10 +91,8 @@ public class DefaultStellarShellExecutorTest {
   @Test
   @SuppressWarnings("unchecked")
   public void testAssignmentOfMaps() {
-    Map<String, Integer> expected = ImmutableMap.<String, Integer>builder()
-            .put("a", 10)
-            .put("b", 20)
-            .build();
+    Map<String, Integer> expected =
+        ImmutableMap.<String, Integer>builder().put("a", 10).put("b", 20).build();
 
     // assign a list to a variable
     StellarResult result = executor.execute("x := {'a':10, 'b':20}");
@@ -291,8 +286,8 @@ public class DefaultStellarShellExecutorTest {
 
   /**
    * If the executor is initialized without a connection to Zookeeper, the globals should be
-   * defined, but empty.  This allows a user to '%define' their own with magic commands even
-   * without Zookeeper.
+   * defined, but empty. This allows a user to '%define' their own with magic commands even without
+   * Zookeeper.
    */
   @Test
   public void testEmptyGlobalsWithNoZookeeper() {

@@ -1,19 +1,16 @@
 /*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
+ * Licensed to the Apache Software Foundation (ASF) under one or more contributor license
+ * agreements. See the NOTICE file distributed with this work for additional information regarding
+ * copyright ownership. The ASF licenses this file to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the License. You may obtain a
+ * copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  */
 package com.caseystella.stellar.common.shell.cli;
 
@@ -64,7 +61,8 @@ public class StellarShellTest {
   }
 
   /**
-   * @return The data written to stdout during the test (with newlines stripped out to simplify comparisons.)
+   * @return The data written to stdout during the test (with newlines stripped out to simplify
+   *         comparisons.)
    */
   private String stdout() {
     return out.toString().replace(System.lineSeparator(), "");
@@ -134,8 +132,8 @@ public class StellarShellTest {
   }
 
   /**
-   * The REPL should handle if no value is returned.  Some Stellar expressions
-   * will result in no value.
+   * The REPL should handle if no value is returned. Some Stellar expressions will result in no
+   * value.
    */
   @Test
   public void testExecuteNoop() throws Exception {
@@ -188,7 +186,7 @@ public class StellarShellTest {
     assertTrue(candidates.size() > 0);
 
     // validate each candidate
-    for(String candidate: candidates) {
+    for (String candidate : candidates) {
       String completion = buffer + candidate;
 
       // the auto-complete should include an open paren
@@ -196,7 +194,8 @@ public class StellarShellTest {
 
       // the candidate should be a valid, defined function
       String function = completion.substring(0, completion.length() - 1);
-      Iterable<String> allFunctions = stellarShell.getExecutor().getFunctionResolver().getFunctions();
+      Iterable<String> allFunctions =
+          stellarShell.getExecutor().getFunctionResolver().getFunctions();
       String definedFunction = Iterables.find(allFunctions, (fn) -> fn.equals(function));
       assertEquals(function, definedFunction);
     }

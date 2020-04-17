@@ -15,7 +15,7 @@ public class FloatType implements NumberType<Float> {
 
   @Override
   public Float minValue() {
-    return -1*Float.MAX_VALUE;
+    return -1 * Float.MAX_VALUE;
   }
 
   @Override

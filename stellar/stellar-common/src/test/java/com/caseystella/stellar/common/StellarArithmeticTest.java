@@ -1,19 +1,16 @@
 /*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
+ * Licensed to the Apache Software Foundation (ASF) under one or more contributor license
+ * agreements. See the NOTICE file distributed with this work for additional information regarding
+ * copyright ownership. The ASF licenses this file to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the License. You may obtain a
+ * copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  */
 
 package com.caseystella.stellar.common;
@@ -73,8 +70,10 @@ public class StellarArithmeticTest {
     Assertions.assertEquals(3.2, StellarProcessorUtils.run("1.2 + 2", new HashMap<>()));
     Assertions.assertEquals(1.2e-3 + 2, StellarProcessorUtils.run("1.2e-3 + 2", new HashMap<>()));
     Assertions.assertEquals(1.2f + 3.7, StellarProcessorUtils.run("1.2f + 3.7", new HashMap<>()));
-    Assertions.assertEquals(12L * (1.2f + 7), StellarProcessorUtils.run("12L*(1.2f + 7)", new HashMap<>()));
-    Assertions.assertEquals(12.2f * (1.2f + 7L), StellarProcessorUtils.run("TO_FLOAT(12.2) * (1.2f + 7L)", new HashMap<>()));
+    Assertions.assertEquals(12L * (1.2f + 7),
+        StellarProcessorUtils.run("12L*(1.2f + 7)", new HashMap<>()));
+    Assertions.assertEquals(12.2f * (1.2f + 7L),
+        StellarProcessorUtils.run("TO_FLOAT(12.2) * (1.2f + 7L)", new HashMap<>()));
   }
 
   @Test
@@ -93,27 +92,33 @@ public class StellarArithmeticTest {
     }
     {
       String query = "2*(1 + 2 + 3 - 4)";
-      assertEquals(4, (Integer) StellarProcessorUtils.run(query, ImmutableMap.of("one", 1, "very_nearly_one", 1.000001)), 1e-6);
+      assertEquals(4, (Integer) StellarProcessorUtils.run(query,
+          ImmutableMap.of("one", 1, "very_nearly_one", 1.000001)), 1e-6);
     }
     {
       String query = "1 + 2 + 3 - 4 - 2";
-      assertEquals(0, (Integer) StellarProcessorUtils.run(query, ImmutableMap.of("one", 1, "very_nearly_one", 1.000001)), 1e-6);
+      assertEquals(0, (Integer) StellarProcessorUtils.run(query,
+          ImmutableMap.of("one", 1, "very_nearly_one", 1.000001)), 1e-6);
     }
     {
       String query = "1 + 2 + 3 + 4";
-      assertEquals(10, (Integer) StellarProcessorUtils.run(query, ImmutableMap.of("one", 1, "very_nearly_one", 1.000001)), 1e-6);
+      assertEquals(10, (Integer) StellarProcessorUtils.run(query,
+          ImmutableMap.of("one", 1, "very_nearly_one", 1.000001)), 1e-6);
     }
     {
       String query = "(one + 2)*3";
-      assertEquals(9, (Integer) StellarProcessorUtils.run(query, ImmutableMap.of("one", 1, "very_nearly_one", 1.000001)), 1e-6);
+      assertEquals(9, (Integer) StellarProcessorUtils.run(query,
+          ImmutableMap.of("one", 1, "very_nearly_one", 1.000001)), 1e-6);
     }
     {
       String query = "TO_INTEGER((one + 2)*3.5)";
-      assertEquals(10, (Integer) StellarProcessorUtils.run(query, ImmutableMap.of("one", 1, "very_nearly_one", 1.000001)), 1e-6);
+      assertEquals(10, (Integer) StellarProcessorUtils.run(query,
+          ImmutableMap.of("one", 1, "very_nearly_one", 1.000001)), 1e-6);
     }
     {
       String query = "1 + 2*3";
-      assertEquals(7, (Integer) StellarProcessorUtils.run(query, ImmutableMap.of("one", 1, "very_nearly_one", 1.000001)), 1e-6);
+      assertEquals(7, (Integer) StellarProcessorUtils.run(query,
+          ImmutableMap.of("one", 1, "very_nearly_one", 1.000001)), 1e-6);
     }
     {
       String query = "TO_LONG(foo)";
@@ -121,11 +126,13 @@ public class StellarArithmeticTest {
     }
     {
       String query = "TO_LONG(foo)";
-      Assertions.assertEquals(232321L, StellarProcessorUtils.run(query, ImmutableMap.of("foo", "00232321")));
+      Assertions.assertEquals(232321L,
+          StellarProcessorUtils.run(query, ImmutableMap.of("foo", "00232321")));
     }
     {
       String query = "TO_LONG(foo)";
-      Assertions.assertEquals(Long.MAX_VALUE, StellarProcessorUtils.run(query, ImmutableMap.of("foo", Long.toString(Long.MAX_VALUE))));
+      Assertions.assertEquals(Long.MAX_VALUE,
+          StellarProcessorUtils.run(query, ImmutableMap.of("foo", Long.toString(Long.MAX_VALUE))));
     }
   }
 
@@ -144,33 +151,43 @@ public class StellarArithmeticTest {
     when(flt.getValue()).thenReturn(1.0F);
 
     Map<Pair<String, String>, Class<? extends Number>> expectedReturnTypeMappings =
-        new HashMap<Pair<String, String>, Class<? extends Number>>() {{
-          put(Pair.of("TO_FLOAT(3.0)", "TO_LONG(1)"), Float.class);
-          put(Pair.of("TO_FLOAT(3)", "3.0"), Double.class);
-          put(Pair.of("TO_FLOAT(3)", "TO_FLOAT(3)"), Float.class);
-          put(Pair.of("TO_FLOAT(3)", "3"), Float.class);
+        new HashMap<Pair<String, String>, Class<? extends Number>>() {
+          {
+            put(Pair.of("TO_FLOAT(3.0)", "TO_LONG(1)"), Float.class);
+            put(Pair.of("TO_FLOAT(3)", "3.0"), Double.class);
+            put(Pair.of("TO_FLOAT(3)", "TO_FLOAT(3)"), Float.class);
+            put(Pair.of("TO_FLOAT(3)", "3"), Float.class);
 
-          put(Pair.of("TO_LONG(1)", "TO_LONG(1)"), Long.class);
-          put(Pair.of("TO_LONG(1)", "3.0"), Double.class);
-          put(Pair.of("TO_LONG(1)", "TO_FLOAT(3)"), Float.class);
-          put(Pair.of("TO_LONG(1)", "3"), Long.class);
+            put(Pair.of("TO_LONG(1)", "TO_LONG(1)"), Long.class);
+            put(Pair.of("TO_LONG(1)", "3.0"), Double.class);
+            put(Pair.of("TO_LONG(1)", "TO_FLOAT(3)"), Float.class);
+            put(Pair.of("TO_LONG(1)", "3"), Long.class);
 
-          put(Pair.of("3.0", "TO_LONG(1)"), Double.class);
-          put(Pair.of("3.0", "3.0"), Double.class);
-          put(Pair.of("3.0", "TO_FLOAT(3)"), Double.class);
-          put(Pair.of("3.0", "3"), Double.class);
+            put(Pair.of("3.0", "TO_LONG(1)"), Double.class);
+            put(Pair.of("3.0", "3.0"), Double.class);
+            put(Pair.of("3.0", "TO_FLOAT(3)"), Double.class);
+            put(Pair.of("3.0", "3"), Double.class);
 
-          put(Pair.of("3", "TO_LONG(1)"), Long.class);
-          put(Pair.of("3", "3.0"), Double.class);
-          put(Pair.of("3", "TO_FLOAT(3)"), Float.class);
-          put(Pair.of("3", "3"), Integer.class);
-        }};
+            put(Pair.of("3", "TO_LONG(1)"), Long.class);
+            put(Pair.of("3", "3.0"), Double.class);
+            put(Pair.of("3", "TO_FLOAT(3)"), Float.class);
+            put(Pair.of("3", "3"), Integer.class);
+          }
+        };
 
     expectedReturnTypeMappings.forEach((pair, expectedClass) -> {
-      assertTrue(StellarProcessorUtils.run(pair.getLeft() + " * " + pair.getRight(), ImmutableMap.of()).getClass() == expectedClass);
-      assertTrue(StellarProcessorUtils.run(pair.getLeft() + " + " + pair.getRight(), ImmutableMap.of()).getClass() == expectedClass);
-      assertTrue(StellarProcessorUtils.run(pair.getLeft() + " - " + pair.getRight(), ImmutableMap.of()).getClass() == expectedClass);
-      assertTrue(StellarProcessorUtils.run(pair.getLeft() + " / " + pair.getRight(), ImmutableMap.of()).getClass() == expectedClass);
+      assertTrue(
+          StellarProcessorUtils.run(pair.getLeft() + " * " + pair.getRight(), ImmutableMap.of())
+              .getClass() == expectedClass);
+      assertTrue(
+          StellarProcessorUtils.run(pair.getLeft() + " + " + pair.getRight(), ImmutableMap.of())
+              .getClass() == expectedClass);
+      assertTrue(
+          StellarProcessorUtils.run(pair.getLeft() + " - " + pair.getRight(), ImmutableMap.of())
+              .getClass() == expectedClass);
+      assertTrue(
+          StellarProcessorUtils.run(pair.getLeft() + " / " + pair.getRight(), ImmutableMap.of())
+              .getClass() == expectedClass);
     });
   }
 
@@ -199,101 +216,151 @@ public class StellarArithmeticTest {
     Assertions.assertEquals(0L * 1L, StellarProcessorUtils.run("0L * 1L", ImmutableMap.of()));
     Assertions.assertEquals(0l / 1L, StellarProcessorUtils.run("0l / 1L", ImmutableMap.of()));
     Assertions.assertEquals(1L - 1l, StellarProcessorUtils.run("1L - 1l", ImmutableMap.of()));
-    Assertions.assertEquals(2147483648L + 1L, StellarProcessorUtils.run("2147483648L + 1L", ImmutableMap.of()));
+    Assertions.assertEquals(2147483648L + 1L,
+        StellarProcessorUtils.run("2147483648L + 1L", ImmutableMap.of()));
   }
 
   @SuppressWarnings("NumericOverflow")
   @Test
   public void checkInterestingCases() {
-    Assertions.assertEquals((((((1L) + .5d)))) * 6.f, StellarProcessorUtils.run("(((((1L) + .5d)))) * 6.f", ImmutableMap.of()));
-    Assertions.assertEquals((((((1L) + .5d)))) * 6.f / 0.f, StellarProcessorUtils.run("(((((1L) + .5d)))) * 6.f / 0.f", ImmutableMap.of()));
-    Assertions.assertEquals(Double.class, StellarProcessorUtils.run("(((((1L) + .5d)))) * 6.f / 0.f", ImmutableMap.of()).getClass());
+    Assertions.assertEquals((((((1L) + .5d)))) * 6.f,
+        StellarProcessorUtils.run("(((((1L) + .5d)))) * 6.f", ImmutableMap.of()));
+    Assertions.assertEquals((((((1L) + .5d)))) * 6.f / 0.f,
+        StellarProcessorUtils.run("(((((1L) + .5d)))) * 6.f / 0.f", ImmutableMap.of()));
+    Assertions.assertEquals(Double.class,
+        StellarProcessorUtils.run("(((((1L) + .5d)))) * 6.f / 0.f", ImmutableMap.of()).getClass());
   }
 
   @Test
   public void makeSureStellarProperlyEvaluatesLiteralsToExpectedTypes() {
     {
-      Assertions.assertEquals(Float.class, StellarProcessorUtils.run("6.f", ImmutableMap.of()).getClass());
-      Assertions.assertEquals(Float.class, StellarProcessorUtils.run(".0f", ImmutableMap.of()).getClass());
-      Assertions.assertEquals(Float.class, StellarProcessorUtils.run("6.0F", ImmutableMap.of()).getClass());
-      Assertions.assertEquals(Float.class, StellarProcessorUtils.run("6f", ImmutableMap.of()).getClass());
-      Assertions.assertEquals(Float.class, StellarProcessorUtils.run("6e-6f", ImmutableMap.of()).getClass());
-      Assertions.assertEquals(Float.class, StellarProcessorUtils.run("6e+6f", ImmutableMap.of()).getClass());
-      Assertions.assertEquals(Float.class, StellarProcessorUtils.run("6e6f", ImmutableMap.of()).getClass());
-      Assertions.assertEquals(Float.class, StellarProcessorUtils.run("TO_FLOAT(1231)", ImmutableMap.of()).getClass());
-      Assertions.assertEquals(Float.class, StellarProcessorUtils.run("TO_FLOAT(12.31)", ImmutableMap.of()).getClass());
-      Assertions.assertEquals(Float.class, StellarProcessorUtils.run("TO_FLOAT(12.31f)", ImmutableMap.of()).getClass());
-      Assertions.assertEquals(Float.class, StellarProcessorUtils.run("TO_FLOAT(12L)", ImmutableMap.of()).getClass());
+      Assertions.assertEquals(Float.class,
+          StellarProcessorUtils.run("6.f", ImmutableMap.of()).getClass());
+      Assertions.assertEquals(Float.class,
+          StellarProcessorUtils.run(".0f", ImmutableMap.of()).getClass());
+      Assertions.assertEquals(Float.class,
+          StellarProcessorUtils.run("6.0F", ImmutableMap.of()).getClass());
+      Assertions.assertEquals(Float.class,
+          StellarProcessorUtils.run("6f", ImmutableMap.of()).getClass());
+      Assertions.assertEquals(Float.class,
+          StellarProcessorUtils.run("6e-6f", ImmutableMap.of()).getClass());
+      Assertions.assertEquals(Float.class,
+          StellarProcessorUtils.run("6e+6f", ImmutableMap.of()).getClass());
+      Assertions.assertEquals(Float.class,
+          StellarProcessorUtils.run("6e6f", ImmutableMap.of()).getClass());
+      Assertions.assertEquals(Float.class,
+          StellarProcessorUtils.run("TO_FLOAT(1231)", ImmutableMap.of()).getClass());
+      Assertions.assertEquals(Float.class,
+          StellarProcessorUtils.run("TO_FLOAT(12.31)", ImmutableMap.of()).getClass());
+      Assertions.assertEquals(Float.class,
+          StellarProcessorUtils.run("TO_FLOAT(12.31f)", ImmutableMap.of()).getClass());
+      Assertions.assertEquals(Float.class,
+          StellarProcessorUtils.run("TO_FLOAT(12L)", ImmutableMap.of()).getClass());
     }
     {
-      Assertions.assertEquals(Double.class, StellarProcessorUtils.run("6.d", ImmutableMap.of()).getClass());
-      Assertions.assertEquals(Double.class, StellarProcessorUtils.run("6.D", ImmutableMap.of()).getClass());
-      Assertions.assertEquals(Double.class, StellarProcessorUtils.run("6.0d", ImmutableMap.of()).getClass());
-      Assertions.assertEquals(Double.class, StellarProcessorUtils.run("6D", ImmutableMap.of()).getClass());
-      Assertions.assertEquals(Double.class, StellarProcessorUtils.run("6e5D", ImmutableMap.of()).getClass());
-      Assertions.assertEquals(Double.class, StellarProcessorUtils.run("6e-5D", ImmutableMap.of()).getClass());
-      Assertions.assertEquals(Double.class, StellarProcessorUtils.run("6e+5D", ImmutableMap.of()).getClass());
-      Assertions.assertEquals(Double.class, StellarProcessorUtils.run("TO_DOUBLE(1231)", ImmutableMap.of()).getClass());
-      Assertions.assertEquals(Double.class, StellarProcessorUtils.run("TO_DOUBLE(12.31)", ImmutableMap.of()).getClass());
-      Assertions.assertEquals(Double.class, StellarProcessorUtils.run("TO_DOUBLE(12.31f)", ImmutableMap.of()).getClass());
-      Assertions.assertEquals(Double.class, StellarProcessorUtils.run("TO_DOUBLE(12L)", ImmutableMap.of()).getClass());
+      Assertions.assertEquals(Double.class,
+          StellarProcessorUtils.run("6.d", ImmutableMap.of()).getClass());
+      Assertions.assertEquals(Double.class,
+          StellarProcessorUtils.run("6.D", ImmutableMap.of()).getClass());
+      Assertions.assertEquals(Double.class,
+          StellarProcessorUtils.run("6.0d", ImmutableMap.of()).getClass());
+      Assertions.assertEquals(Double.class,
+          StellarProcessorUtils.run("6D", ImmutableMap.of()).getClass());
+      Assertions.assertEquals(Double.class,
+          StellarProcessorUtils.run("6e5D", ImmutableMap.of()).getClass());
+      Assertions.assertEquals(Double.class,
+          StellarProcessorUtils.run("6e-5D", ImmutableMap.of()).getClass());
+      Assertions.assertEquals(Double.class,
+          StellarProcessorUtils.run("6e+5D", ImmutableMap.of()).getClass());
+      Assertions.assertEquals(Double.class,
+          StellarProcessorUtils.run("TO_DOUBLE(1231)", ImmutableMap.of()).getClass());
+      Assertions.assertEquals(Double.class,
+          StellarProcessorUtils.run("TO_DOUBLE(12.31)", ImmutableMap.of()).getClass());
+      Assertions.assertEquals(Double.class,
+          StellarProcessorUtils.run("TO_DOUBLE(12.31f)", ImmutableMap.of()).getClass());
+      Assertions.assertEquals(Double.class,
+          StellarProcessorUtils.run("TO_DOUBLE(12L)", ImmutableMap.of()).getClass());
     }
     {
-      Assertions.assertEquals(Integer.class, StellarProcessorUtils.run("6", ImmutableMap.of()).getClass());
-      Assertions.assertEquals(Integer.class, StellarProcessorUtils.run("60000000", ImmutableMap.of()).getClass());
-      Assertions.assertEquals(Integer.class, StellarProcessorUtils.run("-0", ImmutableMap.of()).getClass());
-      Assertions.assertEquals(Integer.class, StellarProcessorUtils.run("-60000000", ImmutableMap.of()).getClass());
-      Assertions.assertEquals(Integer.class, StellarProcessorUtils.run("TO_INTEGER(1231)", ImmutableMap.of()).getClass());
-      Assertions.assertEquals(Integer.class, StellarProcessorUtils.run("TO_INTEGER(12.31)", ImmutableMap.of()).getClass());
-      Assertions.assertEquals(Integer.class, StellarProcessorUtils.run("TO_INTEGER(12.31f)", ImmutableMap.of()).getClass());
-      Assertions.assertEquals(Integer.class, StellarProcessorUtils.run("TO_INTEGER(12L)", ImmutableMap.of()).getClass());
+      Assertions.assertEquals(Integer.class,
+          StellarProcessorUtils.run("6", ImmutableMap.of()).getClass());
+      Assertions.assertEquals(Integer.class,
+          StellarProcessorUtils.run("60000000", ImmutableMap.of()).getClass());
+      Assertions.assertEquals(Integer.class,
+          StellarProcessorUtils.run("-0", ImmutableMap.of()).getClass());
+      Assertions.assertEquals(Integer.class,
+          StellarProcessorUtils.run("-60000000", ImmutableMap.of()).getClass());
+      Assertions.assertEquals(Integer.class,
+          StellarProcessorUtils.run("TO_INTEGER(1231)", ImmutableMap.of()).getClass());
+      Assertions.assertEquals(Integer.class,
+          StellarProcessorUtils.run("TO_INTEGER(12.31)", ImmutableMap.of()).getClass());
+      Assertions.assertEquals(Integer.class,
+          StellarProcessorUtils.run("TO_INTEGER(12.31f)", ImmutableMap.of()).getClass());
+      Assertions.assertEquals(Integer.class,
+          StellarProcessorUtils.run("TO_INTEGER(12L)", ImmutableMap.of()).getClass());
     }
     {
-      Assertions.assertEquals(Long.class, StellarProcessorUtils.run("12345678910l", ImmutableMap.of()).getClass());
-      Assertions.assertEquals(Long.class, StellarProcessorUtils.run("0l", ImmutableMap.of()).getClass());
-      Assertions.assertEquals(Long.class, StellarProcessorUtils.run("-0l", ImmutableMap.of()).getClass());
-      Assertions.assertEquals(Long.class, StellarProcessorUtils.run("-60000000L", ImmutableMap.of()).getClass());
-      Assertions.assertEquals(Long.class, StellarProcessorUtils.run("-60000000L", ImmutableMap.of()).getClass());
-      Assertions.assertEquals(Long.class, StellarProcessorUtils.run("TO_LONG(1231)", ImmutableMap.of()).getClass());
-      Assertions.assertEquals(Long.class, StellarProcessorUtils.run("TO_LONG(12.31)", ImmutableMap.of()).getClass());
-      Assertions.assertEquals(Long.class, StellarProcessorUtils.run("TO_LONG(12.31f)", ImmutableMap.of()).getClass());
-      Assertions.assertEquals(Long.class, StellarProcessorUtils.run("TO_LONG(12L)", ImmutableMap.of()).getClass());
+      Assertions.assertEquals(Long.class,
+          StellarProcessorUtils.run("12345678910l", ImmutableMap.of()).getClass());
+      Assertions.assertEquals(Long.class,
+          StellarProcessorUtils.run("0l", ImmutableMap.of()).getClass());
+      Assertions.assertEquals(Long.class,
+          StellarProcessorUtils.run("-0l", ImmutableMap.of()).getClass());
+      Assertions.assertEquals(Long.class,
+          StellarProcessorUtils.run("-60000000L", ImmutableMap.of()).getClass());
+      Assertions.assertEquals(Long.class,
+          StellarProcessorUtils.run("-60000000L", ImmutableMap.of()).getClass());
+      Assertions.assertEquals(Long.class,
+          StellarProcessorUtils.run("TO_LONG(1231)", ImmutableMap.of()).getClass());
+      Assertions.assertEquals(Long.class,
+          StellarProcessorUtils.run("TO_LONG(12.31)", ImmutableMap.of()).getClass());
+      Assertions.assertEquals(Long.class,
+          StellarProcessorUtils.run("TO_LONG(12.31f)", ImmutableMap.of()).getClass());
+      Assertions.assertEquals(Long.class,
+          StellarProcessorUtils.run("TO_LONG(12L)", ImmutableMap.of()).getClass());
     }
   }
 
   @Test
   public void parseExceptionMultipleLeadingZerosOnInteger() {
-    assertThrows(ParseException.class, () -> StellarProcessorUtils.run("000000", ImmutableMap.of()));
+    assertThrows(ParseException.class,
+        () -> StellarProcessorUtils.run("000000", ImmutableMap.of()));
   }
 
   @Test
   public void parseExceptionMultipleLeadingZerosOnLong() {
-    assertThrows(ParseException.class, () -> StellarProcessorUtils.run("000000l", ImmutableMap.of()));
+    assertThrows(ParseException.class,
+        () -> StellarProcessorUtils.run("000000l", ImmutableMap.of()));
   }
 
   @Test
   public void parseExceptionMultipleLeadingZerosOnDouble() {
-    assertThrows(ParseException.class, () -> StellarProcessorUtils.run("000000d", ImmutableMap.of()));
+    assertThrows(ParseException.class,
+        () -> StellarProcessorUtils.run("000000d", ImmutableMap.of()));
   }
 
   @Test
   public void parseExceptionMultipleLeadingZerosOnFloat() {
-    assertThrows(ParseException.class, () -> StellarProcessorUtils.run("000000f", ImmutableMap.of()));
+    assertThrows(ParseException.class,
+        () -> StellarProcessorUtils.run("000000f", ImmutableMap.of()));
   }
 
   @Test
   public void parseExceptionMultipleLeadingNegativeSignsFloat() {
-    assertThrows(ParseException.class, () -> StellarProcessorUtils.run("--000000f", ImmutableMap.of()));
+    assertThrows(ParseException.class,
+        () -> StellarProcessorUtils.run("--000000f", ImmutableMap.of()));
   }
 
   @Test
   public void parseExceptionMultipleLeadingNegativeSignsDouble() {
-    assertThrows(ParseException.class, () -> StellarProcessorUtils.run("--000000D", ImmutableMap.of()));
+    assertThrows(ParseException.class,
+        () -> StellarProcessorUtils.run("--000000D", ImmutableMap.of()));
   }
 
   @Test
   public void parseExceptionMultipleLeadingNegativeSignsLong() {
-    assertThrows(ParseException.class, () -> StellarProcessorUtils.run("--000000L", ImmutableMap.of()));
+    assertThrows(ParseException.class,
+        () -> StellarProcessorUtils.run("--000000L", ImmutableMap.of()));
   }
 
   @Test
@@ -308,13 +375,13 @@ public class StellarArithmeticTest {
 
   @Test
   public void ableToDivideByZero() {
-    Assertions.assertEquals(0F/0F, StellarProcessorUtils.run("0F/0F", ImmutableMap.of()));
-    Assertions.assertEquals(0D/0D, StellarProcessorUtils.run("0D/0D", ImmutableMap.of()));
-    Assertions.assertEquals(0D/0F, StellarProcessorUtils.run("0D/0F", ImmutableMap.of()));
-    Assertions.assertEquals(0F/0D, StellarProcessorUtils.run("0F/0D", ImmutableMap.of()));
-    Assertions.assertEquals(0F/0, StellarProcessorUtils.run("0F/0", ImmutableMap.of()));
-    Assertions.assertEquals(0D/0, StellarProcessorUtils.run("0D/0", ImmutableMap.of()));
-    Assertions.assertEquals(0/0D, StellarProcessorUtils.run("0/0D", ImmutableMap.of()));
-    Assertions.assertEquals(0/0F, StellarProcessorUtils.run("0/0F", ImmutableMap.of()));
+    Assertions.assertEquals(0F / 0F, StellarProcessorUtils.run("0F/0F", ImmutableMap.of()));
+    Assertions.assertEquals(0D / 0D, StellarProcessorUtils.run("0D/0D", ImmutableMap.of()));
+    Assertions.assertEquals(0D / 0F, StellarProcessorUtils.run("0D/0F", ImmutableMap.of()));
+    Assertions.assertEquals(0F / 0D, StellarProcessorUtils.run("0F/0D", ImmutableMap.of()));
+    Assertions.assertEquals(0F / 0, StellarProcessorUtils.run("0F/0", ImmutableMap.of()));
+    Assertions.assertEquals(0D / 0, StellarProcessorUtils.run("0D/0", ImmutableMap.of()));
+    Assertions.assertEquals(0 / 0D, StellarProcessorUtils.run("0/0D", ImmutableMap.of()));
+    Assertions.assertEquals(0 / 0F, StellarProcessorUtils.run("0/0F", ImmutableMap.of()));
   }
 }

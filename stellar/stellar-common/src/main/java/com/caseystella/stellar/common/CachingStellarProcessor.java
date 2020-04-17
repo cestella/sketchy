@@ -1,19 +1,16 @@
 /**
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
+ * Licensed to the Apache Software Foundation (ASF) under one or more contributor license
+ * agreements. See the NOTICE file distributed with this work for additional information regarding
+ * copyright ownership. The ASF licenses this file to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the License. You may obtain a
+ * copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  */
 package com.caseystella.stellar.common;
 
@@ -36,13 +33,15 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
- * The Caching Stellar Processor is a stellar processor that optionally fronts stellar with an expression-by-expression
- * LFU cache.
+ * The Caching Stellar Processor is a stellar processor that optionally fronts stellar with an
+ * expression-by-expression LFU cache.
  */
 public class CachingStellarProcessor extends StellarProcessor {
 
-  private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
-  private static ThreadLocal<Map<String, Set<String>> > variableCache = ThreadLocal.withInitial(() -> new HashMap<>());
+  private static final org.slf4j.Logger LOG =
+      LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+  private static ThreadLocal<Map<String, Set<String>>> variableCache =
+      ThreadLocal.withInitial(() -> new HashMap<>());
 
   /**
    * A property that defines the maximum cache size.
@@ -98,26 +97,19 @@ public class CachingStellarProcessor extends StellarProcessor {
       }
 
       Key key = (Key) o;
-      return new EqualsBuilder()
-              .append(expression, key.expression)
-              .append(input, key.input)
-              .isEquals();
+      return new EqualsBuilder().append(expression, key.expression).append(input, key.input)
+          .isEquals();
     }
 
     @Override
     public int hashCode() {
-      return new HashCodeBuilder(17, 37)
-              .append(expression)
-              .append(input)
-              .toHashCode();
+      return new HashCodeBuilder(17, 37).append(expression).append(input).toHashCode();
     }
 
     @Override
     public String toString() {
-      return new ToStringBuilder(this)
-              .append("expression", expression)
-              .append("input", input)
-              .toString();
+      return new ToStringBuilder(this).append("expression", expression).append("input", input)
+          .toString();
     }
   }
 
@@ -127,27 +119,25 @@ public class CachingStellarProcessor extends StellarProcessor {
    *
    * @param expression The Stellar expression to parse and evaluate.
    * @param variableResolver The {@link VariableResolver} to determine values of variables used in
-   *     the Stellar expression, {@code expression}.
+   *        the Stellar expression, {@code expression}.
    * @param functionResolver The {@link FunctionResolver} to determine values of functions used in
-   *     the Stellar expression, {@code expression}.
+   *        the Stellar expression, {@code expression}.
    * @param context The context used during validation.
    * @return The value of the evaluated Stellar expression, {@code expression}.
    */
   @Override
   @SuppressWarnings("unchecked")
-  public Object parse(
-      String expression,
-      VariableResolver variableResolver,
-      FunctionResolver functionResolver,
-      Context context) {
+  public Object parse(String expression, VariableResolver variableResolver,
+      FunctionResolver functionResolver, Context context) {
 
     Optional<Object> cacheOpt = context.getCapability(Context.Capabilities.CACHE, false);
-    if(cacheOpt.isPresent()) {
+    if (cacheOpt.isPresent()) {
 
       // use the cache
       Cache<Key, Object> cache = (Cache<Key, Object>) cacheOpt.get();
       Key k = toKey(expression, variableResolver);
-      return cache.get(k, x -> parseUncached(x.expression, variableResolver, functionResolver, context));
+      return cache.get(k,
+          x -> parseUncached(x.expression, variableResolver, functionResolver, context));
 
     } else {
 
@@ -156,7 +146,8 @@ public class CachingStellarProcessor extends StellarProcessor {
     }
   }
 
-  protected Object parseUncached(String expression, VariableResolver variableResolver, FunctionResolver functionResolver, Context context) {
+  protected Object parseUncached(String expression, VariableResolver variableResolver,
+      FunctionResolver functionResolver, Context context) {
     LOG.debug("Executing Stellar; expression={}", expression);
     return super.parse(expression, variableResolver, functionResolver, context);
   }
@@ -171,11 +162,12 @@ public class CachingStellarProcessor extends StellarProcessor {
   protected Key toKey(String expression, VariableResolver resolver) {
 
     // fetch only the variables used in the expression
-    Set<String> variablesUsed = variableCache.get().computeIfAbsent(expression, this::variablesUsed);
+    Set<String> variablesUsed =
+        variableCache.get().computeIfAbsent(expression, this::variablesUsed);
 
     // resolve each of the variables used by the expression
     Map<String, Object> input = new HashMap<>();
-    for(String v : variablesUsed) {
+    for (String v : variablesUsed) {
       input.computeIfAbsent(v, resolver::resolve);
     }
 
@@ -185,52 +177,55 @@ public class CachingStellarProcessor extends StellarProcessor {
   }
 
   /**
-   * Create a cache given a config.  Note that if the cache size is {@literal <}= 0, then no cache will be returned.
+   * Create a cache given a config. Note that if the cache size is {@literal <}= 0, then no cache
+   * will be returned.
+   * 
    * @param config
    * @return A cache.
    */
   public static Cache<Key, Object> createCache(Map<String, Object> config) {
 
     // the cache configuration is required
-    if(config == null) {
+    if (config == null) {
       LOG.debug("Cannot create cache; missing cache configuration");
       return null;
     }
 
     // max cache size is required
     Long maxSize = getParam(config, MAX_CACHE_SIZE_PARAM, null, Long.class);
-    if(maxSize == null || maxSize <= 0) {
-      LOG.error("Cannot create cache; missing or invalid configuration; {} = {}", MAX_CACHE_SIZE_PARAM, maxSize);
+    if (maxSize == null || maxSize <= 0) {
+      LOG.error("Cannot create cache; missing or invalid configuration; {} = {}",
+          MAX_CACHE_SIZE_PARAM, maxSize);
       return null;
     }
 
     // max time retain is required
     Integer maxTimeRetain = getParam(config, MAX_TIME_RETAIN_PARAM, null, Integer.class);
-    if(maxTimeRetain == null || maxTimeRetain <= 0) {
-      LOG.error("Cannot create cache; missing or invalid configuration; {} = {}", MAX_TIME_RETAIN_PARAM, maxTimeRetain);
+    if (maxTimeRetain == null || maxTimeRetain <= 0) {
+      LOG.error("Cannot create cache; missing or invalid configuration; {} = {}",
+          MAX_TIME_RETAIN_PARAM, maxTimeRetain);
       return null;
     }
 
-    Caffeine<Object, Object> cache = Caffeine
-            .newBuilder()
-            .maximumSize(maxSize)
-            .expireAfterWrite(maxTimeRetain, TimeUnit.MINUTES);
+    Caffeine<Object, Object> cache = Caffeine.newBuilder().maximumSize(maxSize)
+        .expireAfterWrite(maxTimeRetain, TimeUnit.MINUTES);
 
     // record stats is optional
     Boolean recordStats = getParam(config, RECORD_STATS, false, Boolean.class);
-    if(recordStats) {
+    if (recordStats) {
       cache.recordStats();
     }
 
     return cache.build();
   }
 
-  private static <T> T getParam(Map<String, Object> config, String key, T defaultVal, Class<T> clazz) {
+  private static <T> T getParam(Map<String, Object> config, String key, T defaultVal,
+      Class<T> clazz) {
     Object o = config.get(key);
-    if(o == null) {
+    if (o == null) {
       return defaultVal;
     }
     T ret = ConversionUtils.convert(o, clazz);
-    return ret == null?defaultVal:ret;
+    return ret == null ? defaultVal : ret;
   }
 }

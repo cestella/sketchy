@@ -1,20 +1,17 @@
 /*
  *
- *  Licensed to the Apache Software Foundation (ASF) under one
- *  or more contributor license agreements.  See the NOTICE file
- *  distributed with this work for additional information
- *  regarding copyright ownership.  The ASF licenses this file
- *  to you under the Apache License, Version 2.0 (the
- *  "License"); you may not use this file except in compliance
- *  with the License.  You may obtain a copy of the License at
+ * Licensed to the Apache Software Foundation (ASF) under one or more contributor license
+ * agreements. See the NOTICE file distributed with this work for additional information regarding
+ * copyright ownership. The ASF licenses this file to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the License. You may obtain a
+ * copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  *
  */
 
@@ -103,8 +100,7 @@ public class SerDeUtilsTest {
   public void testMap() {
     final Map<String, Object> expected = new HashMap<>();
     expected.put("foo", "bar");
-    expected.put( "bar", 1.0);
-    ;
+    expected.put("bar", 1.0);;
     byte[] raw = SerDeUtils.toBytes(expected);
     Object actual = SerDeUtils.fromBytes(raw, Object.class);
     assertEquals(expected, actual);
@@ -123,7 +119,8 @@ public class SerDeUtilsTest {
   @Test
   @SuppressWarnings("unchecked")
   public void testBloomFilter() {
-    final BloomFilter<Object> expected = new BloomFilter<>(new BloomFilter.DefaultSerializer<>(), 10000, 0.01);
+    final BloomFilter<Object> expected =
+        new BloomFilter<>(new BloomFilter.DefaultSerializer<>(), 10000, 0.01);
     expected.add("foo");
     expected.add("bar");
     byte[] raw = SerDeUtils.toBytes(expected);
@@ -182,16 +179,23 @@ public class SerDeUtilsTest {
 
     @Override
     public boolean equals(Object o) {
-      if (this == o) return true;
-      if (o == null || getClass() != o.getClass()) return false;
+      if (this == o)
+        return true;
+      if (o == null || getClass() != o.getClass())
+        return false;
 
       ArbitraryPojo that = (ArbitraryPojo) o;
 
-      if (getList() != null ? !getList().equals(that.getList()) : that.getList() != null) return false;
-      if (getString() != null ? !getString().equals(that.getString()) : that.getString() != null) return false;
-      if (getD() != null ? !getD().equals(that.getD()) : that.getD() != null) return false;
-      if (getMap() != null ? !getMap().equals(that.getMap()) : that.getMap() != null) return false;
-      return immutableList != null ? immutableList.equals(that.immutableList) : that.immutableList == null;
+      if (getList() != null ? !getList().equals(that.getList()) : that.getList() != null)
+        return false;
+      if (getString() != null ? !getString().equals(that.getString()) : that.getString() != null)
+        return false;
+      if (getD() != null ? !getD().equals(that.getD()) : that.getD() != null)
+        return false;
+      if (getMap() != null ? !getMap().equals(that.getMap()) : that.getMap() != null)
+        return false;
+      return immutableList != null ? immutableList.equals(that.immutableList)
+          : that.immutableList == null;
 
     }
 

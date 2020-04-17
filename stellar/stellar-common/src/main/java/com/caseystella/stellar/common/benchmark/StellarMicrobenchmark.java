@@ -1,19 +1,16 @@
 /*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
+ * Licensed to the Apache Software Foundation (ASF) under one or more contributor license
+ * agreements. See the NOTICE file distributed with this work for additional information regarding
+ * copyright ownership. The ASF licenses this file to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the License. You may obtain a
+ * copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  */
 package com.caseystella.stellar.common.benchmark;
 
@@ -54,9 +51,7 @@ public class StellarMicrobenchmark {
 
   public static int DEFAULT_WARMUP = 100;
   public static int DEFAULT_NUM_TIMES = 1000;
-  public static Double[] DEFAULT_PERCENTILES = new Double[] {
-    50d, 75d, 95d, 99d
-  };
+  public static Double[] DEFAULT_PERCENTILES = new Double[] {50d, 75d, 95d, 99d};
 
   enum BenchmarkOptions {
     HELP("h", new OptionHandler<BenchmarkOptions>() {
@@ -66,12 +61,12 @@ public class StellarMicrobenchmark {
       public Option apply(@Nullable String s) {
         return new Option(s, "help", false, "Generate Help screen");
       }
-    }),
-    WARMUP("w", new OptionHandler<BenchmarkOptions>() {
+    }), WARMUP("w", new OptionHandler<BenchmarkOptions>() {
       @Nullable
       @Override
       public Option apply(@Nullable String s) {
-        Option o = new Option(s, "warmup", true, "Number of times for warmup per expression. Default: " + DEFAULT_WARMUP);
+        Option o = new Option(s, "warmup", true,
+            "Number of times for warmup per expression. Default: " + DEFAULT_WARMUP);
         o.setArgName("NUM");
         o.setRequired(false);
         return o;
@@ -81,14 +76,12 @@ public class StellarMicrobenchmark {
       public Optional<Object> getValue(BenchmarkOptions option, CommandLine cli) {
         return Optional.ofNullable(option.get(cli).trim());
       }
-    }),
-    PERCENTILES("p", new OptionHandler<BenchmarkOptions>() {
+    }), PERCENTILES("p", new OptionHandler<BenchmarkOptions>() {
       @Nullable
       @Override
       public Option apply(@Nullable String s) {
-        Option o = new Option(s, "percentiles", true
-                             , "Percentiles to calculate per run. Default: " + Joiner.on(",").join(Arrays.asList(DEFAULT_PERCENTILES))
-                             );
+        Option o = new Option(s, "percentiles", true, "Percentiles to calculate per run. Default: "
+            + Joiner.on(",").join(Arrays.asList(DEFAULT_PERCENTILES)));
         o.setArgName("NUM");
         o.setRequired(false);
         return o;
@@ -98,12 +91,12 @@ public class StellarMicrobenchmark {
       public Optional<Object> getValue(BenchmarkOptions option, CommandLine cli) {
         return Optional.ofNullable(option.get(cli).trim());
       }
-    }),
-    NUM_TIMES("n", new OptionHandler<BenchmarkOptions>() {
+    }), NUM_TIMES("n", new OptionHandler<BenchmarkOptions>() {
       @Nullable
       @Override
       public Option apply(@Nullable String s) {
-        Option o = new Option(s, "num_times", true, "Number of times to run per expression (after warmup). Default: " + DEFAULT_NUM_TIMES);
+        Option o = new Option(s, "num_times", true,
+            "Number of times to run per expression (after warmup). Default: " + DEFAULT_NUM_TIMES);
         o.setArgName("NUM");
         o.setRequired(false);
         return o;
@@ -113,8 +106,7 @@ public class StellarMicrobenchmark {
       public Optional<Object> getValue(BenchmarkOptions option, CommandLine cli) {
         return Optional.ofNullable(option.get(cli).trim());
       }
-    }),
-    EXPRESSIONS("e", new OptionHandler<BenchmarkOptions>() {
+    }), EXPRESSIONS("e", new OptionHandler<BenchmarkOptions>() {
       @Nullable
       @Override
       public Option apply(@Nullable String s) {
@@ -128,12 +120,12 @@ public class StellarMicrobenchmark {
       public Optional<Object> getValue(BenchmarkOptions option, CommandLine cli) {
         return Optional.ofNullable(option.get(cli).trim());
       }
-    }),
-    VARIABLES("v", new OptionHandler<BenchmarkOptions>() {
+    }), VARIABLES("v", new OptionHandler<BenchmarkOptions>() {
       @Nullable
       @Override
       public Option apply(@Nullable String s) {
-        Option o = new Option(s, "variables", true, "File containing a JSON Map of variables to use");
+        Option o =
+            new Option(s, "variables", true, "File containing a JSON Map of variables to use");
         o.setArgName("FILE");
         o.setRequired(false);
         return o;
@@ -143,8 +135,7 @@ public class StellarMicrobenchmark {
       public Optional<Object> getValue(BenchmarkOptions option, CommandLine cli) {
         return Optional.ofNullable(option.get(cli).trim());
       }
-    }),
-    OUTPUT("o", new OptionHandler<BenchmarkOptions>() {
+    }), OUTPUT("o", new OptionHandler<BenchmarkOptions>() {
       @Nullable
       @Override
       public Option apply(@Nullable String s) {
@@ -158,12 +149,13 @@ public class StellarMicrobenchmark {
       public Optional<Object> getValue(BenchmarkOptions option, CommandLine cli) {
         return Optional.ofNullable(option.get(cli).trim());
       }
-    })
+    });
     ;
-    ;
+
     Option option;
     String shortCode;
     OptionHandler<BenchmarkOptions> handler;
+
     BenchmarkOptions(String shortCode, OptionHandler<BenchmarkOptions> optionHandler) {
       this.shortCode = shortCode;
       this.handler = optionHandler;
@@ -181,7 +173,7 @@ public class StellarMicrobenchmark {
     public static CommandLine parse(CommandLineParser parser, String[] args) {
       try {
         CommandLine cli = parser.parse(getOptions(), args);
-        if(HELP.has(cli)) {
+        if (HELP.has(cli)) {
           printHelp();
           System.exit(0);
         }
@@ -196,8 +188,8 @@ public class StellarMicrobenchmark {
     }
 
     public static EnumMap<BenchmarkOptions, Optional<Object>> createConfig(CommandLine cli) {
-      EnumMap<BenchmarkOptions, Optional<Object> > ret = new EnumMap<>(BenchmarkOptions.class);
-      for(BenchmarkOptions option : values()) {
+      EnumMap<BenchmarkOptions, Optional<Object>> ret = new EnumMap<>(BenchmarkOptions.class);
+      for (BenchmarkOptions option : values()) {
         ret.put(option, option.handler.getValue(option, cli));
       }
       return ret;
@@ -205,12 +197,12 @@ public class StellarMicrobenchmark {
 
     public static void printHelp() {
       HelpFormatter formatter = new HelpFormatter();
-      formatter.printHelp( "StellarBenchmark", getOptions());
+      formatter.printHelp("StellarBenchmark", getOptions());
     }
 
     public static Options getOptions() {
       Options ret = new Options();
-      for(BenchmarkOptions o : BenchmarkOptions.values()) {
+      for (BenchmarkOptions o : BenchmarkOptions.values()) {
         ret.addOption(o.option);
       }
       return ret;
@@ -219,22 +211,19 @@ public class StellarMicrobenchmark {
 
   public static void main(String... argv) throws IOException {
     CommandLine cli = BenchmarkOptions.parse(new PosixParser(), argv);
-    if(!BenchmarkOptions.EXPRESSIONS.has(cli)) {
+    if (!BenchmarkOptions.EXPRESSIONS.has(cli)) {
       throw new IllegalStateException("You must at least specify an expressions file.");
     }
     File expressionsFile = new File(BenchmarkOptions.EXPRESSIONS.get(cli));
-    Optional<File> variablesFile = Optional.ofNullable(!BenchmarkOptions.VARIABLES.has(cli)
-                                                      ?null
-                                                      :new File(BenchmarkOptions.VARIABLES.get(cli))
-                                                      );
-    Optional<File> output = Optional.ofNullable(!BenchmarkOptions.OUTPUT.has(cli)
-                                             ?null
-                                             :new File(BenchmarkOptions.OUTPUT.get(cli))
-                                             );
+    Optional<File> variablesFile = Optional.ofNullable(!BenchmarkOptions.VARIABLES.has(cli) ? null
+        : new File(BenchmarkOptions.VARIABLES.get(cli)));
+    Optional<File> output = Optional.ofNullable(
+        !BenchmarkOptions.OUTPUT.has(cli) ? null : new File(BenchmarkOptions.OUTPUT.get(cli)));
     List<String> lines = Files.readLines(expressionsFile, Charset.defaultCharset());
     Map<String, Object> variables = new HashMap<>();
     if (variablesFile.isPresent()) {
-      variables = JSONUtils.INSTANCE.load(new FileInputStream(variablesFile.get()), JSONUtils.MAP_SUPPLIER);
+      variables =
+          JSONUtils.INSTANCE.load(new FileInputStream(variablesFile.get()), JSONUtils.MAP_SUPPLIER);
     }
     int numTimes = DEFAULT_NUM_TIMES;
     if (BenchmarkOptions.NUM_TIMES.has(cli)) {
@@ -254,9 +243,10 @@ public class StellarMicrobenchmark {
         Double d = Double.parseDouble(token.trim());
         percentileList.add(d);
       }
-      percentiles = (Double[])percentileList.toArray();
+      percentiles = (Double[]) percentileList.toArray();
     }
-    PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(System.out, StandardCharsets.UTF_8)));
+    PrintWriter out = new PrintWriter(
+        new BufferedWriter(new OutputStreamWriter(System.out, StandardCharsets.UTF_8)));
     if (output.isPresent()) {
       out = new PrintWriter(output.get(), StandardCharsets.UTF_8.name());
     }

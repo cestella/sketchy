@@ -1,20 +1,17 @@
 /*
  *
- *  Licensed to the Apache Software Foundation (ASF) under one
- *  or more contributor license agreements.  See the NOTICE file
- *  distributed with this work for additional information
- *  regarding copyright ownership.  The ASF licenses this file
- *  to you under the Apache License, Version 2.0 (the
- *  "License"); you may not use this file except in compliance
- *  with the License.  You may obtain a copy of the License at
+ * Licensed to the Apache Software Foundation (ASF) under one or more contributor license
+ * agreements. See the NOTICE file distributed with this work for additional information regarding
+ * copyright ownership. The ASF licenses this file to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the License. You may obtain a
+ * copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  *
  */
 
@@ -36,7 +33,7 @@ public class StellarShellOptionsValidator {
 
   private static final Pattern validPortPattern = Pattern.compile("(^.*)[:](\\d+)$");
   private static final Predicate<String> hostnameValidator = hostname -> {
-    if(StringUtils.isEmpty(hostname)) {
+    if (StringUtils.isEmpty(hostname)) {
       return false;
     }
     try {
@@ -49,8 +46,8 @@ public class StellarShellOptionsValidator {
 
 
 
-  private static final InetAddressValidator inetAddressValidator = InetAddressValidator
-      .getInstance();
+  private static final InetAddressValidator inetAddressValidator =
+      InetAddressValidator.getInstance();
 
   /**
    * Validates Stellar CLI Options.
@@ -78,28 +75,29 @@ public class StellarShellOptionsValidator {
    * @param zMulti the zookeeper url fragment
    */
   private static void validateZookeeperOption(String zMulti) throws IllegalArgumentException {
-    for(String z : Splitter.on(",").split(zMulti)) {
+    for (String z : Splitter.on(",").split(zMulti)) {
       Matcher matcher = validPortPattern.matcher(z);
       boolean hasPort = z.contains(":");
       if (hasPort && !matcher.matches()) {
-        throw new IllegalArgumentException(String.format("Zookeeper option must have valid port: %s", z));
+        throw new IllegalArgumentException(
+            String.format("Zookeeper option must have valid port: %s", z));
       }
 
       if (hasPort && matcher.groupCount() != 2) {
         throw new IllegalArgumentException(
-                String.format("Zookeeper Option must be in the form of [HOST|IP]:PORT  %s", z));
+            String.format("Zookeeper Option must be in the form of [HOST|IP]:PORT  %s", z));
       }
-      String name = hasPort?matcher.group(1):z;
-      Integer port = hasPort?Integer.parseInt(matcher.group(2)):null;
+      String name = hasPort ? matcher.group(1) : z;
+      Integer port = hasPort ? Integer.parseInt(matcher.group(2)) : null;
 
       if (!hostnameValidator.test(name) && !inetAddressValidator.isValid(name)) {
-        throw new IllegalArgumentException(
-                String.format("Zookeeper Option %s is not a valid host name or ip address  %s", name, z));
+        throw new IllegalArgumentException(String
+            .format("Zookeeper Option %s is not a valid host name or ip address  %s", name, z));
       }
 
       if (hasPort && (port == 0 || port > 65535)) {
         throw new IllegalArgumentException(
-                String.format("Zookeeper Option %s port is not valid", z));
+            String.format("Zookeeper Option %s port is not valid", z));
       }
     }
   }
