@@ -21,4 +21,4 @@ jobs:
       with:
         java-version: 1.8
     - name: Build with Maven
-      run: mvn -B package --file pom.xml && ([[ -z $(git status -s) ]] || (echo "Tree is dirty due to formatting issues.  Kindly run mvn format and recommit.";exit 1))
+      run: mvn -B package --file pom.xml && ([[ -z $(git status -s) ]] || (echo "Tree is dirty due to formatting issues.  Kindly run `mvn clean compile` and recommit.";exit 1))
