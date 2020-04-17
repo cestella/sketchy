@@ -14,8 +14,24 @@
  */
 package com.caseystella.stellar.common;
 
+import static java.lang.String.format;
+
+import com.caseystella.sketchy.serialization.ConversionUtils;
+import com.caseystella.stellar.common.evaluators.ArithmeticEvaluator;
+import com.caseystella.stellar.common.evaluators.ComparisonExpressionWithOperatorEvaluator;
+import com.caseystella.stellar.common.evaluators.NumberLiteralEvaluator;
+import com.caseystella.stellar.common.generated.StellarBaseListener;
+import com.caseystella.stellar.common.generated.StellarParser;
+import com.caseystella.stellar.dsl.Context;
+import com.caseystella.stellar.dsl.Context.ActivityType;
+import com.caseystella.stellar.dsl.FunctionMarker;
+import com.caseystella.stellar.dsl.ParseException;
+import com.caseystella.stellar.dsl.StellarFunction;
+import com.caseystella.stellar.dsl.Token;
 import com.caseystella.stellar.dsl.VariableResolver;
+import com.caseystella.stellar.dsl.functions.resolver.FunctionResolver;
 import com.google.common.base.Joiner;
+import com.google.common.collect.Iterables;
 import java.io.Serializable;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -29,25 +45,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-
-import com.google.common.collect.Iterables;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.tuple.Pair;
-import com.caseystella.stellar.common.evaluators.ArithmeticEvaluator;
-import com.caseystella.stellar.common.evaluators.ComparisonExpressionWithOperatorEvaluator;
-import com.caseystella.stellar.common.evaluators.NumberLiteralEvaluator;
-import com.caseystella.stellar.common.generated.StellarBaseListener;
-import com.caseystella.stellar.common.generated.StellarParser;
-import com.caseystella.stellar.common.utils.ConversionUtils;
-import com.caseystella.stellar.dsl.Context;
-import com.caseystella.stellar.dsl.FunctionMarker;
-import com.caseystella.stellar.dsl.ParseException;
-import com.caseystella.stellar.dsl.StellarFunction;
-import com.caseystella.stellar.dsl.Token;
-import com.caseystella.stellar.dsl.functions.resolver.FunctionResolver;
-
-import static java.lang.String.format;
-import com.caseystella.stellar.dsl.Context.ActivityType;
 
 public class StellarCompiler extends StellarBaseListener {
   private static Token<?> EXPRESSION_REFERENCE = new Token<>(null, Object.class);
@@ -58,27 +57,46 @@ public class StellarCompiler extends StellarBaseListener {
   private final NumberLiteralEvaluator numberLiteralEvaluator;
   private final ComparisonExpressionWithOperatorEvaluator comparisonExpressionWithOperatorEvaluator;
 
+
   public interface ShortCircuitOp {
   }
 
+
   public static class ShortCircuitFrame {
   }
+
+
   public static class BooleanArg implements ShortCircuitOp {
   }
+
+
   public static class IfExpr implements ShortCircuitOp {
   }
+
+
   public static class ThenExpr implements ShortCircuitOp {
   }
+
+
   public static class ElseExpr implements ShortCircuitOp {
   }
+
+
   public static class EndConditional implements ShortCircuitOp {
   }
+
+
   public static class MatchClauseCheckExpr implements ShortCircuitOp {
   }
+
+
   public static class MatchClauseEnd implements ShortCircuitOp {
   }
+
+
   public static class MatchClausesEnd implements ShortCircuitOp {
   }
+
 
   public static class ExpressionState {
     Context context;
@@ -92,6 +110,7 @@ public class StellarCompiler extends StellarBaseListener {
       this.functionResolver = functionResolver;
     }
   }
+
 
   public static class Expression implements Serializable {
     final Deque<Token<?>> tokenDeque;
@@ -117,7 +136,7 @@ public class StellarCompiler extends StellarBaseListener {
     /**
      * When treating empty or missing values as false, we need to ensure we ONLY do so in a
      * conditional context.
-     * 
+     *
      * @param tokenValueType
      * @return
      */
@@ -128,7 +147,7 @@ public class StellarCompiler extends StellarBaseListener {
 
     /**
      * Determine if a token and value is an empty list in the appropriate conditional context
-     * 
+     *
      * @param token
      * @param value
      * @return
@@ -149,7 +168,7 @@ public class StellarCompiler extends StellarBaseListener {
 
     /**
      * Determine if a token is missing in a conditional context.
-     * 
+     *
      * @param token
      * @return
      */
@@ -302,6 +321,7 @@ public class StellarCompiler extends StellarBaseListener {
       }
     }
   }
+
 
   interface DeferredFunction {
     void apply(Deque<Token<?>> tokenDeque, ExpressionState state);
@@ -684,7 +704,7 @@ public class StellarCompiler extends StellarBaseListener {
 
   /**
    * Get function arguments.
-   * 
+   *
    * @param token The token containing the function arguments.
    * @return
    */
@@ -701,7 +721,7 @@ public class StellarCompiler extends StellarBaseListener {
 
   /**
    * Resolves a function by name.
-   * 
+   *
    * @param funcName
    * @return
    */
@@ -719,7 +739,7 @@ public class StellarCompiler extends StellarBaseListener {
 
   /**
    * Initialize a Stellar function.
-   * 
+   *
    * @param function The function to initialize.
    * @param functionName The name of the functions.
    */

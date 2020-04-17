@@ -4,9 +4,9 @@
  * copyright ownership. The ASF licenses this file to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance with the License. You may obtain a
  * copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -15,13 +15,12 @@
 
 package com.caseystella.stellar.dsl.functions;
 
-import com.caseystella.stellar.common.utils.ConversionUtils;
+import com.caseystella.sketchy.serialization.ConversionUtils;
 import com.caseystella.stellar.dsl.BaseStellarFunction;
+import com.caseystella.stellar.dsl.Stellar;
 import com.github.benmanes.caffeine.cache.CacheLoader;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
-import com.caseystella.stellar.dsl.Stellar;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -57,15 +56,18 @@ public class DateFunctions {
 
     @Override
     public boolean equals(Object o) {
-      if (this == o)
+      if (this == o) {
         return true;
-      if (o == null || getClass() != o.getClass())
+      }
+      if (o == null || getClass() != o.getClass()) {
         return false;
+      }
 
       TimezonedFormat that = (TimezonedFormat) o;
 
-      if (format != null ? !format.equals(that.format) : that.format != null)
+      if (format != null ? !format.equals(that.format) : that.format != null) {
         return false;
+      }
       return timezone != null ? timezone.equals(that.timezone) : that.timezone == null;
     }
 
@@ -76,6 +78,7 @@ public class DateFunctions {
       return result;
     }
   }
+
 
   private static LoadingCache<TimezonedFormat, ThreadLocal<SimpleDateFormat>> formatCache = Caffeine
       .newBuilder().build(new CacheLoader<TimezonedFormat, ThreadLocal<SimpleDateFormat>>() {
@@ -151,6 +154,7 @@ public class DateFunctions {
       return null;
     }
   }
+
 
   @Stellar(name = "DATE_FORMAT",
       description = "Takes an epoch timestamp and converts it to a date format.",
@@ -239,6 +243,7 @@ public class DateFunctions {
     }
   }
 
+
   /**
    * Stellar Function: DAY_OF_MONTH
    *
@@ -265,6 +270,7 @@ public class DateFunctions {
       return calendar.get(Calendar.DAY_OF_MONTH);
     }
   }
+
 
   /**
    * Stellar Function: WEEK_OF_MONTH
@@ -293,6 +299,7 @@ public class DateFunctions {
     }
   }
 
+
   /**
    * Stellar Function: WEEK_OF_YEAR
    *
@@ -319,6 +326,7 @@ public class DateFunctions {
       return calendar.get(Calendar.WEEK_OF_YEAR);
     }
   }
+
 
   /**
    * Stellar Function: MONTH
@@ -347,6 +355,7 @@ public class DateFunctions {
     }
   }
 
+
   /**
    * Stellar Function: YEAR
    *
@@ -372,6 +381,7 @@ public class DateFunctions {
       return calendar.get(Calendar.YEAR);
     }
   }
+
 
   /**
    * Stellar Function: DAY_OF_YEAR

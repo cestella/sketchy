@@ -4,9 +4,9 @@
  * copyright ownership. The ASF licenses this file to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance with the License. You may obtain a
  * copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -14,23 +14,22 @@
  */
 package com.caseystella.stellar.common;
 
-import com.caseystella.stellar.common.utils.ConversionUtils;
+import com.caseystella.sketchy.serialization.ConversionUtils;
 import com.caseystella.stellar.dsl.Context;
 import com.caseystella.stellar.dsl.VariableResolver;
 import com.caseystella.stellar.dsl.functions.resolver.FunctionResolver;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.slf4j.LoggerFactory;
-
 import java.lang.invoke.MethodHandles;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.slf4j.LoggerFactory;
 
 /**
  * The Caching Stellar Processor is a stellar processor that optionally fronts stellar with an
@@ -57,6 +56,7 @@ public class CachingStellarProcessor extends StellarProcessor {
    * A property that defines if cache usage stats should be recorded.
    */
   public static String RECORD_STATS = "stellar.cache.record.stats";
+
 
   /**
    * The cache key is based on the expression and input values.
@@ -179,7 +179,7 @@ public class CachingStellarProcessor extends StellarProcessor {
   /**
    * Create a cache given a config. Note that if the cache size is {@literal <}= 0, then no cache
    * will be returned.
-   * 
+   *
    * @param config
    * @return A cache.
    */

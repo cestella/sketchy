@@ -4,9 +4,9 @@
  * copyright ownership. The ASF licenses this file to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance with the License. You may obtain a
  * copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -14,12 +14,11 @@
  */
 package com.caseystella.stellar.dsl.functions;
 
-import com.caseystella.stellar.common.utils.ConversionUtils;
-import com.caseystella.stellar.common.utils.SerDeUtils;
+import com.caseystella.sketchy.serialization.ConversionUtils;
+import com.caseystella.sketchy.serialization.SerDeUtils;
+import com.caseystella.stellar.common.utils.BloomFilter;
 import com.caseystella.stellar.dsl.BaseStellarFunction;
 import com.caseystella.stellar.dsl.Stellar;
-import com.caseystella.stellar.common.utils.BloomFilter;
-
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -46,6 +45,7 @@ public class DataStructureFunctions {
     }
   }
 
+
   @Stellar(name = "EXISTS", namespace = "BLOOM",
       description = "If the bloom filter contains the value",
       params = {"bloom - The bloom filter", "value - The value to check"},
@@ -70,6 +70,7 @@ public class DataStructureFunctions {
     }
   }
 
+
   @Stellar(name = "INIT", namespace = "BLOOM", description = "Returns an empty bloom filter",
       params = {"expectedInsertions - The expected insertions",
           "falsePositiveRate - The false positive rate you are willing to tolerate"},
@@ -89,6 +90,7 @@ public class DataStructureFunctions {
       return new BloomFilter<>(SerDeUtils.SERIALIZER, expectedInsertions, falsePositiveRate);
     }
   }
+
 
   @Stellar(name = "MERGE", namespace = "BLOOM", description = "Returns a merged bloom filter",
       params = {"bloomfilters - A list of bloom filters to merge"},
@@ -120,6 +122,7 @@ public class DataStructureFunctions {
     }
   }
 
+
   @Stellar(name = "IS_EMPTY",
       description = "Returns true if string or collection is empty or null and false if otherwise.",
       params = {"input - Object of string or collection type (for example, list)"},
@@ -144,6 +147,8 @@ public class DataStructureFunctions {
       }
     }
   }
+
+
   @Stellar(name = "ADD", namespace = "LIST", description = "Adds an element to a list.",
       params = {"list - List to add element to.", "element - Element to add to list"},
       returns = "Resulting list with the item added at the end.")
@@ -169,6 +174,7 @@ public class DataStructureFunctions {
       }
     }
   }
+
 
   @Stellar(name = "LENGTH",
       description = "Returns the length of a string or size of a collection. Returns 0 for empty or null Strings",

@@ -4,9 +4,9 @@
  * copyright ownership. The ASF licenses this file to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance with the License. You may obtain a
  * copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -15,6 +15,11 @@
 
 package com.caseystella.stellar.dsl.functions;
 
+import com.caseystella.sketchy.serialization.ConversionUtils;
+import com.caseystella.sketchy.serialization.JSONUtils;
+import com.caseystella.stellar.dsl.BaseStellarFunction;
+import com.caseystella.stellar.dsl.ParseException;
+import com.caseystella.stellar.dsl.Stellar;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
@@ -25,11 +30,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
-import com.caseystella.stellar.common.utils.ConversionUtils;
-import com.caseystella.stellar.common.utils.JSONUtils;
-import com.caseystella.stellar.dsl.BaseStellarFunction;
-import com.caseystella.stellar.dsl.ParseException;
-import com.caseystella.stellar.dsl.Stellar;
 
 public class StringFunctions {
 
@@ -53,6 +53,7 @@ public class StringFunctions {
     }
   }
 
+
   @Stellar(name = "STARTS_WITH", description = "Determines whether a string starts with a prefix",
       params = {"string - The string to test", "prefix - The proposed prefix"},
       returns = "True if the string starts with the specified prefix and false if otherwise")
@@ -73,6 +74,7 @@ public class StringFunctions {
     }
   }
 
+
   @Stellar(name = "TO_LOWER", description = "Transforms the first argument to a lowercase string",
       params = {"input - String"}, returns = "Lowercase string")
   public static class ToLower extends BaseStellarFunction {
@@ -81,6 +83,7 @@ public class StringFunctions {
       return strings.get(0) == null ? null : strings.get(0).toString().toLowerCase();
     }
   }
+
 
   @Stellar(name = "TO_UPPER", description = "Transforms the first argument to an uppercase string",
       params = {"input - String"}, returns = "Uppercase string")
@@ -91,6 +94,7 @@ public class StringFunctions {
     }
   }
 
+
   @Stellar(name = "TO_STRING", description = "Transforms the first argument to a string",
       params = {"input - Object"}, returns = "String")
   public static class ToString extends BaseStellarFunction {
@@ -100,6 +104,7 @@ public class StringFunctions {
     }
   }
 
+
   @Stellar(name = "TRIM", description = "Trims whitespace from both sides of a string.",
       params = {"input - String"}, returns = "String")
   public static class Trim extends BaseStellarFunction {
@@ -108,6 +113,7 @@ public class StringFunctions {
       return strings.get(0) == null ? null : strings.get(0).toString().trim();
     }
   }
+
 
   @Stellar(name = "JOIN",
       description = "Joins the non-null items in the iterable as strings with the specified delimiter. Null items are dropped.",
@@ -124,6 +130,7 @@ public class StringFunctions {
       return Joiner.on(delim).join(Iterables.filter(arg1, x -> x != null));
     }
   }
+
 
   @Stellar(name = "SPLIT", description = "Splits the string by the delimiter.",
       params = {"input - String to split", "delim - String delimiter"}, returns = "List of strings")
@@ -142,6 +149,7 @@ public class StringFunctions {
     }
   }
 
+
   @Stellar(name = "GET_LAST", description = "Returns the last element of the list",
       params = {"input - List"}, returns = "Last element of the list")
   public static class GetLast extends BaseStellarFunction {
@@ -153,6 +161,7 @@ public class StringFunctions {
     }
   }
 
+
   @Stellar(name = "GET_FIRST", description = "Returns the first element of the list",
       params = {"input - List"}, returns = "First element of the list")
   public static class GetFirst extends BaseStellarFunction {
@@ -163,6 +172,7 @@ public class StringFunctions {
       return Iterables.getFirst(arg1, null);
     }
   }
+
 
   @Stellar(name = "GET", description = "Returns the i'th element of the list ",
       params = {"input - List", "i - The index (0-based)"}, returns = "First element of the list")
@@ -179,9 +189,11 @@ public class StringFunctions {
     }
   }
 
+
   private enum FillDirection {
     LEFT, RIGHT
   }
+
 
   @Stellar(name = "FILL_LEFT",
       description = "Fills or pads a given string with a given character, to a given length on the left",
@@ -197,6 +209,7 @@ public class StringFunctions {
       return fill(FillDirection.LEFT, args.get(0), args.get(1), args.get(2));
     }
   }
+
 
   @Stellar(name = "FILL_RIGHT",
       description = "Fills or pads a given string with a given character, to a given length on the right",
@@ -274,6 +287,7 @@ public class StringFunctions {
     }
   }
 
+
   @Stellar(name = "FORMAT",
       description = "Returns a formatted string using the specified format string and arguments. Uses Java's string formatting conventions.",
       params = {"format - string", "arguments... - object(s)"}, returns = "A formatted string.")
@@ -292,6 +306,7 @@ public class StringFunctions {
       return String.format(format, formatArgs);
     }
   }
+
 
   @Stellar(name = "SUBSTRING", description = "Returns a substring of a string",
       params = {"input - The string to take the substring of",
@@ -339,6 +354,7 @@ public class StringFunctions {
     }
   }
 
+
   @Stellar(name = "CHOMP",
       description = "Removes one newline from end of a String if it's there, otherwise leave it alone. A newline is \"\\n\", \"\\r\", or \"\\r\\n\"",
       params = {"the String to chomp a newline from, may be null"},
@@ -361,6 +377,8 @@ public class StringFunctions {
       }
     }
   }
+
+
   @Stellar(name = "CHOP", description = "Remove the last character from a String",
       params = {"the String to chop last character from, may be null"},
       returns = "String without last character, null if null String input")
@@ -382,6 +400,7 @@ public class StringFunctions {
       }
     }
   }
+
 
   @Stellar(name = "PREPEND_IF_MISSING",
       description = "Prepends the prefix to the start of the string if the string does not already start with any of the prefixes",
@@ -411,6 +430,7 @@ public class StringFunctions {
     }
   }
 
+
   @Stellar(name = "APPEND_IF_MISSING",
       description = "Appends the suffix to the end of the string if the string does not already end with any of the suffixes",
       params = {"str - The string.",
@@ -439,6 +459,7 @@ public class StringFunctions {
     }
   }
 
+
   @Stellar(name = "COUNT_MATCHES",
       description = "Counts how many times the substring appears in the larger string",
       params = {"str - the CharSequence to check, may be null",
@@ -459,6 +480,7 @@ public class StringFunctions {
       return matchcount;
     }
   }
+
 
   @Stellar(name = "TO_JSON_OBJECT",
       description = "Returns a JSON object for the specified JSON string",
@@ -494,6 +516,7 @@ public class StringFunctions {
       return new ParseException("Unable to parse JSON string");
     }
   }
+
 
   @Stellar(name = "TO_JSON_MAP", description = "Returns a MAP object for the specified JSON string",
       params = {"str - the JSON String to convert, may be null"},
@@ -531,6 +554,7 @@ public class StringFunctions {
       }
     }
   }
+
 
   @Stellar(name = "TO_JSON_LIST",
       description = "Returns a List object for the specified JSON string",

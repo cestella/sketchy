@@ -4,9 +4,9 @@
  * copyright ownership. The ASF licenses this file to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance with the License. You may obtain a
  * copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -14,11 +14,13 @@
  */
 package com.caseystella.stellar.dsl.functions;
 
+import com.caseystella.sketchy.serialization.ConversionUtils;
 import com.caseystella.stellar.common.shell.VariableResult;
-import com.caseystella.stellar.common.utils.ConversionUtils;
+import com.caseystella.stellar.common.shell.cli.PausableInput;
 import com.caseystella.stellar.dsl.BaseStellarFunction;
 import com.caseystella.stellar.dsl.Context;
 import com.caseystella.stellar.dsl.ParseException;
+import com.caseystella.stellar.dsl.Stellar;
 import com.caseystella.stellar.dsl.StellarFunction;
 import com.jakewharton.fliptables.FlipTable;
 import java.io.BufferedReader;
@@ -35,8 +37,6 @@ import java.util.Map;
 import java.util.Optional;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.text.WordUtils;
-import com.caseystella.stellar.common.shell.cli.PausableInput;
-import com.caseystella.stellar.dsl.Stellar;
 import org.jboss.aesh.console.Console;
 import org.slf4j.LoggerFactory;
 
@@ -73,6 +73,7 @@ public class ShellFunctions {
       return FlipTable.of(headers, data);
     }
   }
+
 
   @Stellar(namespace = "SHELL", name = "LIST_VARS",
       description = "Return the variables in a tabular form",
@@ -118,6 +119,7 @@ public class ShellFunctions {
     }
   }
 
+
   @Stellar(namespace = "SHELL", name = "VARS2MAP",
       description = "Take a set of variables and return a map",
       params = {"variables* - variable names to use to create map "},
@@ -152,6 +154,7 @@ public class ShellFunctions {
     }
   }
 
+
   @Stellar(namespace = "SHELL", name = "GET_EXPRESSION",
       description = "Get a stellar expression from a variable",
       params = {"variable - variable name"},
@@ -185,6 +188,7 @@ public class ShellFunctions {
       return true;
     }
   }
+
 
   @Stellar(namespace = "SHELL", name = "EDIT",
       description = "Open an editor (optionally initialized with text) and return "

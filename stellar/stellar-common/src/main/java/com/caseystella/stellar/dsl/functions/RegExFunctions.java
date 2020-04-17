@@ -4,9 +4,9 @@
  * copyright ownership. The ASF licenses this file to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance with the License. You may obtain a
  * copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -15,15 +15,14 @@
 
 package com.caseystella.stellar.dsl.functions;
 
+import com.caseystella.sketchy.serialization.ConversionUtils;
+import com.caseystella.stellar.common.utils.PatternCache;
+import com.caseystella.stellar.dsl.BaseStellarFunction;
+import com.caseystella.stellar.dsl.Stellar;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import com.caseystella.stellar.common.utils.ConversionUtils;
-import com.caseystella.stellar.dsl.BaseStellarFunction;
 import org.apache.commons.lang3.StringUtils;
-import com.caseystella.stellar.common.utils.PatternCache;
-import com.caseystella.stellar.dsl.Stellar;
 
 public class RegExFunctions {
 
@@ -64,6 +63,7 @@ public class RegExFunctions {
       return false;
     }
   }
+
 
   @Stellar(name = "REGEXP_GROUP_VAL",
       description = "Returns the value of a group in a regex against a string",
@@ -110,6 +110,7 @@ public class RegExFunctions {
       return matcher.group(groupNumber);
     }
   }
+
 
   @Stellar(name = "REGEXP_REPLACE",
       description = "Replace all occurences of the regex pattern within the string by value",

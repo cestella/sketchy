@@ -16,17 +16,12 @@
  */
 package com.caseystella.stellar.common.shell;
 
-import com.caseystella.stellar.common.shell.specials.MagicListGlobals;
-import com.caseystella.stellar.common.shell.specials.MagicListVariables;
-import com.caseystella.stellar.common.shell.specials.MagicUndefineGlobal;
-import com.caseystella.stellar.dsl.Context;
-import com.caseystella.stellar.dsl.StellarFunctions;
-import com.caseystella.stellar.dsl.VariableResolver;
-import com.caseystella.stellar.dsl.functions.resolver.FunctionResolver;
-import com.google.common.collect.Maps;
-import org.apache.commons.collections.map.UnmodifiableMap;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.curator.framework.CuratorFramework;
+import static com.caseystella.stellar.common.configuration.ConfigurationsUtils.readGlobalConfigBytesFromZookeeper;
+import static com.caseystella.stellar.common.shell.StellarResult.error;
+import static com.caseystella.stellar.common.shell.StellarResult.noop;
+import static com.caseystella.stellar.common.shell.StellarResult.success;
+
+import com.caseystella.sketchy.serialization.JSONUtils;
 import com.caseystella.stellar.common.StellarProcessor;
 import com.caseystella.stellar.common.configuration.ConfigurationsUtils;
 import com.caseystella.stellar.common.shell.specials.AssignmentCommand;
@@ -34,14 +29,18 @@ import com.caseystella.stellar.common.shell.specials.Comment;
 import com.caseystella.stellar.common.shell.specials.DocCommand;
 import com.caseystella.stellar.common.shell.specials.MagicDefineGlobal;
 import com.caseystella.stellar.common.shell.specials.MagicListFunctions;
+import com.caseystella.stellar.common.shell.specials.MagicListGlobals;
+import com.caseystella.stellar.common.shell.specials.MagicListVariables;
+import com.caseystella.stellar.common.shell.specials.MagicUndefineGlobal;
 import com.caseystella.stellar.common.shell.specials.QuitCommand;
 import com.caseystella.stellar.common.shell.specials.SpecialCommand;
-import com.caseystella.stellar.common.utils.JSONUtils;
+import com.caseystella.stellar.dsl.Context;
 import com.caseystella.stellar.dsl.MapVariableResolver;
 import com.caseystella.stellar.dsl.StellarFunctionInfo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import com.caseystella.stellar.dsl.StellarFunctions;
+import com.caseystella.stellar.dsl.VariableResolver;
+import com.caseystella.stellar.dsl.functions.resolver.FunctionResolver;
+import com.google.common.collect.Maps;
 import java.io.ByteArrayInputStream;
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
@@ -51,11 +50,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
-
-import static com.caseystella.stellar.common.configuration.ConfigurationsUtils.readGlobalConfigBytesFromZookeeper;
-import static com.caseystella.stellar.common.shell.StellarResult.noop;
-import static com.caseystella.stellar.common.shell.StellarResult.error;
-import static com.caseystella.stellar.common.shell.StellarResult.success;
+import org.apache.commons.collections.map.UnmodifiableMap;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.curator.framework.CuratorFramework;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Default implementation of a StellarShellExecutor.
@@ -133,7 +132,7 @@ public class DefaultStellarShellExecutor implements StellarShellExecutor {
 
   /**
    * The default specials that will be made available, if none are specified otherwise.
-   * 
+   *
    * @return The default special commands.
    */
   public static List<SpecialCommand> defaultSpecials() {
@@ -159,7 +158,7 @@ public class DefaultStellarShellExecutor implements StellarShellExecutor {
 
   /**
    * Add a listener that will be notified when a function is defined.
-   * 
+   *
    * @param listener The listener to notify.
    */
   @Override
@@ -169,7 +168,7 @@ public class DefaultStellarShellExecutor implements StellarShellExecutor {
 
   /**
    * Notify function listeners that a function has been defined.
-   * 
+   *
    * @param functionInfo The function that was defined.
    */
   private void notifyFunctionListeners(StellarFunctionInfo functionInfo) {
@@ -180,7 +179,7 @@ public class DefaultStellarShellExecutor implements StellarShellExecutor {
 
   /**
    * Add a listener that will be notified when a variable is defined.
-   * 
+   *
    * @param listener The listener to notify.
    */
   @Override
@@ -190,7 +189,7 @@ public class DefaultStellarShellExecutor implements StellarShellExecutor {
 
   /**
    * Notify variable listeners that a variable has been (re)defined.
-   * 
+   *
    * @param variableName The variable name.
    * @param result The variable result.
    */
@@ -202,7 +201,7 @@ public class DefaultStellarShellExecutor implements StellarShellExecutor {
 
   /**
    * Add a listener that will be notified when a magic command is defined.
-   * 
+   *
    * @param listener The listener to notify.
    */
   @Override
@@ -212,7 +211,7 @@ public class DefaultStellarShellExecutor implements StellarShellExecutor {
 
   /**
    * Notify listeners that a magic command has been defined.
-   * 
+   *
    * @param specialCommand The magic command.
    */
   private void notifySpecialListeners(SpecialCommand specialCommand) {
@@ -302,7 +301,7 @@ public class DefaultStellarShellExecutor implements StellarShellExecutor {
 
   /**
    * Creates a Zookeeper client.
-   * 
+   *
    * @param zookeeperUrl The Zookeeper URL.
    */
   private Optional<CuratorFramework> createZookeeperClient(Optional<String> zookeeperUrl) {
@@ -325,7 +324,7 @@ public class DefaultStellarShellExecutor implements StellarShellExecutor {
 
   /**
    * Creates a Context initialized with configuration stored in Zookeeper.
-   * 
+   *
    * @param properties Properties to configure the context.
    * @param zkClient An optional Zookeeper client.
    */
@@ -356,7 +355,7 @@ public class DefaultStellarShellExecutor implements StellarShellExecutor {
 
   /**
    * Fetches the global configuration from Zookeeper.
-   * 
+   *
    * @param zkClient The Zookeeper client.
    * @return The global configuration retrieved from Zookeeper.
    * @throws Exception
@@ -384,7 +383,7 @@ public class DefaultStellarShellExecutor implements StellarShellExecutor {
 
   /**
    * Executes Stellar expressions.
-   * 
+   *
    * @param expression The expression to execute.
    */
   private StellarResult executeStellar(String expression) {

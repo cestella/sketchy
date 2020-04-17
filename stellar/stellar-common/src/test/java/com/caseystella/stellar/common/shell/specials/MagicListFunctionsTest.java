@@ -16,20 +16,21 @@
  */
 package com.caseystella.stellar.common.shell.specials;
 
-import com.caseystella.stellar.common.utils.ConversionUtils;
-import com.caseystella.stellar.dsl.functions.StringFunctions;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import com.caseystella.sketchy.serialization.ConversionUtils;
 import com.caseystella.stellar.common.shell.DefaultStellarShellExecutor;
 import com.caseystella.stellar.common.shell.StellarResult;
+import com.caseystella.stellar.dsl.functions.StringFunctions;
 import com.caseystella.stellar.dsl.functions.resolver.SimpleFunctionResolver;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
-
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class MagicListFunctionsTest {
 

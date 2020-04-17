@@ -4,9 +4,9 @@
  * copyright ownership. The ASF licenses this file to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance with the License. You may obtain a
  * copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -19,6 +19,11 @@ import static com.caseystella.stellar.dsl.functions.resolver.ClasspathFunctionRe
 import static com.caseystella.stellar.dsl.functions.resolver.ClasspathFunctionResolver.Config.STELLAR_SEARCH_INCLUDES_KEY;
 import static com.caseystella.stellar.dsl.functions.resolver.ClasspathFunctionResolver.Config.STELLAR_VFS_PATHS;
 
+import com.caseystella.sketchy.serialization.ConversionUtils;
+import com.caseystella.stellar.common.utils.VFSClassloaderUtil;
+import com.caseystella.stellar.dsl.Context;
+import com.caseystella.stellar.dsl.Stellar;
+import com.caseystella.stellar.dsl.StellarFunction;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -26,12 +31,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-
-import com.caseystella.stellar.common.utils.ConversionUtils;
-import com.caseystella.stellar.common.utils.VFSClassloaderUtil;
-import com.caseystella.stellar.dsl.Context;
-import com.caseystella.stellar.dsl.Stellar;
-import com.caseystella.stellar.dsl.StellarFunction;
 import org.apache.commons.vfs2.FileObject;
 import org.apache.commons.vfs2.FileSystemException;
 import org.apache.commons.vfs2.impl.VFSClassLoader;
@@ -142,7 +141,7 @@ public class ClasspathFunctionResolver extends BaseFunctionResolver {
 
   /**
    * Use one or more classloaders
-   * 
+   *
    * @param classloaders
    */
   public void classLoaders(ClassLoader... classloaders) {
@@ -153,7 +152,7 @@ public class ClasspathFunctionResolver extends BaseFunctionResolver {
   /**
    * Includes one or more packages in the Stellar function resolution process. The packages to
    * include can be specified with a regular expression.
-   * 
+   *
    * @param toInclude The regular expressions.
    */
   public void include(String... toInclude) {
@@ -165,7 +164,7 @@ public class ClasspathFunctionResolver extends BaseFunctionResolver {
   /**
    * Excludes one or more packages from the Stellar function resolution process. The packages to
    * exclude can be specified with a regular expression.
-   * 
+   *
    * @param toExclude The regular expressions defining packages that should be excluded.
    */
   public void exclude(String... toExclude) {

@@ -18,6 +18,15 @@ package com.caseystella.sketchy.window;
 
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 
+import com.caseystella.sketchy.serialization.ConversionUtils;
+import com.caseystella.sketchy.window.generated.WindowBaseListener;
+import com.caseystella.sketchy.window.generated.WindowLexer;
+import com.caseystella.sketchy.window.generated.WindowParser;
+import com.caseystella.sketchy.window.predicates.DayPredicates;
+import com.caseystella.stellar.dsl.ErrorListener;
+import com.caseystella.stellar.dsl.GrammarUtils;
+import com.caseystella.stellar.dsl.ParseException;
+import com.caseystella.stellar.dsl.Token;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
@@ -27,21 +36,11 @@ import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.function.Predicate;
-
-import com.caseystella.sketchy.window.generated.WindowBaseListener;
-import com.caseystella.sketchy.window.generated.WindowLexer;
-import com.caseystella.sketchy.window.predicates.DayPredicates;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.TokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
-import com.caseystella.sketchy.window.generated.WindowParser;
-import com.caseystella.stellar.common.utils.ConversionUtils;
-import com.caseystella.stellar.dsl.ErrorListener;
-import com.caseystella.stellar.dsl.GrammarUtils;
-import com.caseystella.stellar.dsl.ParseException;
-import com.caseystella.stellar.dsl.Token;
 
 /**
  * The WindowProcessor instance provides the parser callbacks for the Window selector language. This
@@ -61,7 +60,7 @@ public class WindowProcessor extends WindowBaseListener {
 
   /**
    * Retrieve the window constructed from the window selector statement.
-   * 
+   *
    * @return window returns the window constructed from the window selector statement
    */
   public Window getWindow() {
@@ -88,7 +87,7 @@ public class WindowProcessor extends WindowBaseListener {
   /**
    * If we see an identifier, an argument for an inclusion/exclusion predicate, then we want to just
    * push it onto the stack without its ':'.
-   * 
+   *
    * @param ctx
    */
   @Override
@@ -102,7 +101,7 @@ public class WindowProcessor extends WindowBaseListener {
   /**
    * When we enter a specifier then we want to push onto the stack the specifier marker so we know
    * when the specifier parameters end.
-   * 
+   *
    * @param ctx
    */
   @Override
@@ -150,7 +149,7 @@ public class WindowProcessor extends WindowBaseListener {
 
   /**
    * Normalize the day specifier e.g. tuesdays -{@literal >} tuesday and push onto the stack.
-   * 
+   *
    * @param ctx
    */
   @Override
@@ -174,7 +173,7 @@ public class WindowProcessor extends WindowBaseListener {
   /**
    * When we're beginning an exclusion specifier list, then we push the list token so we know when
    * we're done processing
-   * 
+   *
    * @param ctx
    */
   @Override
@@ -188,7 +187,7 @@ public class WindowProcessor extends WindowBaseListener {
   /**
    * And when we're done with the exclusions specifier, then we set the exclusions to the predicates
    * we've put on the stack.
-   * 
+   *
    * @param ctx
    */
   @Override
@@ -202,7 +201,7 @@ public class WindowProcessor extends WindowBaseListener {
   /**
    * When we're beginning an inclusion specifier list, then we push the list token so we know when
    * we're done processing
-   * 
+   *
    * @param ctx
    */
   @Override
@@ -216,7 +215,7 @@ public class WindowProcessor extends WindowBaseListener {
   /**
    * And when we're done with the inclusions specifier, then we set the exclusions to the predicates
    * we've put on the stack.
-   * 
+   *
    * @param ctx
    */
   @Override
@@ -237,7 +236,7 @@ public class WindowProcessor extends WindowBaseListener {
    * the interval will be set based on the smallest to largest being the start and end time
    * respectively. Thus 'from 1 hour ago to 1 day ago' and 'from 1 day ago to 1 hour ago' are
    * equivalent.
-   * 
+   *
    * @param ctx
    */
   @Override
@@ -254,7 +253,7 @@ public class WindowProcessor extends WindowBaseListener {
 
   /**
    * When we've done specifying a from, then we want to set it.
-   * 
+   *
    * @param ctx
    */
   @Override
@@ -269,7 +268,7 @@ public class WindowProcessor extends WindowBaseListener {
 
   /**
    * We've set a skip distance.
-   * 
+   *
    * @param ctx
    */
   @Override
@@ -284,7 +283,7 @@ public class WindowProcessor extends WindowBaseListener {
 
   /**
    * We've set a window width.
-   * 
+   *
    * @param ctx
    */
   @Override
@@ -301,7 +300,7 @@ public class WindowProcessor extends WindowBaseListener {
 
   /**
    * We've set a time interval, which is a value along with a unit.
-   * 
+   *
    * @param ctx
    */
   @Override
@@ -318,7 +317,7 @@ public class WindowProcessor extends WindowBaseListener {
 
   /**
    * We've set a time amount, which is integral.
-   * 
+   *
    * @param ctx
    */
   @Override
@@ -336,7 +335,7 @@ public class WindowProcessor extends WindowBaseListener {
 
   /**
    * We've set a time unit. We support the timeunits provided by java.util.concurrent.TimeUnit
-   * 
+   *
    * @param ctx
    */
   @Override
@@ -429,7 +428,7 @@ public class WindowProcessor extends WindowBaseListener {
   /**
    * Create a textual representation of the syntax tree. This is useful for those intrepid souls who
    * wish to extend the window selector language. God speed.
-   * 
+   *
    * @param statement
    * @return A string representation of the syntax tree.
    */

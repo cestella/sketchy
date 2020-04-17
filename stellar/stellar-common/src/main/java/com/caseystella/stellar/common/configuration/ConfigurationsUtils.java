@@ -4,9 +4,9 @@
  * copyright ownership. The ASF licenses this file to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance with the License. You may obtain a
  * copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -14,16 +14,10 @@
  */
 package com.caseystella.stellar.common.configuration;
 
+import com.caseystella.sketchy.serialization.JSONUtils;
+import com.caseystella.stellar.common.Constants;
 import com.caseystella.stellar.dsl.Context;
 import com.caseystella.stellar.dsl.StellarFunctions;
-import org.apache.curator.RetryPolicy;
-import org.apache.curator.framework.CuratorFramework;
-import org.apache.curator.framework.CuratorFrameworkFactory;
-import org.apache.curator.retry.ExponentialBackoffRetry;
-import com.caseystella.stellar.common.Constants;
-import com.caseystella.stellar.common.utils.JSONUtils;
-import org.apache.zookeeper.KeeperException;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -32,6 +26,11 @@ import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import org.apache.curator.RetryPolicy;
+import org.apache.curator.framework.CuratorFramework;
+import org.apache.curator.framework.CuratorFrameworkFactory;
+import org.apache.curator.retry.ExponentialBackoffRetry;
+import org.apache.zookeeper.KeeperException;
 
 public class ConfigurationsUtils {
 

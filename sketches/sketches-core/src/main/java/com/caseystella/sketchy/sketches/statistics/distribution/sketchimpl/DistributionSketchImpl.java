@@ -17,10 +17,10 @@
 
 package com.caseystella.sketchy.sketches.statistics.distribution.sketchimpl;
 
+import com.caseystella.sketchy.serialization.SerDeUtils;
 import com.caseystella.sketchy.sketches.statistics.distribution.DistributionSketch;
 import com.caseystella.sketchy.sketches.statistics.distribution.types.number.NumberType;
 import com.caseystella.sketchy.sketches.statistics.distribution.types.sketch.SketchType;
-import com.caseystella.stellar.common.utils.SerDeUtils;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
@@ -104,7 +104,7 @@ public abstract class DistributionSketchImpl<T extends Number, S>
   /**
    * Add a value. NOTE: This does not store the point, but only updates internal state. NOTE: This
    * is NOT threadsafe.
-   * 
+   *
    * @param value
    */
   @Override
@@ -212,7 +212,7 @@ public abstract class DistributionSketchImpl<T extends Number, S>
   /**
    * Unbiased kurtosis. See
    * http://commons.apache.org/proper/commons-math/apidocs/org/apache/commons/math4/stat/descriptive/moment/Kurtosis.html
-   * 
+   *
    * @return unbiased kurtosis
    */
   @Override
@@ -230,7 +230,7 @@ public abstract class DistributionSketchImpl<T extends Number, S>
   /**
    * Unbiased skewness. See
    * http://commons.apache.org/proper/commons-math/apidocs/org/apache/commons/math4/stat/descriptive/moment/Skewness.html
-   * 
+   *
    * @return unbiased skewness
    */
   @Override

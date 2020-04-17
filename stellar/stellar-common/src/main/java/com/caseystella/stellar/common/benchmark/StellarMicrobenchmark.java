@@ -14,7 +14,7 @@
  */
 package com.caseystella.stellar.common.benchmark;
 
-import com.caseystella.stellar.common.utils.JSONUtils;
+import com.caseystella.sketchy.serialization.JSONUtils;
 import com.caseystella.stellar.common.utils.cli.OptionHandler;
 import com.caseystella.stellar.dsl.Context;
 import com.caseystella.stellar.dsl.MapVariableResolver;
@@ -22,7 +22,6 @@ import com.caseystella.stellar.dsl.StellarFunctions;
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import com.google.common.io.Files;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
@@ -52,6 +51,7 @@ public class StellarMicrobenchmark {
   public static int DEFAULT_WARMUP = 100;
   public static int DEFAULT_NUM_TIMES = 1000;
   public static Double[] DEFAULT_PERCENTILES = new Double[] {50d, 75d, 95d, 99d};
+
 
   enum BenchmarkOptions {
     HELP("h", new OptionHandler<BenchmarkOptions>() {
