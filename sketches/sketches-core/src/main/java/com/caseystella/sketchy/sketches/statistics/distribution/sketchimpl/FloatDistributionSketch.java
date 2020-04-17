@@ -6,7 +6,7 @@ import com.caseystella.sketchy.sketches.statistics.distribution.types.sketch.Ske
 import com.caseystella.sketchy.sketches.statistics.distribution.types.number.NumberTypes;
 import org.apache.datasketches.kll.KllFloatsSketch;
 
-public class FloatDistributionSketch extends DistributionSketchImpl<Float, KllFloatsSketch> {
+public class FloatDistributionSketch extends DistributionSketchImpl<Double, KllFloatsSketch> {
 
   public FloatDistributionSketch() {
   }
@@ -16,8 +16,8 @@ public class FloatDistributionSketch extends DistributionSketchImpl<Float, KllFl
   }
 
   @Override
-  protected NumberType<Float> createNumberType() {
-    return NumberTypes.FLOAT.get();
+  protected NumberType<Double> createNumberType() {
+    return NumberTypes.DOUBLE.get();
   }
 
   @Override
@@ -26,7 +26,7 @@ public class FloatDistributionSketch extends DistributionSketchImpl<Float, KllFl
   }
 
   @Override
-  protected DistributionSketchImpl<Float, KllFloatsSketch> createNew() {
+  protected DistributionSketchImpl<Double, KllFloatsSketch> createNew() {
     return new FloatDistributionSketch(getK());
   }
 }
