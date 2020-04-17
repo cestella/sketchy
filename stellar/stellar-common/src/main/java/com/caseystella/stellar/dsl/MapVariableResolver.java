@@ -18,7 +18,6 @@
 
 package com.caseystella.stellar.dsl;
 
-
 import com.caseystella.stellar.common.utils.ConcatMap;
 
 import java.util.ArrayList;
@@ -27,43 +26,42 @@ import java.util.Map;
 
 public class MapVariableResolver implements VariableResolver {
 
+    List<Map> variableMappings = new ArrayList<>();
 
-  List<Map> variableMappings = new ArrayList<>();
-
-  public MapVariableResolver(Map variableMappingOne, Map... variableMapping) {
-    if (variableMappingOne != null) {
-      variableMappings.add(variableMappingOne);
-    }
-    add(variableMapping);
-  }
-
-  public void add(Map... ms) {
-    if (ms != null) {
-      for (Map m : ms) {
-        if (m != null) {
-          this.variableMappings.add(m);
+    public MapVariableResolver(Map variableMappingOne, Map... variableMapping) {
+        if (variableMappingOne != null) {
+            variableMappings.add(variableMappingOne);
         }
-      }
-    }
-  }
-
-  @Override
-  public Object resolve(String variable) {
-    if(variable != null && variable.equals(VariableResolver.ALL_FIELDS)) {
-      return new ConcatMap(variableMappings);
+        add(variableMapping);
     }
 
-    for (Map variableMapping : variableMappings) {
-      Object o = variableMapping.get(variable);
-      if (o != null) {
-        return o;
-      }
+    public void add(Map... ms) {
+        if (ms != null) {
+            for (Map m : ms) {
+                if (m != null) {
+                    this.variableMappings.add(m);
+                }
+            }
+        }
     }
-    return null;
-  }
 
-  @Override
-  public boolean exists(String variable) {
-    return true;
-  }
+    @Override
+    public Object resolve(String variable) {
+        if (variable != null && variable.equals(VariableResolver.ALL_FIELDS)) {
+            return new ConcatMap(variableMappings);
+        }
+
+        for (Map variableMapping : variableMappings) {
+            Object o = variableMapping.get(variable);
+            if (o != null) {
+                return o;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public boolean exists(String variable) {
+        return true;
+    }
 }

@@ -26,62 +26,55 @@ import java.util.function.Function;
 
 public class SystemFunctions {
 
-  @Stellar(namespace = "SYSTEM",
-          name = "ENV_GET",
-          description = "Returns the value associated with an environment variable",
-          params = {
-                  "env_var - Environment variable name to get the value for"
-          },
-          returns = "String"
-  )
-  public static class EnvGet extends BaseStellarFunction {
-    private Environment env;
+    @Stellar(namespace = "SYSTEM", name = "ENV_GET", description = "Returns the value associated with an environment variable", params = {
+            "env_var - Environment variable name to get the value for" }, returns = "String")
+    public static class EnvGet extends BaseStellarFunction {
+        private Environment env;
 
-    public EnvGet() {
-      this(new Environment());
+        public EnvGet() {
+            this(new Environment());
+        }
+
+        public EnvGet(Environment env) {
+            this.env = env;
+        }
+
+        @Override
+        public Object apply(List<Object> args) {
+            return extractTypeChecked(args, 0, String.class, x -> env.get((String) x.get(0)));
+        }
     }
 
-    public EnvGet(Environment env) {
-      this.env = env;
+    /**
+     * Extract type-checked value from an argument list using the specified type check and extraction function
+     *
+     * @param args
+     *            Arguments to check
+     * @param i
+     *            Index of argument to extract
+     * @param clazz
+     *            Object type to verify
+     * @param extractFunc
+     *            Function applied to extract the value from args
+     * @return value from args if passes type checks, null otherwise
+     */
+    public static Object extractTypeChecked(List<Object> args, int i, Class clazz,
+            Function<List<Object>, Object> extractFunc) {
+        if (args.size() < i + 1) {
+            return null;
+        } else if (clazz.isInstance(args.get(i))) {
+            return extractFunc.apply(args);
+        } else {
+            return null;
+        }
     }
 
-    @Override
-    public Object apply(List<Object> args) {
-      return extractTypeChecked(args, 0, String.class, x -> env.get((String) x.get(0)));
+    @Stellar(namespace = "SYSTEM", name = "PROPERTY_GET", description = "Returns the value associated with a Java system property", params = {
+            "key - Property to get the value for" }, returns = "String")
+    public static class PropertyGet extends BaseStellarFunction {
+        @Override
+        public Object apply(List<Object> args) {
+            return extractTypeChecked(args, 0, String.class, x -> System.getProperty((String) args.get(0)));
+        }
     }
-  }
-
-  /**
-   * Extract type-checked value from an argument list using the specified type check and extraction function
-   *
-   * @param args Arguments to check
-   * @param i Index of argument to extract
-   * @param clazz Object type to verify
-   * @param extractFunc Function applied to extract the value from args
-   * @return value from args if passes type checks, null otherwise
-   */
-  public static Object extractTypeChecked(List<Object> args, int i, Class clazz, Function<List<Object>, Object> extractFunc) {
-    if (args.size() < i + 1) {
-      return null;
-    } else if (clazz.isInstance(args.get(i))) {
-      return extractFunc.apply(args);
-    } else {
-      return null;
-    }
-  }
-
-  @Stellar(namespace = "SYSTEM",
-          name = "PROPERTY_GET",
-          description = "Returns the value associated with a Java system property",
-          params = {
-                  "key - Property to get the value for"
-          },
-          returns = "String"
-  )
-  public static class PropertyGet extends BaseStellarFunction {
-    @Override
-    public Object apply(List<Object> args) {
-      return extractTypeChecked(args, 0, String.class, x -> System.getProperty((String) args.get(0)));
-    }
-  }
 }

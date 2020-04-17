@@ -19,5 +19,5 @@
 package com.caseystella.stellar.common;
 
 public interface BooleanOp {
-  boolean op(boolean left, boolean right);
+    boolean op(boolean left, boolean right);
 }

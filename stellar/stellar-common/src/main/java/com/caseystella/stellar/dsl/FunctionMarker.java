@@ -18,4 +18,5 @@
 
 package com.caseystella.stellar.dsl;
 
-public class FunctionMarker { }
+public class FunctionMarker {
+}

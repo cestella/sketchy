@@ -23,7 +23,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,62 +34,91 @@ import org.junit.jupiter.api.Test;
 
 public class RegExFunctionsTest {
 
-  // test RegExMatch
-  @Test
-  public void testRegExMatch() {
-    final Map<String, String> variableMap = new HashMap<String, String>() {{
-      put("numbers", "12345");
-      put("numberPattern", "\\d(\\d)(\\d).*");
-      put("letters", "abcde");
-      put("letterPattern", "[a-zA-Z]+");
-      put("empty", "");
-    }};
+    // test RegExMatch
+    @Test
+    public void testRegExMatch() {
+        final Map<String, String> variableMap = new HashMap<String, String>() {
+            {
+                put("numbers", "12345");
+                put("numberPattern", "\\d(\\d)(\\d).*");
+                put("letters", "abcde");
+                put("letterPattern", "[a-zA-Z]+");
+                put("empty", "");
+            }
+        };
 
-    Assertions.assertTrue(StellarProcessorUtils.runPredicate("REGEXP_MATCH(numbers,numberPattern)", new DefaultVariableResolver(v -> variableMap.get(v), v -> variableMap.containsKey(v))));
-    Assertions.assertFalse(StellarProcessorUtils.runPredicate("REGEXP_MATCH(letters,numberPattern)", new DefaultVariableResolver(v -> variableMap.get(v), v -> variableMap.containsKey(v))));
-    Assertions.assertTrue(StellarProcessorUtils.runPredicate("REGEXP_MATCH(letters,[numberPattern,letterPattern])", new DefaultVariableResolver(v -> variableMap.get(v), v -> variableMap.containsKey(v))));
-    Assertions.assertFalse(StellarProcessorUtils.runPredicate("REGEXP_MATCH(letters,[numberPattern])", new DefaultVariableResolver(v -> variableMap.get(v), v -> variableMap.containsKey(v))));
-    Assertions.assertFalse(StellarProcessorUtils.runPredicate("REGEXP_MATCH(letters,[numberPattern,numberPattern])", new DefaultVariableResolver(v -> variableMap.get(v), v -> variableMap.containsKey(v))));
-    Assertions.assertFalse(StellarProcessorUtils.runPredicate("REGEXP_MATCH(null,[numberPattern])", new DefaultVariableResolver(v -> variableMap.get(v), v -> variableMap.containsKey(v))));
-    Assertions.assertFalse(StellarProcessorUtils.runPredicate("REGEXP_MATCH(letters,null)", new DefaultVariableResolver(v -> variableMap.get(v), v -> variableMap.containsKey(v))));
-    Assertions.assertFalse(StellarProcessorUtils.runPredicate("REGEXP_MATCH(letters,[null])", new DefaultVariableResolver(v -> variableMap.get(v), v -> variableMap.containsKey(v))));
-  }
+        Assertions.assertTrue(StellarProcessorUtils.runPredicate("REGEXP_MATCH(numbers,numberPattern)",
+                new DefaultVariableResolver(v -> variableMap.get(v), v -> variableMap.containsKey(v))));
+        Assertions.assertFalse(StellarProcessorUtils.runPredicate("REGEXP_MATCH(letters,numberPattern)",
+                new DefaultVariableResolver(v -> variableMap.get(v), v -> variableMap.containsKey(v))));
+        Assertions.assertTrue(StellarProcessorUtils.runPredicate("REGEXP_MATCH(letters,[numberPattern,letterPattern])",
+                new DefaultVariableResolver(v -> variableMap.get(v), v -> variableMap.containsKey(v))));
+        Assertions.assertFalse(StellarProcessorUtils.runPredicate("REGEXP_MATCH(letters,[numberPattern])",
+                new DefaultVariableResolver(v -> variableMap.get(v), v -> variableMap.containsKey(v))));
+        Assertions.assertFalse(StellarProcessorUtils.runPredicate("REGEXP_MATCH(letters,[numberPattern,numberPattern])",
+                new DefaultVariableResolver(v -> variableMap.get(v), v -> variableMap.containsKey(v))));
+        Assertions.assertFalse(StellarProcessorUtils.runPredicate("REGEXP_MATCH(null,[numberPattern])",
+                new DefaultVariableResolver(v -> variableMap.get(v), v -> variableMap.containsKey(v))));
+        Assertions.assertFalse(StellarProcessorUtils.runPredicate("REGEXP_MATCH(letters,null)",
+                new DefaultVariableResolver(v -> variableMap.get(v), v -> variableMap.containsKey(v))));
+        Assertions.assertFalse(StellarProcessorUtils.runPredicate("REGEXP_MATCH(letters,[null])",
+                new DefaultVariableResolver(v -> variableMap.get(v), v -> variableMap.containsKey(v))));
+    }
 
-  @Test
-  public void testRegExGroupVal() {
-    final Map<String, String> variableMap = new HashMap<String, String>() {{
-      put("numbers", "12345");
-      put("numberPattern", "\\d(\\d)(\\d).*");
-      put("numberPatternNoCaptures", "\\d\\d\\d.*");
-      put("letters", "abcde");
-      put("empty", "");
-    }};
-    Assertions.assertTrue(StellarProcessorUtils.runPredicate("REGEXP_GROUP_VAL(numbers,numberPattern,2) == '3'", new DefaultVariableResolver(v -> variableMap.get(v), v -> variableMap.containsKey(v))));
-    Assertions.assertTrue(StellarProcessorUtils.runPredicate("REGEXP_GROUP_VAL(letters,numberPattern,2) == null", new DefaultVariableResolver(v -> variableMap.get(v), v -> variableMap.containsKey(v))));
-    Assertions.assertTrue(StellarProcessorUtils.runPredicate("REGEXP_GROUP_VAL(empty,numberPattern,2) == null", new DefaultVariableResolver(v -> variableMap.get(v), v -> variableMap.containsKey(v))));
-    Assertions.assertTrue(StellarProcessorUtils.runPredicate("REGEXP_GROUP_VAL(numbers,numberPatternNoCaptures,2) == null", new DefaultVariableResolver(v -> variableMap.get(v), v -> variableMap.containsKey(v))));
+    @Test
+    public void testRegExGroupVal() {
+        final Map<String, String> variableMap = new HashMap<String, String>() {
+            {
+                put("numbers", "12345");
+                put("numberPattern", "\\d(\\d)(\\d).*");
+                put("numberPatternNoCaptures", "\\d\\d\\d.*");
+                put("letters", "abcde");
+                put("empty", "");
+            }
+        };
+        Assertions.assertTrue(StellarProcessorUtils.runPredicate("REGEXP_GROUP_VAL(numbers,numberPattern,2) == '3'",
+                new DefaultVariableResolver(v -> variableMap.get(v), v -> variableMap.containsKey(v))));
+        Assertions.assertTrue(StellarProcessorUtils.runPredicate("REGEXP_GROUP_VAL(letters,numberPattern,2) == null",
+                new DefaultVariableResolver(v -> variableMap.get(v), v -> variableMap.containsKey(v))));
+        Assertions.assertTrue(StellarProcessorUtils.runPredicate("REGEXP_GROUP_VAL(empty,numberPattern,2) == null",
+                new DefaultVariableResolver(v -> variableMap.get(v), v -> variableMap.containsKey(v))));
+        Assertions.assertTrue(
+                StellarProcessorUtils.runPredicate("REGEXP_GROUP_VAL(numbers,numberPatternNoCaptures,2) == null",
+                        new DefaultVariableResolver(v -> variableMap.get(v), v -> variableMap.containsKey(v))));
 
-    Assertions.assertThrows(ParseException.class, () -> StellarProcessorUtils.runPredicate("REGEXP_GROUP_VAL(2) == null",
-        new DefaultVariableResolver(v -> variableMap.get(v), v -> variableMap.containsKey(v))),
-        "Did not fail on wrong number of parameters");
-  }
+        Assertions.assertThrows(ParseException.class,
+                () -> StellarProcessorUtils.runPredicate("REGEXP_GROUP_VAL(2) == null",
+                        new DefaultVariableResolver(v -> variableMap.get(v), v -> variableMap.containsKey(v))),
+                "Did not fail on wrong number of parameters");
+    }
 
-  @Test
-  public void testRegExReplace() {
-    final Map<String, String> variableMap = new HashMap<String, String>() {{
-      put("numbers", "12345");
-      put("numberPattern", "\\d(\\d)(\\d).*");
-      put("letters", "abcde");
-      put("empty", "");
-    }};
+    @Test
+    public void testRegExReplace() {
+        final Map<String, String> variableMap = new HashMap<String, String>() {
+            {
+                put("numbers", "12345");
+                put("numberPattern", "\\d(\\d)(\\d).*");
+                put("letters", "abcde");
+                put("empty", "");
+            }
+        };
 
-    Assertions.assertTrue(StellarProcessorUtils.runPredicate("REGEXP_REPLACE(empty, numberPattern, letters) == null", new DefaultVariableResolver(v -> variableMap.get(v), v -> variableMap.containsKey(v))));
-    Assertions.assertTrue(StellarProcessorUtils.runPredicate("REGEXP_REPLACE(numbers, empty, empty) == numbers", new DefaultVariableResolver(v -> variableMap.get(v), v -> variableMap.containsKey(v))));
-    Assertions.assertTrue(StellarProcessorUtils.runPredicate("REGEXP_REPLACE(numbers, empty, letters) == numbers", new DefaultVariableResolver(v -> variableMap.get(v), v -> variableMap.containsKey(v))));
-    Assertions.assertTrue(StellarProcessorUtils.runPredicate("REGEXP_REPLACE(numbers, numberPattern, empty) == numbers", new DefaultVariableResolver(v -> variableMap.get(v), v -> variableMap.containsKey(v))));
-    Assertions.assertTrue(StellarProcessorUtils.runPredicate("REGEXP_REPLACE(numbers, numberPattern, letters) == letters", new DefaultVariableResolver(v -> variableMap.get(v), v -> variableMap.containsKey(v))));
-    Assertions.assertTrue(StellarProcessorUtils.runPredicate("REGEXP_REPLACE(letters, numberPattern, numbers) == letters", new DefaultVariableResolver(v -> variableMap.get(v), v -> variableMap.containsKey(v))));
-  }
-
+        Assertions
+                .assertTrue(StellarProcessorUtils.runPredicate("REGEXP_REPLACE(empty, numberPattern, letters) == null",
+                        new DefaultVariableResolver(v -> variableMap.get(v), v -> variableMap.containsKey(v))));
+        Assertions.assertTrue(StellarProcessorUtils.runPredicate("REGEXP_REPLACE(numbers, empty, empty) == numbers",
+                new DefaultVariableResolver(v -> variableMap.get(v), v -> variableMap.containsKey(v))));
+        Assertions.assertTrue(StellarProcessorUtils.runPredicate("REGEXP_REPLACE(numbers, empty, letters) == numbers",
+                new DefaultVariableResolver(v -> variableMap.get(v), v -> variableMap.containsKey(v))));
+        Assertions.assertTrue(
+                StellarProcessorUtils.runPredicate("REGEXP_REPLACE(numbers, numberPattern, empty) == numbers",
+                        new DefaultVariableResolver(v -> variableMap.get(v), v -> variableMap.containsKey(v))));
+        Assertions.assertTrue(
+                StellarProcessorUtils.runPredicate("REGEXP_REPLACE(numbers, numberPattern, letters) == letters",
+                        new DefaultVariableResolver(v -> variableMap.get(v), v -> variableMap.containsKey(v))));
+        Assertions.assertTrue(
+                StellarProcessorUtils.runPredicate("REGEXP_REPLACE(letters, numberPattern, numbers) == letters",
+                        new DefaultVariableResolver(v -> variableMap.get(v), v -> variableMap.containsKey(v))));
+    }
 
 }

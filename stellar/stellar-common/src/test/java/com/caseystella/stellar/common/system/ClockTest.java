@@ -29,26 +29,27 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 public class ClockTest {
 
-  @Test
-  public void returns_system_time() throws Exception {
-    Clock clock = new Clock();
-    long t1 = clock.currentTimeMillis();
-    Thread.sleep(50);
-    long t2 = clock.currentTimeMillis();
-    Thread.sleep(50);
-    long t3 = clock.currentTimeMillis();
-    assertThat("t3 should be greater", t3 > t2, equalTo(true));
-    assertThat("t2 should be greater", t2 > t1, equalTo(true));
-  }
+    @Test
+    public void returns_system_time() throws Exception {
+        Clock clock = new Clock();
+        long t1 = clock.currentTimeMillis();
+        Thread.sleep(50);
+        long t2 = clock.currentTimeMillis();
+        Thread.sleep(50);
+        long t3 = clock.currentTimeMillis();
+        assertThat("t3 should be greater", t3 > t2, equalTo(true));
+        assertThat("t2 should be greater", t2 > t1, equalTo(true));
+    }
 
-  @Test
-  public void formats_system_time_given_passed_format() throws Exception {
-    Clock clock = Mockito.spy(Clock.class);
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSSZ");
-    sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-    Date date = sdf.parse("20160615183527162+0000");
-    Mockito.when(clock.currentTimeMillis()).thenReturn(date.getTime());
-    assertThat("time not right", clock.currentTimeFormatted("yyyyMMddHHmmssSSSZ"), equalTo("20160615183527162+0000"));
-  }
+    @Test
+    public void formats_system_time_given_passed_format() throws Exception {
+        Clock clock = Mockito.spy(Clock.class);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSSZ");
+        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+        Date date = sdf.parse("20160615183527162+0000");
+        Mockito.when(clock.currentTimeMillis()).thenReturn(date.getTime());
+        assertThat("time not right", clock.currentTimeFormatted("yyyyMMddHHmmssSSSZ"),
+                equalTo("20160615183527162+0000"));
+    }
 
 }

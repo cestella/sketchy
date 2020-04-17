@@ -23,12 +23,12 @@ import com.caseystella.stellar.common.generated.StellarParser;
 import com.caseystella.stellar.dsl.Token;
 
 public class DoubleLiteralEvaluator implements NumberEvaluator<StellarParser.DoubleLiteralContext> {
-  @Override
-  public Token<Double> evaluate(StellarParser.DoubleLiteralContext context, FrameContext.Context contextVariety) {
-    if (context == null) {
-      throw new IllegalArgumentException("Cannot evaluate a context that is null.");
-    }
+    @Override
+    public Token<Double> evaluate(StellarParser.DoubleLiteralContext context, FrameContext.Context contextVariety) {
+        if (context == null) {
+            throw new IllegalArgumentException("Cannot evaluate a context that is null.");
+        }
 
-    return new Token<>(Double.parseDouble(context.getText()), Double.class, contextVariety);
-  }
+        return new Token<>(Double.parseDouble(context.getText()), Double.class, contextVariety);
+    }
 }

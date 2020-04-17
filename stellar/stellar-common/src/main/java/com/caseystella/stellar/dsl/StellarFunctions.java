@@ -24,15 +24,15 @@ import com.caseystella.stellar.dsl.functions.resolver.SingletonFunctionResolver;
 
 public class StellarFunctions {
 
-  public static FunctionResolver FUNCTION_RESOLVER() {
-    return SingletonFunctionResolver.getInstance();
-  }
+    public static FunctionResolver FUNCTION_RESOLVER() {
+        return SingletonFunctionResolver.getInstance();
+    }
 
-  public static void initialize(Context context) {
-    SingletonFunctionResolver.getInstance().initialize(context);
-  }
+    public static void initialize(Context context) {
+        SingletonFunctionResolver.getInstance().initialize(context);
+    }
 
-  public static void close() throws IOException {
-    SingletonFunctionResolver.getInstance().close();
-  }
+    public static void close() throws IOException {
+        SingletonFunctionResolver.getInstance().close();
+    }
 }

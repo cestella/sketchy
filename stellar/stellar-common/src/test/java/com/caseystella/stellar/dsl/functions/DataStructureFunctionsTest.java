@@ -34,102 +34,87 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DataStructureFunctionsTest {
 
-  @Test
-  public void is_empty_handles_happy_path() {
-    DataStructureFunctions.IsEmpty isEmpty = new DataStructureFunctions.IsEmpty();
-    {
-      boolean empty = (boolean) isEmpty.apply(ImmutableList.of("hello"));
-      assertThat("should be false", empty, CoreMatchers.equalTo(false));
+    @Test
+    public void is_empty_handles_happy_path() {
+        DataStructureFunctions.IsEmpty isEmpty = new DataStructureFunctions.IsEmpty();
+        {
+            boolean empty = (boolean) isEmpty.apply(ImmutableList.of("hello"));
+            assertThat("should be false", empty, CoreMatchers.equalTo(false));
+        }
+        {
+            boolean empty = (boolean) isEmpty.apply(ImmutableList.of(ImmutableList.of("hello", "world")));
+            assertThat("should be false", empty, CoreMatchers.equalTo(false));
+        }
+        {
+            boolean empty = (boolean) isEmpty.apply(ImmutableList.of(1));
+            assertThat("should be false", empty, CoreMatchers.equalTo(false));
+        }
+        {
+            boolean empty = (boolean) isEmpty.apply(ImmutableList.of(ImmutableMap.of("mykey", "myvalue")));
+            assertThat("should be false", empty, CoreMatchers.equalTo(false));
+        }
     }
-    {
-      boolean empty = (boolean) isEmpty.apply(ImmutableList.of(ImmutableList.of("hello", "world")));
-      assertThat("should be false", empty, CoreMatchers.equalTo(false));
-    }
-    {
-      boolean empty = (boolean) isEmpty.apply(ImmutableList.of(1));
-      assertThat("should be false", empty, CoreMatchers.equalTo(false));
-    }
-    {
-      boolean empty = (boolean) isEmpty.apply(ImmutableList.of(ImmutableMap.of("mykey", "myvalue")));
-      assertThat("should be false", empty, CoreMatchers.equalTo(false));
-    }
-  }
 
-  @Test
-  public void is_empty_handles_empty_values() {
-    DataStructureFunctions.IsEmpty isEmpty = new DataStructureFunctions.IsEmpty();
-    {
-      boolean empty = (boolean) isEmpty.apply(ImmutableList.of());
-      assertThat("should be true", empty, CoreMatchers.equalTo(true));
+    @Test
+    public void is_empty_handles_empty_values() {
+        DataStructureFunctions.IsEmpty isEmpty = new DataStructureFunctions.IsEmpty();
+        {
+            boolean empty = (boolean) isEmpty.apply(ImmutableList.of());
+            assertThat("should be true", empty, CoreMatchers.equalTo(true));
+        }
+        {
+            boolean empty = (boolean) isEmpty.apply(null);
+            assertThat("should be true", empty, CoreMatchers.equalTo(true));
+        }
+        {
+            boolean empty = (boolean) isEmpty.apply(ImmutableList.of(""));
+            assertThat("should be true", empty, CoreMatchers.equalTo(true));
+        }
+        {
+            boolean empty = (boolean) isEmpty.apply(ImmutableList.of(ImmutableMap.of()));
+            assertThat("should be true", empty, CoreMatchers.equalTo(true));
+        }
     }
-    {
-      boolean empty = (boolean) isEmpty.apply(null);
-      assertThat("should be true", empty, CoreMatchers.equalTo(true));
-    }
-    {
-      boolean empty = (boolean) isEmpty.apply(ImmutableList.of(""));
-      assertThat("should be true", empty, CoreMatchers.equalTo(true));
-    }
-    {
-      boolean empty = (boolean) isEmpty.apply(ImmutableList.of(ImmutableMap.of()));
-      assertThat("should be true", empty, CoreMatchers.equalTo(true));
-    }
-  }
 
-  @Test
-  @SuppressWarnings("unchecked")
-  public void listAdd_number() {
-    for(String expr : ImmutableList.of("LIST_ADD(my_list, 1)"
-                                      ,"LIST_ADD([], 1)"
-                                      ,"LIST_ADD([], val)"
-                                      )
-       )
-    {
-      Object o = StellarProcessorUtils.run(expr, ImmutableMap.of("my_list", new ArrayList<>(), "val", 1));
-      assertTrue(o instanceof List);
-      List<Number> result = (List<Number>) o;
-      assertEquals(1, result.size());
-      assertEquals(1, result.get(0));
+    @Test
+    @SuppressWarnings("unchecked")
+    public void listAdd_number() {
+        for (String expr : ImmutableList.of("LIST_ADD(my_list, 1)", "LIST_ADD([], 1)", "LIST_ADD([], val)")) {
+            Object o = StellarProcessorUtils.run(expr, ImmutableMap.of("my_list", new ArrayList<>(), "val", 1));
+            assertTrue(o instanceof List);
+            List<Number> result = (List<Number>) o;
+            assertEquals(1, result.size());
+            assertEquals(1, result.get(0));
+        }
     }
-  }
 
-  @Test
-  @SuppressWarnings("unchecked")
-  public void listAdd_mixed() {
-    for(String expr : ImmutableList.of("LIST_ADD(my_list, 1)"
-                                      ,"LIST_ADD(['foo'], 1)"
-                                      ,"LIST_ADD(['foo'], val)"
-                                      )
-       )
-    {
-      ArrayList<Object> list = new ArrayList<>();
-      list.add("foo");
-      Object o = StellarProcessorUtils.run(expr, ImmutableMap.of("my_list", list, "val", 1));
-      assertTrue(o instanceof List);
-      List<Object> result = (List<Object>) o;
-      assertEquals(2, result.size());
-      assertEquals("foo", result.get(0));
-      assertEquals(1, result.get(1));
+    @Test
+    @SuppressWarnings("unchecked")
+    public void listAdd_mixed() {
+        for (String expr : ImmutableList.of("LIST_ADD(my_list, 1)", "LIST_ADD(['foo'], 1)", "LIST_ADD(['foo'], val)")) {
+            ArrayList<Object> list = new ArrayList<>();
+            list.add("foo");
+            Object o = StellarProcessorUtils.run(expr, ImmutableMap.of("my_list", list, "val", 1));
+            assertTrue(o instanceof List);
+            List<Object> result = (List<Object>) o;
+            assertEquals(2, result.size());
+            assertEquals("foo", result.get(0));
+            assertEquals(1, result.get(1));
+        }
     }
-  }
 
-  @Test
-  @SuppressWarnings("unchecked")
-  public void listAdd_number_nonempty() {
-    for(String expr : ImmutableList.of("LIST_ADD(my_list, 2)"
-                                      ,"LIST_ADD([1], 2)"
-                                      ,"LIST_ADD([1], val)"
-                                      )
-       )
-    {
-      ArrayList<Integer> list = new ArrayList<>();
-      list.add(1);
-      Object o = StellarProcessorUtils.run(expr, ImmutableMap.of("my_list", list, "val", 2));
-      assertTrue(o instanceof List);
-      List<Number> result = (List<Number>) o;
-      assertEquals(2, result.size());
-      assertEquals(1, result.get(0));
-      assertEquals(2, result.get(1));
+    @Test
+    @SuppressWarnings("unchecked")
+    public void listAdd_number_nonempty() {
+        for (String expr : ImmutableList.of("LIST_ADD(my_list, 2)", "LIST_ADD([1], 2)", "LIST_ADD([1], val)")) {
+            ArrayList<Integer> list = new ArrayList<>();
+            list.add(1);
+            Object o = StellarProcessorUtils.run(expr, ImmutableMap.of("my_list", list, "val", 2));
+            assertTrue(o instanceof List);
+            List<Number> result = (List<Number>) o;
+            assertEquals(2, result.size());
+            assertEquals(1, result.get(0));
+            assertEquals(2, result.get(1));
+        }
     }
-  }
 }

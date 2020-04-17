@@ -28,36 +28,36 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 public class IntLiteralEvaluatorTest {
-  NumberEvaluator<StellarParser.IntLiteralContext> evaluator;
-  StellarParser.IntLiteralContext context;
+    NumberEvaluator<StellarParser.IntLiteralContext> evaluator;
+    StellarParser.IntLiteralContext context;
 
-  @BeforeEach
-  public void setUp() throws Exception {
-    evaluator = new IntLiteralEvaluator();
-    context = mock(StellarParser.IntLiteralContext.class);
-  }
+    @BeforeEach
+    public void setUp() throws Exception {
+        evaluator = new IntLiteralEvaluator();
+        context = mock(StellarParser.IntLiteralContext.class);
+    }
 
-  @Test
-  public void verifyHappyPathEvaluation() {
-    when(context.getText()).thenReturn("100");
+    @Test
+    public void verifyHappyPathEvaluation() {
+        when(context.getText()).thenReturn("100");
 
-    Token<? extends Number> evaluated = evaluator.evaluate(context, null);
-    assertEquals(new Token<>(100, Integer.class, null), evaluated);
+        Token<? extends Number> evaluated = evaluator.evaluate(context, null);
+        assertEquals(new Token<>(100, Integer.class, null), evaluated);
 
-    verify(context).getText();
-    verifyNoMoreInteractions(context);
-  }
+        verify(context).getText();
+        verifyNoMoreInteractions(context);
+    }
 
-  @Test
-  public void verifyNumberFormationExceptionWithEmptyString() {
-    when(context.getText()).thenReturn("");
-    assertThrows(NumberFormatException.class, () -> evaluator.evaluate(context, null));
-  }
+    @Test
+    public void verifyNumberFormationExceptionWithEmptyString() {
+        when(context.getText()).thenReturn("");
+        assertThrows(NumberFormatException.class, () -> evaluator.evaluate(context, null));
+    }
 
-  @Test
-  public void throwIllegalArgumentExceptionWhenContextIsNull() {
-    IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> evaluator.evaluate(null, null));
-    assertEquals("Cannot evaluate a context that is null.", e.getMessage());
-  }
+    @Test
+    public void throwIllegalArgumentExceptionWhenContextIsNull() {
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> evaluator.evaluate(null, null));
+        assertEquals("Cannot evaluate a context that is null.", e.getMessage());
+    }
 
 }

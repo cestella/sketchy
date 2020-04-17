@@ -33,83 +33,73 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class MagicUndefineGlobalTest {
 
-  MagicUndefineGlobal magic;
-  DefaultStellarShellExecutor executor;
+    MagicUndefineGlobal magic;
+    DefaultStellarShellExecutor executor;
 
-  @BeforeEach
-  public void setup() throws Exception {
+    @BeforeEach
+    public void setup() throws Exception {
 
-    // setup the %magic
-    magic = new MagicUndefineGlobal();
+        // setup the %magic
+        magic = new MagicUndefineGlobal();
 
-    // setup the executor
-    Properties props = new Properties();
-    executor = new DefaultStellarShellExecutor(props, Optional.empty());
-    executor.init();
-  }
-
-  @Test
-  public void testGetCommand() {
-    assertEquals("%undefine", magic.getCommand());
-  }
-
-  @Test
-  public void testShouldMatch() {
-    List<String> inputs = Arrays.asList(
-            "%undefine",
-            "   %undefine   ",
-            "%undefine   FOO",
-            "    %undefine    FOO "
-    );
-    for(String in : inputs) {
-      assertTrue(magic.getMatcher().apply(in), "failed: " + in);
+        // setup the executor
+        Properties props = new Properties();
+        executor = new DefaultStellarShellExecutor(props, Optional.empty());
+        executor.init();
     }
-  }
 
-  @Test
-  public void testShouldNotMatch() {
-    List<String> inputs = Arrays.asList(
-            "foo",
-            "  undefine ",
-            "bar",
-            "%define"
-    );
-    for(String in : inputs) {
-      assertFalse(magic.getMatcher().apply(in), "failed: " + in);
+    @Test
+    public void testGetCommand() {
+        assertEquals("%undefine", magic.getCommand());
     }
-  }
 
-  @Test
-  public void testUndefine() {
-    // define a global
-    executor.getGlobalConfig().put("global", 22);
-    assertEquals(1, executor.getGlobalConfig().size());
+    @Test
+    public void testShouldMatch() {
+        List<String> inputs = Arrays.asList("%undefine", "   %undefine   ", "%undefine   FOO", "    %undefine    FOO ");
+        for (String in : inputs) {
+            assertTrue(magic.getMatcher().apply(in), "failed: " + in);
+        }
+    }
 
-    // use the magic to undefine the global variable
-    StellarResult result = magic.execute("%undefine global", executor);
+    @Test
+    public void testShouldNotMatch() {
+        List<String> inputs = Arrays.asList("foo", "  undefine ", "bar", "%define");
+        for (String in : inputs) {
+            assertFalse(magic.getMatcher().apply(in), "failed: " + in);
+        }
+    }
 
-    // validate the result
-    assertTrue(result.isSuccess());
-    assertTrue(result.getValue().isPresent());
+    @Test
+    public void testUndefine() {
+        // define a global
+        executor.getGlobalConfig().put("global", 22);
+        assertEquals(1, executor.getGlobalConfig().size());
 
-    // ensure that the global variable does not exist
-    assertEquals(0, executor.getGlobalConfig().size());
-  }
+        // use the magic to undefine the global variable
+        StellarResult result = magic.execute("%undefine global", executor);
 
-  @Test
-  public void testWithNoVariable() {
-    // define a global
-    executor.getGlobalConfig().put("global", 22);
-    assertEquals(1, executor.getGlobalConfig().size());
+        // validate the result
+        assertTrue(result.isSuccess());
+        assertTrue(result.getValue().isPresent());
 
-    // no arg specifying the var to undefine
-    StellarResult result = magic.execute("%undefine", executor);
+        // ensure that the global variable does not exist
+        assertEquals(0, executor.getGlobalConfig().size());
+    }
 
-    // validate the result
-    assertTrue(result.isError());
-    assertTrue(result.getException().isPresent());
+    @Test
+    public void testWithNoVariable() {
+        // define a global
+        executor.getGlobalConfig().put("global", 22);
+        assertEquals(1, executor.getGlobalConfig().size());
 
-    // ensure that the global variables were not changed
-    assertEquals(1, executor.getGlobalConfig().size());
-  }
+        // no arg specifying the var to undefine
+        StellarResult result = magic.execute("%undefine", executor);
+
+        // validate the result
+        assertTrue(result.isError());
+        assertTrue(result.getException().isPresent());
+
+        // ensure that the global variables were not changed
+        assertEquals(1, executor.getGlobalConfig().size());
+    }
 }

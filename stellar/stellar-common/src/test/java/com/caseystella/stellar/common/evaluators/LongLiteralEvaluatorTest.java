@@ -29,39 +29,37 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 public class LongLiteralEvaluatorTest {
-  NumberEvaluator<StellarParser.LongLiteralContext> evaluator;
-  StellarParser.LongLiteralContext context;
+    NumberEvaluator<StellarParser.LongLiteralContext> evaluator;
+    StellarParser.LongLiteralContext context;
 
-  @BeforeEach
-  public void setUp() throws Exception {
-    evaluator = new LongLiteralEvaluator();
-    context = mock(StellarParser.LongLiteralContext.class);
-  }
+    @BeforeEach
+    public void setUp() throws Exception {
+        evaluator = new LongLiteralEvaluator();
+        context = mock(StellarParser.LongLiteralContext.class);
+    }
 
-  @Test
-  public void verifyHappyPathEvaluation() {
-    when(context.getText()).thenReturn("100L");
+    @Test
+    public void verifyHappyPathEvaluation() {
+        when(context.getText()).thenReturn("100L");
 
-    Token<? extends Number> evaluated = evaluator.evaluate(context, null);
-    assertEquals(new Token<>(100L, Long.class, null), evaluated);
+        Token<? extends Number> evaluated = evaluator.evaluate(context, null);
+        assertEquals(new Token<>(100L, Long.class, null), evaluated);
 
-    verify(context).getText();
-    verifyNoMoreInteractions(context);
-  }
+        verify(context).getText();
+        verifyNoMoreInteractions(context);
+    }
 
-  @Test
-  public void verifyNumberFormationExceptionWithEmptyString() {
-    when(context.getText()).thenReturn("");
-    Exception e = assertThrows(ParseException.class, () -> evaluator.evaluate(context, null));
-    assertEquals(
-        "Invalid format for long. Failed trying to parse a long with the following value: ",
-        e.getMessage());
-  }
+    @Test
+    public void verifyNumberFormationExceptionWithEmptyString() {
+        when(context.getText()).thenReturn("");
+        Exception e = assertThrows(ParseException.class, () -> evaluator.evaluate(context, null));
+        assertEquals("Invalid format for long. Failed trying to parse a long with the following value: ",
+                e.getMessage());
+    }
 
-  @Test
-  public void throwIllegalArgumentExceptionWhenContextIsNull() {
-    Exception e =
-        assertThrows(IllegalArgumentException.class, () -> evaluator.evaluate(null, null));
-    assertEquals("Cannot evaluate a context that is null.", e.getMessage());
-  }
+    @Test
+    public void throwIllegalArgumentExceptionWhenContextIsNull() {
+        Exception e = assertThrows(IllegalArgumentException.class, () -> evaluator.evaluate(null, null));
+        assertEquals("Cannot evaluate a context that is null.", e.getMessage());
+    }
 }

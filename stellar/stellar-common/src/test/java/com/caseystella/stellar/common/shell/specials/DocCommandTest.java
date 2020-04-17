@@ -33,54 +33,52 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DocCommandTest {
 
-  DocCommand command;
-  DefaultStellarShellExecutor executor;
+    DocCommand command;
+    DefaultStellarShellExecutor executor;
 
-  @BeforeEach
-  public void setup() throws Exception {
+    @BeforeEach
+    public void setup() throws Exception {
 
-    // setup the command
-    command = new DocCommand();
+        // setup the command
+        command = new DocCommand();
 
-    // setup a function resolver - only 3 functions have been defined
-    SimpleFunctionResolver functionResolver = new SimpleFunctionResolver()
-            .withClass(StringFunctions.ToString.class)
-            .withClass(StringFunctions.ToLower.class)
-            .withClass(StringFunctions.ToUpper.class);
+        // setup a function resolver - only 3 functions have been defined
+        SimpleFunctionResolver functionResolver = new SimpleFunctionResolver().withClass(StringFunctions.ToString.class)
+                .withClass(StringFunctions.ToLower.class).withClass(StringFunctions.ToUpper.class);
 
-    // setup the executor
-    Properties props = new Properties();
-    executor = new DefaultStellarShellExecutor(functionResolver, props, Optional.empty());
-    executor.init();
-  }
+        // setup the executor
+        Properties props = new Properties();
+        executor = new DefaultStellarShellExecutor(functionResolver, props, Optional.empty());
+        executor.init();
+    }
 
-  @Test
-  public void testWithFunction() {
-    StellarResult result = command.execute("?TO_STRING", executor);
+    @Test
+    public void testWithFunction() {
+        StellarResult result = command.execute("?TO_STRING", executor);
 
-    // validate the result
-    assertTrue(result.isSuccess());
-    assertTrue(result.getValue().isPresent());
+        // validate the result
+        assertTrue(result.isSuccess());
+        assertTrue(result.getValue().isPresent());
 
-    // validate that we have some sort of doc string
-    assertTrue(result.getValue().toString().length() > 0);
-  }
+        // validate that we have some sort of doc string
+        assertTrue(result.getValue().toString().length() > 0);
+    }
 
-  @Test
-  public void testFunctionNotDefined() {
-    StellarResult result = command.execute("?INVALID", executor);
+    @Test
+    public void testFunctionNotDefined() {
+        StellarResult result = command.execute("?INVALID", executor);
 
-    // validate the result
-    assertTrue(result.isError());
-    assertTrue(result.getException().isPresent());
-  }
+        // validate the result
+        assertTrue(result.isError());
+        assertTrue(result.getException().isPresent());
+    }
 
-  @Test
-  public void testNoFunction() {
-    StellarResult result = command.execute("?", executor);
+    @Test
+    public void testNoFunction() {
+        StellarResult result = command.execute("?", executor);
 
-    // validate the result
-    assertTrue(result.isError());
-    assertTrue(result.getException().isPresent());
-  }
+        // validate the result
+        assertTrue(result.isError());
+        assertTrue(result.getException().isPresent());
+    }
 }

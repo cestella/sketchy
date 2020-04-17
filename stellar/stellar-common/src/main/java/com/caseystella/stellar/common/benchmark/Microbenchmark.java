@@ -27,41 +27,43 @@ import java.util.function.Consumer;
 
 public class Microbenchmark {
 
-  public static class StellarStatement {
-    String expression;
-    VariableResolver variableResolver;
-    FunctionResolver functionResolver;
-    Context context;
-  }
-
-  public static DescriptiveStatistics run(StellarStatement statement, int warmupRounds, int benchmarkRounds )
-  {
-    run(warmupRounds, statement, ts -> {});
-    final DescriptiveStatistics stats = new DescriptiveStatistics();
-    run(benchmarkRounds, statement, ts -> { stats.addValue(ts);});
-    return stats;
-  }
-
-  private static void run(int numTimes, StellarStatement statement, Consumer<Long> func) {
-    StellarProcessor processor = new StellarProcessor();
-    for(int i = 0;i < numTimes;++i) {
-      long start = System.nanoTime();
-      processor.parse(statement.expression, statement.variableResolver, statement.functionResolver, statement.context);
-      func.accept((System.nanoTime() - start)/1000);
+    public static class StellarStatement {
+        String expression;
+        VariableResolver variableResolver;
+        FunctionResolver functionResolver;
+        Context context;
     }
-  }
 
-  public static String describe(DescriptiveStatistics stats, Double[] percentiles){
-    StringBuilder sb = new StringBuilder();
-    sb.append(String.format("round: mean of %dms [+-%d], measured %d rounds;\n",
-            (long)stats.getMean(),
-            (long)stats.getStandardDeviation(), stats.getN() ));
-    sb.append("\tMin - " + (long)stats.getMin() + "\n");
-    for(double pctile : percentiles) {
-      sb.append("\t" + pctile + " - " + stats.getPercentile(pctile) + "\n");
+    public static DescriptiveStatistics run(StellarStatement statement, int warmupRounds, int benchmarkRounds) {
+        run(warmupRounds, statement, ts -> {
+        });
+        final DescriptiveStatistics stats = new DescriptiveStatistics();
+        run(benchmarkRounds, statement, ts -> {
+            stats.addValue(ts);
+        });
+        return stats;
     }
-    sb.append("\tMax - " + (long)stats.getMax());
-    return sb.toString();
-  }
+
+    private static void run(int numTimes, StellarStatement statement, Consumer<Long> func) {
+        StellarProcessor processor = new StellarProcessor();
+        for (int i = 0; i < numTimes; ++i) {
+            long start = System.nanoTime();
+            processor.parse(statement.expression, statement.variableResolver, statement.functionResolver,
+                    statement.context);
+            func.accept((System.nanoTime() - start) / 1000);
+        }
+    }
+
+    public static String describe(DescriptiveStatistics stats, Double[] percentiles) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.format("round: mean of %dms [+-%d], measured %d rounds;\n", (long) stats.getMean(),
+                (long) stats.getStandardDeviation(), stats.getN()));
+        sb.append("\tMin - " + (long) stats.getMin() + "\n");
+        for (double pctile : percentiles) {
+            sb.append("\t" + pctile + " - " + stats.getPercentile(pctile) + "\n");
+        }
+        sb.append("\tMax - " + (long) stats.getMax());
+        return sb.toString();
+    }
 
 }

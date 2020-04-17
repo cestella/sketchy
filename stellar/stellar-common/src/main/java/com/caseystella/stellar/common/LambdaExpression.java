@@ -28,42 +28,40 @@ import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 
-
 public class LambdaExpression extends StellarCompiler.Expression {
-  StellarCompiler.ExpressionState state;
-  List<String> variables;
-  public LambdaExpression(List<String> variables, Deque<Token<?>> tokenDeque, StellarCompiler.ExpressionState state) {
-    super(tokenDeque);
-    this.state = state;
-    this.variables = variables;
-  }
+    StellarCompiler.ExpressionState state;
+    List<String> variables;
 
-  @Override
-  public Deque<Token<?>> getTokenDeque() {
-    Deque<Token<?>> ret = new ArrayDeque<>(super.getTokenDeque().size());
-    for(Token<?> token : super.getTokenDeque()) {
-      ret.add(token);
-    }
-    return ret;
-  }
-
-  public Object apply(List<Object> variableArgs) {
-    Map<String, Object> lambdaVariables = new HashMap<>();
-    int i = 0;
-    for(;i < Math.min(variables.size(),variableArgs.size()) ;++i) {
-      lambdaVariables.put(variables.get(i), variableArgs.get(i));
-    }
-    for(;i < variables.size();++i) {
-      lambdaVariables.put(variables.get(i), null);
+    public LambdaExpression(List<String> variables, Deque<Token<?>> tokenDeque, StellarCompiler.ExpressionState state) {
+        super(tokenDeque);
+        this.state = state;
+        this.variables = variables;
     }
 
-    VariableResolver variableResolver = new DefaultVariableResolver(variable -> lambdaVariables.getOrDefault(variable
-                                                                                , state.variableResolver.resolve(variable)
-                                                                                ), variable -> true);
-    StellarCompiler.ExpressionState localState = new StellarCompiler.ExpressionState(
-            state.context
-          , state.functionResolver
-          , variableResolver);
-    return apply(localState);
-  }
+    @Override
+    public Deque<Token<?>> getTokenDeque() {
+        Deque<Token<?>> ret = new ArrayDeque<>(super.getTokenDeque().size());
+        for (Token<?> token : super.getTokenDeque()) {
+            ret.add(token);
+        }
+        return ret;
+    }
+
+    public Object apply(List<Object> variableArgs) {
+        Map<String, Object> lambdaVariables = new HashMap<>();
+        int i = 0;
+        for (; i < Math.min(variables.size(), variableArgs.size()); ++i) {
+            lambdaVariables.put(variables.get(i), variableArgs.get(i));
+        }
+        for (; i < variables.size(); ++i) {
+            lambdaVariables.put(variables.get(i), null);
+        }
+
+        VariableResolver variableResolver = new DefaultVariableResolver(
+                variable -> lambdaVariables.getOrDefault(variable, state.variableResolver.resolve(variable)),
+                variable -> true);
+        StellarCompiler.ExpressionState localState = new StellarCompiler.ExpressionState(state.context,
+                state.functionResolver, variableResolver);
+        return apply(localState);
+    }
 }

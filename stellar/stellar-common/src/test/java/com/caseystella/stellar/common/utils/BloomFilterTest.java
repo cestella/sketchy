@@ -30,74 +30,77 @@ import static com.caseystella.stellar.common.utils.StellarProcessorUtils.run;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class BloomFilterTest {
-  private Map<String, Object> variables = new HashMap<String, Object>() {{
-    put("string", "casey");
-    put("double", 1.0);
-    put("integer", 1);
-    put("map", ImmutableMap.of("key1", "value1", "key2", "value2"));
-  }};
+    private Map<String, Object> variables = new HashMap<String, Object>() {
+        {
+            put("string", "casey");
+            put("double", 1.0);
+            put("integer", 1);
+            put("map", ImmutableMap.of("key1", "value1", "key2", "value2"));
+        }
+    };
 
-  @Test
-  @SuppressWarnings("unchecked")
-  public void testMerge() {
+    @Test
+    @SuppressWarnings("unchecked")
+    public void testMerge() {
 
-    BloomFilter bloomString = (BloomFilter)run("BLOOM_ADD(BLOOM_INIT(), string)", variables);
-    BloomFilter bloomDouble = (BloomFilter)run("BLOOM_ADD(BLOOM_INIT(), double)", variables);
-    BloomFilter bloomInteger= (BloomFilter)run("BLOOM_ADD(BLOOM_INIT(), integer)", variables);
-    BloomFilter bloomMap= (BloomFilter)run("BLOOM_ADD(BLOOM_INIT(), map)", variables);
-    BloomFilter merged = (BloomFilter)run("BLOOM_MERGE([stringFilter, doubleFilter, integerFilter, mapFilter])"
-                                         , ImmutableMap.of("stringFilter", bloomString
-                                                          ,"doubleFilter", bloomDouble
-                                                          ,"integerFilter", bloomInteger
-                                                          ,"mapFilter", bloomMap
-                                                          )
-                                         );
-    assertNotNull(merged);
-    for(Object val : variables.values()) {
-      assertTrue(merged.mightContain(val));
+        BloomFilter bloomString = (BloomFilter) run("BLOOM_ADD(BLOOM_INIT(), string)", variables);
+        BloomFilter bloomDouble = (BloomFilter) run("BLOOM_ADD(BLOOM_INIT(), double)", variables);
+        BloomFilter bloomInteger = (BloomFilter) run("BLOOM_ADD(BLOOM_INIT(), integer)", variables);
+        BloomFilter bloomMap = (BloomFilter) run("BLOOM_ADD(BLOOM_INIT(), map)", variables);
+        BloomFilter merged = (BloomFilter) run("BLOOM_MERGE([stringFilter, doubleFilter, integerFilter, mapFilter])",
+                ImmutableMap.of("stringFilter", bloomString, "doubleFilter", bloomDouble, "integerFilter", bloomInteger,
+                        "mapFilter", bloomMap));
+        assertNotNull(merged);
+        for (Object val : variables.values()) {
+            assertTrue(merged.mightContain(val));
+        }
     }
-  }
 
-  @Test
-  @SuppressWarnings("unchecked")
-  public void testAdd() {
-    BloomFilter result = (BloomFilter)run("BLOOM_ADD(BLOOM_INIT(), string, double, integer, map)", variables);
-    for(Object val : variables.values()) {
-      assertTrue(result.mightContain(val));
+    @Test
+    @SuppressWarnings("unchecked")
+    public void testAdd() {
+        BloomFilter result = (BloomFilter) run("BLOOM_ADD(BLOOM_INIT(), string, double, integer, map)", variables);
+        for (Object val : variables.values()) {
+            assertTrue(result.mightContain(val));
+        }
+        assertTrue(result.mightContain(ImmutableMap.of("key1", "value1", "key2", "value2")));
     }
-    assertTrue(result.mightContain(ImmutableMap.of("key1", "value1", "key2", "value2")));
-  }
 
-  @Test
-  public void testExists() {
-    {
-      Boolean result = (Boolean) run("BLOOM_EXISTS(BLOOM_ADD(BLOOM_INIT(), string, double, integer, map), 'casey')", variables);
-      assertTrue(result);
+    @Test
+    public void testExists() {
+        {
+            Boolean result = (Boolean) run(
+                    "BLOOM_EXISTS(BLOOM_ADD(BLOOM_INIT(), string, double, integer, map), 'casey')", variables);
+            assertTrue(result);
+        }
+        {
+            Boolean result = (Boolean) run(
+                    "BLOOM_EXISTS(BLOOM_ADD(BLOOM_INIT(), string, double, integer, map), double)", variables);
+            assertTrue(result);
+        }
+        {
+            Boolean result = (Boolean) run(
+                    "BLOOM_EXISTS(BLOOM_ADD(BLOOM_INIT(), string, double, integer, map), integer)", variables);
+            assertTrue(result);
+        }
+        {
+            Boolean result = (Boolean) run("BLOOM_EXISTS(BLOOM_ADD(BLOOM_INIT(), string, double, integer, map), map)",
+                    variables);
+            assertTrue(result);
+        }
+        {
+            Boolean result = (Boolean) run(
+                    "BLOOM_EXISTS(BLOOM_ADD(BLOOM_INIT(), string, double, integer, map), 'samantha')", variables);
+            assertFalse(result);
+        }
+        {
+            boolean thrown = false;
+            try {
+                run("BLOOM_EXISTS(BLOOM_ADD(BLOOM_INIT(), string, double, integer, map), sam)", variables);
+            } catch (ParseException pe) {
+                thrown = true;
+            }
+            assertTrue(thrown);
+        }
     }
-    {
-      Boolean result = (Boolean) run("BLOOM_EXISTS(BLOOM_ADD(BLOOM_INIT(), string, double, integer, map), double)", variables);
-      assertTrue(result);
-    }
-    {
-      Boolean result = (Boolean) run("BLOOM_EXISTS(BLOOM_ADD(BLOOM_INIT(), string, double, integer, map), integer)", variables);
-      assertTrue(result);
-    }
-    {
-      Boolean result = (Boolean) run("BLOOM_EXISTS(BLOOM_ADD(BLOOM_INIT(), string, double, integer, map), map)", variables);
-      assertTrue(result);
-    }
-    {
-      Boolean result = (Boolean) run("BLOOM_EXISTS(BLOOM_ADD(BLOOM_INIT(), string, double, integer, map), 'samantha')", variables);
-      assertFalse(result);
-    }
-    {
-      boolean thrown = false;
-      try{
-        run("BLOOM_EXISTS(BLOOM_ADD(BLOOM_INIT(), string, double, integer, map), sam)", variables);
-      }catch(ParseException pe){
-        thrown = true;
-      }
-      assertTrue(thrown);
-    }
-  }
 }

@@ -30,24 +30,24 @@ import static com.caseystella.stellar.common.shell.StellarResult.noop;
 /**
  * A special command that handles comments.
  *
- *    # this is a comment
+ * # this is a comment
  */
 public class Comment implements SpecialCommand {
 
-  public static final String COMMENT_PREFIX = "#";
+    public static final String COMMENT_PREFIX = "#";
 
-  @Override
-  public String getCommand() {
-    return "#";
-  }
+    @Override
+    public String getCommand() {
+        return "#";
+    }
 
-  @Override
-  public Function<String, Boolean> getMatcher() {
-    return (input) -> startsWith(trimToEmpty(input), COMMENT_PREFIX);
-  }
+    @Override
+    public Function<String, Boolean> getMatcher() {
+        return (input) -> startsWith(trimToEmpty(input), COMMENT_PREFIX);
+    }
 
-  @Override
-  public StellarResult execute(String expression, StellarShellExecutor executor) {
-    return noop();
-  }
+    @Override
+    public StellarResult execute(String expression, StellarShellExecutor executor) {
+        return noop();
+    }
 }

@@ -25,23 +25,20 @@ import com.caseystella.stellar.dsl.StellarFunction;
 import java.util.List;
 
 public class TimeFunction {
-  @Stellar( name="NOW",
-            description = "Right now!",
-            params = {},
-            returns="Timestamp"
-          )
-  public static class Now implements StellarFunction {
-    @Override
-    public Object apply(List<Object> list, Context context) throws ParseException {
-      return System.currentTimeMillis();
-    }
+    @Stellar(name = "NOW", description = "Right now!", params = {}, returns = "Timestamp")
+    public static class Now implements StellarFunction {
+        @Override
+        public Object apply(List<Object> list, Context context) throws ParseException {
+            return System.currentTimeMillis();
+        }
 
-    @Override
-    public void initialize(Context context) { }
+        @Override
+        public void initialize(Context context) {
+        }
 
-    @Override
-    public boolean isInitialized() {
-      return true;
+        @Override
+        public boolean isInitialized() {
+            return true;
+        }
     }
-  }
 }

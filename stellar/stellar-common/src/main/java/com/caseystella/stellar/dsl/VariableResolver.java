@@ -18,9 +18,10 @@
 
 package com.caseystella.stellar.dsl;
 
-
 public interface VariableResolver {
-  public static final String ALL_FIELDS = "_";
-  Object resolve(String variable);
-  boolean exists(String variable);
+    public static final String ALL_FIELDS = "_";
+
+    Object resolve(String variable);
+
+    boolean exists(String variable);
 }

@@ -22,10 +22,10 @@ import java.util.Optional;
 import java.util.function.Function;
 
 public interface EnumConfigurable {
-  String getKey();
+    String getKey();
 
-  default <T> Optional<T> get(Map<String, Object> config, Function<Object, T> converter) {
-    Object o = config.get(getKey());
-    return o == null?Optional.empty():Optional.ofNullable(converter.apply(o));
-  }
+    default <T> Optional<T> get(Map<String, Object> config, Function<Object, T> converter) {
+        Object o = config.get(getKey());
+        return o == null ? Optional.empty() : Optional.ofNullable(converter.apply(o));
+    }
 }

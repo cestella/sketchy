@@ -28,84 +28,84 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@SuppressWarnings({"unchecked"})
+@SuppressWarnings({ "unchecked" })
 public class ComparisonExpressionWithOperatorEvaluatorTest {
-  final ComparisonExpressionWithOperatorEvaluator evaluator = ComparisonExpressionWithOperatorEvaluator.INSTANCE;
+    final ComparisonExpressionWithOperatorEvaluator evaluator = ComparisonExpressionWithOperatorEvaluator.INSTANCE;
 
-  @Test
-  public void evaluateEqShouldProperlyCallEqualityOperatorsEvaluator() {
-    Token<Double> left = mock(Token.class);
-    when(left.getValue()).thenReturn(1D);
+    @Test
+    public void evaluateEqShouldProperlyCallEqualityOperatorsEvaluator() {
+        Token<Double> left = mock(Token.class);
+        when(left.getValue()).thenReturn(1D);
 
-    Token<Double> right = mock(Token.class);
-    when(right.getValue()).thenReturn(1D);
+        Token<Double> right = mock(Token.class);
+        when(right.getValue()).thenReturn(1D);
 
-    StellarParser.ComparisonOpContext op = mock(StellarParser.ComparisonOpContext.class);
-    when(op.EQ()).thenReturn(mock(TerminalNode.class));
+        StellarParser.ComparisonOpContext op = mock(StellarParser.ComparisonOpContext.class);
+        when(op.EQ()).thenReturn(mock(TerminalNode.class));
 
-    Token<Boolean> evaluated = evaluator.evaluate(left, right, op, null);
+        Token<Boolean> evaluated = evaluator.evaluate(left, right, op, null);
 
-    assertTrue(evaluated.getValue());
-  }
+        assertTrue(evaluated.getValue());
+    }
 
-  @Test
-  public void evaluateNotEqShouldProperlyCallEqualityOperatorsEvaluator() {
-    Token<Double> left = mock(Token.class);
-    when(left.getValue()).thenReturn(1D);
+    @Test
+    public void evaluateNotEqShouldProperlyCallEqualityOperatorsEvaluator() {
+        Token<Double> left = mock(Token.class);
+        when(left.getValue()).thenReturn(1D);
 
-    Token<Double> right = mock(Token.class);
-    when(right.getValue()).thenReturn(1D);
+        Token<Double> right = mock(Token.class);
+        when(right.getValue()).thenReturn(1D);
 
-    StellarParser.ComparisonOpContext op = mock(StellarParser.ComparisonOpContext.class);
-    when(op.NEQ()).thenReturn(mock(TerminalNode.class));
+        StellarParser.ComparisonOpContext op = mock(StellarParser.ComparisonOpContext.class);
+        when(op.NEQ()).thenReturn(mock(TerminalNode.class));
 
-    Token<Boolean> evaluated = evaluator.evaluate(left, right, op, null);
+        Token<Boolean> evaluated = evaluator.evaluate(left, right, op, null);
 
-    assertFalse(evaluated.getValue());
-  }
+        assertFalse(evaluated.getValue());
+    }
 
-  @Test
-  public void evaluateLessThanEqShouldProperlyCallEqualityOperatorsEvaluator() {
-    Token<Double> left = mock(Token.class);
-    when(left.getValue()).thenReturn(0D);
+    @Test
+    public void evaluateLessThanEqShouldProperlyCallEqualityOperatorsEvaluator() {
+        Token<Double> left = mock(Token.class);
+        when(left.getValue()).thenReturn(0D);
 
-    Token<Double> right = mock(Token.class);
-    when(right.getValue()).thenReturn(1D);
+        Token<Double> right = mock(Token.class);
+        when(right.getValue()).thenReturn(1D);
 
-    StellarParser.ComparisonOpContext op = mock(StellarParser.ComparisonOpContext.class);
-    when(op.LTE()).thenReturn(mock(TerminalNode.class));
+        StellarParser.ComparisonOpContext op = mock(StellarParser.ComparisonOpContext.class);
+        when(op.LTE()).thenReturn(mock(TerminalNode.class));
 
-    Token<Boolean> evaluated = evaluator.evaluate(left, right, op, null);
+        Token<Boolean> evaluated = evaluator.evaluate(left, right, op, null);
 
-    assertTrue(evaluated.getValue());
-  }
+        assertTrue(evaluated.getValue());
+    }
 
-  @Test
-  public void unexpectedOperatorShouldThrowException() {
-    Token<Double> left = mock(Token.class);
-    when(left.getValue()).thenReturn(0D);
+    @Test
+    public void unexpectedOperatorShouldThrowException() {
+        Token<Double> left = mock(Token.class);
+        when(left.getValue()).thenReturn(0D);
 
-    Token<Double> right = mock(Token.class);
-    when(right.getValue()).thenReturn(1D);
+        Token<Double> right = mock(Token.class);
+        when(right.getValue()).thenReturn(1D);
 
-    StellarParser.ComparisonOpContext op = mock(StellarParser.ComparisonOpContext.class);
+        StellarParser.ComparisonOpContext op = mock(StellarParser.ComparisonOpContext.class);
 
-    ParseException e = assertThrows(ParseException.class, () -> evaluator.evaluate(left, right, op, null));
-    assertTrue(e.getMessage().contains("Unsupported operations. The following expression is invalid: "));
-  }
+        ParseException e = assertThrows(ParseException.class, () -> evaluator.evaluate(left, right, op, null));
+        assertTrue(e.getMessage().contains("Unsupported operations. The following expression is invalid: "));
+    }
 
-  @Test
-  public void nonExpectedOperatorShouldThrowException() {
-    Token<String> left = mock(Token.class);
-    when(left.getValue()).thenReturn("adsf");
+    @Test
+    public void nonExpectedOperatorShouldThrowException() {
+        Token<String> left = mock(Token.class);
+        when(left.getValue()).thenReturn("adsf");
 
-    Token<Double> right = mock(Token.class);
-    when(right.getValue()).thenReturn(1D);
+        Token<Double> right = mock(Token.class);
+        when(right.getValue()).thenReturn(1D);
 
-    StellarParser.ComparisonOpContext op = mock(StellarParser.ComparisonOpContext.class);
-    when(op.LTE()).thenReturn(mock(TerminalNode.class));
+        StellarParser.ComparisonOpContext op = mock(StellarParser.ComparisonOpContext.class);
+        when(op.LTE()).thenReturn(mock(TerminalNode.class));
 
-    ParseException e = assertThrows(ParseException.class, () -> evaluator.evaluate(left, right, op, null));
-    assertTrue(e.getMessage().contains("Unsupported operations. The following expression is invalid: "));
-  }
+        ParseException e = assertThrows(ParseException.class, () -> evaluator.evaluate(left, right, op, null));
+        assertTrue(e.getMessage().contains("Unsupported operations. The following expression is invalid: "));
+    }
 }

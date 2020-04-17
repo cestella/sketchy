@@ -18,17 +18,18 @@
 package com.caseystella.stellar.dsl.functions.resolver;
 
 /**
- * Performs function resolution for Stellar by searching the classpath. The
- * class acts as a singleton to avoid repetitive classpath searches.
+ * Performs function resolution for Stellar by searching the classpath. The class acts as a singleton to avoid
+ * repetitive classpath searches.
  */
 public class SingletonFunctionResolver extends ClasspathFunctionResolver {
 
-  private static SingletonFunctionResolver INSTANCE = new SingletonFunctionResolver();
+    private static SingletonFunctionResolver INSTANCE = new SingletonFunctionResolver();
 
-  private SingletonFunctionResolver() {}
+    private SingletonFunctionResolver() {
+    }
 
-  public static FunctionResolver getInstance() {
-    return INSTANCE;
-  }
+    public static FunctionResolver getInstance() {
+        return INSTANCE;
+    }
 
 }

@@ -35,104 +35,95 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class MagicDefineGlobalTest {
 
-  MagicDefineGlobal magic;
-  DefaultStellarShellExecutor executor;
+    MagicDefineGlobal magic;
+    DefaultStellarShellExecutor executor;
 
-  @BeforeEach
-  public void setup() throws Exception {
+    @BeforeEach
+    public void setup() throws Exception {
 
-    // setup the %magic
-    magic = new MagicDefineGlobal();
+        // setup the %magic
+        magic = new MagicDefineGlobal();
 
-    // setup the executor
-    Properties props = new Properties();
-    executor = new DefaultStellarShellExecutor(props, Optional.empty());
-    executor.init();
-  }
-
-  @Test
-  public void testGetCommand() {
-    assertEquals("%define", magic.getCommand());
-  }
-
-  @Test
-  public void testShouldMatch() {
-    List<String> inputs = Arrays.asList(
-            "%define",
-            "   %define   ",
-            "%define x := 2",
-            "    %define   x := 2 "
-    );
-    for(String in : inputs) {
-      assertTrue(magic.getMatcher().apply(in), "failed: " + in);
+        // setup the executor
+        Properties props = new Properties();
+        executor = new DefaultStellarShellExecutor(props, Optional.empty());
+        executor.init();
     }
-  }
 
-  @Test
-  public void testShouldNotMatch() {
-    List<String> inputs = Arrays.asList(
-            "foo",
-            "  define ",
-            "bar"
-    );
-    for(String in : inputs) {
-      assertFalse(magic.getMatcher().apply(in), "failed: " + in);
+    @Test
+    public void testGetCommand() {
+        assertEquals("%define", magic.getCommand());
     }
-  }
 
-  @Test
-  public void testDefine() {
-    final int expected = 4;
-
-    {
-      StellarResult result = magic.execute("%define global := 2 + 2", executor);
-
-      // validate the result
-      assertTrue(result.isSuccess());
-      assertTrue(result.getValue().isPresent());
-      assertEquals(expected, result.getValue().get());
-
-      // ensure global config was updated
-      assertTrue(executor.getGlobalConfig().containsKey("global"));
-      assertEquals(expected, executor.getGlobalConfig().get("global"));
+    @Test
+    public void testShouldMatch() {
+        List<String> inputs = Arrays.asList("%define", "   %define   ", "%define x := 2", "    %define   x := 2 ");
+        for (String in : inputs) {
+            assertTrue(magic.getMatcher().apply(in), "failed: " + in);
+        }
     }
-    //
-    {
-      // get all globals
-      StellarResult result = executor.execute("%globals");
 
-      // validate the result
-      assertTrue(result.isSuccess());
-      assertTrue(result.getValue().isPresent());
-
-      String out = ConversionUtils.convert(result.getValue().get(), String.class);
-      assertEquals("{global=4}", out);
+    @Test
+    public void testShouldNotMatch() {
+        List<String> inputs = Arrays.asList("foo", "  define ", "bar");
+        for (String in : inputs) {
+            assertFalse(magic.getMatcher().apply(in), "failed: " + in);
+        }
     }
-  }
 
-  @Test
-  public void testNotAssignmentExpression() {
-    StellarResult result = magic.execute("%define 2 + 2", executor);
+    @Test
+    public void testDefine() {
+        final int expected = 4;
 
-    // validate the result
-    assertTrue(result.isError());
-    assertFalse(result.getValue().isPresent());
-    assertTrue(result.getException().isPresent());
+        {
+            StellarResult result = magic.execute("%define global := 2 + 2", executor);
 
-    // the global config should not have changed
-    assertEquals(0, executor.getGlobalConfig().size());
-  }
+            // validate the result
+            assertTrue(result.isSuccess());
+            assertTrue(result.getValue().isPresent());
+            assertEquals(expected, result.getValue().get());
 
-  @Test
-  public void testMissingExpression() {
-    StellarResult result = magic.execute("%define", executor);
+            // ensure global config was updated
+            assertTrue(executor.getGlobalConfig().containsKey("global"));
+            assertEquals(expected, executor.getGlobalConfig().get("global"));
+        }
+        //
+        {
+            // get all globals
+            StellarResult result = executor.execute("%globals");
 
-    // validate the result
-    assertTrue(result.isError());
-    assertFalse(result.getValue().isPresent());
-    assertTrue(result.getException().isPresent());
+            // validate the result
+            assertTrue(result.isSuccess());
+            assertTrue(result.getValue().isPresent());
 
-    // the global config should not have changed
-    assertEquals(0, executor.getGlobalConfig().size());
-  }
+            String out = ConversionUtils.convert(result.getValue().get(), String.class);
+            assertEquals("{global=4}", out);
+        }
+    }
+
+    @Test
+    public void testNotAssignmentExpression() {
+        StellarResult result = magic.execute("%define 2 + 2", executor);
+
+        // validate the result
+        assertTrue(result.isError());
+        assertFalse(result.getValue().isPresent());
+        assertTrue(result.getException().isPresent());
+
+        // the global config should not have changed
+        assertEquals(0, executor.getGlobalConfig().size());
+    }
+
+    @Test
+    public void testMissingExpression() {
+        StellarResult result = magic.execute("%define", executor);
+
+        // validate the result
+        assertTrue(result.isError());
+        assertFalse(result.getValue().isPresent());
+        assertTrue(result.getException().isPresent());
+
+        // the global config should not have changed
+        assertEquals(0, executor.getGlobalConfig().size());
+    }
 }

@@ -33,57 +33,49 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class CommentTest {
 
-  Comment magic;
-  DefaultStellarShellExecutor executor;
+    Comment magic;
+    DefaultStellarShellExecutor executor;
 
-  @BeforeEach
-  public void setup() throws Exception {
+    @BeforeEach
+    public void setup() throws Exception {
 
-    // setup the %magic
-    magic = new Comment();
+        // setup the %magic
+        magic = new Comment();
 
-    // setup the executor
-    Properties props = new Properties();
-    executor = new DefaultStellarShellExecutor(props, Optional.empty());
-    executor.init();
-  }
-
-  @Test
-  public void testGetCommand() {
-    assertEquals("#", magic.getCommand());
-  }
-
-  @Test
-  public void testShouldMatch() {
-    List<String> inputs = Arrays.asList(
-            "#comment",
-            "   #   comment   ",
-            "      #comment"
-    );
-    for(String in : inputs) {
-      assertTrue(magic.getMatcher().apply(in), "failed: " + in);
+        // setup the executor
+        Properties props = new Properties();
+        executor = new DefaultStellarShellExecutor(props, Optional.empty());
+        executor.init();
     }
-  }
 
-  @Test
-  public void testShouldNotMatch() {
-    List<String> inputs = Arrays.asList(
-            "foo",
-            "  define ",
-            "bar"
-    );
-    for(String in : inputs) {
-      assertFalse(magic.getMatcher().apply(in), "failed: " + in);
+    @Test
+    public void testGetCommand() {
+        assertEquals("#", magic.getCommand());
     }
-  }
 
-  @Test
-  public void testComment() {
-    StellarResult result = magic.execute("#  this is a comment ", executor);
+    @Test
+    public void testShouldMatch() {
+        List<String> inputs = Arrays.asList("#comment", "   #   comment   ", "      #comment");
+        for (String in : inputs) {
+            assertTrue(magic.getMatcher().apply(in), "failed: " + in);
+        }
+    }
 
-    // validate the result
-    assertTrue(result.isSuccess());
-    assertTrue(result.getValue().isPresent());
-    assertEquals("", result.getValue().get());
-  }
+    @Test
+    public void testShouldNotMatch() {
+        List<String> inputs = Arrays.asList("foo", "  define ", "bar");
+        for (String in : inputs) {
+            assertFalse(magic.getMatcher().apply(in), "failed: " + in);
+        }
+    }
+
+    @Test
+    public void testComment() {
+        StellarResult result = magic.execute("#  this is a comment ", executor);
+
+        // validate the result
+        assertTrue(result.isSuccess());
+        assertTrue(result.getValue().isPresent());
+        assertEquals("", result.getValue().get());
+    }
 }

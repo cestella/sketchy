@@ -31,74 +31,73 @@ import java.util.stream.StreamSupport;
 import static com.caseystella.stellar.common.shell.StellarResult.error;
 
 /**
- * A special command that allows a user to request doc string
- * about a Stellar function.
+ * A special command that allows a user to request doc string about a Stellar function.
  *
  * For example `?TO_STRING` will output the docs for the function `TO_STRING`
  */
 public class DocCommand implements SpecialCommand {
 
-  public static final String DOC_PREFIX = "?";
+    public static final String DOC_PREFIX = "?";
 
-  @Override
-  public String getCommand() {
-    return DOC_PREFIX;
-  }
-
-  @Override
-  public Function<String, Boolean> getMatcher() {
-    return (input) -> StringUtils.startsWith(input, DOC_PREFIX);
-  }
-
-  @Override
-  public StellarResult execute(String command, StellarShellExecutor executor) {
-    StellarResult result;
-
-    // expect ?functionName
-    String functionName = StringUtils.substring(command, 1);
-
-    // grab any docs for the given function
-    Spliterator<StellarFunctionInfo> fnIterator = executor.getFunctionResolver().getFunctionInfo().spliterator();
-    Optional<StellarFunctionInfo> functionInfo = StreamSupport
-            .stream(fnIterator, false)
-            .filter(info -> StringUtils.equals(functionName, info.getName()))
-            .findFirst();
-
-    if(functionInfo.isPresent()) {
-      result = StellarResult.success(docFormat(functionInfo.get()));
-    } else {
-      result = StellarResult.error(String.format("No docs available for function '%s'", functionName));
+    @Override
+    public String getCommand() {
+        return DOC_PREFIX;
     }
 
-    return result;
-  }
-
-  /**
-   * Formats the Stellar function info object into a readable string.
-   * @param info The stellar function info object.
-   * @return A readable string.
-   */
-  private String docFormat(StellarFunctionInfo info) {
-    StringBuffer docString = new StringBuffer();
-
-    // name
-    docString.append(info.getName() + "\n");
-
-    // description
-    docString.append(String.format("Description: %-60s\n\n", info.getDescription()));
-
-    // params
-    if(info.getParams().length > 0) {
-      docString.append("Arguments:\n");
-      for(String param : info.getParams()) {
-        docString.append(String.format("\t%-60s\n", param));
-      }
-      docString.append("\n");
+    @Override
+    public Function<String, Boolean> getMatcher() {
+        return (input) -> StringUtils.startsWith(input, DOC_PREFIX);
     }
 
-    // returns
-    docString.append(String.format("Returns: %-60s\n", info.getReturns()));
+    @Override
+    public StellarResult execute(String command, StellarShellExecutor executor) {
+        StellarResult result;
 
-    return docString.toString();
-  }
+        // expect ?functionName
+        String functionName = StringUtils.substring(command, 1);
+
+        // grab any docs for the given function
+        Spliterator<StellarFunctionInfo> fnIterator = executor.getFunctionResolver().getFunctionInfo().spliterator();
+        Optional<StellarFunctionInfo> functionInfo = StreamSupport.stream(fnIterator, false)
+                .filter(info -> StringUtils.equals(functionName, info.getName())).findFirst();
+
+        if (functionInfo.isPresent()) {
+            result = StellarResult.success(docFormat(functionInfo.get()));
+        } else {
+            result = StellarResult.error(String.format("No docs available for function '%s'", functionName));
+        }
+
+        return result;
+    }
+
+    /**
+     * Formats the Stellar function info object into a readable string.
+     * 
+     * @param info
+     *            The stellar function info object.
+     * @return A readable string.
+     */
+    private String docFormat(StellarFunctionInfo info) {
+        StringBuffer docString = new StringBuffer();
+
+        // name
+        docString.append(info.getName() + "\n");
+
+        // description
+        docString.append(String.format("Description: %-60s\n\n", info.getDescription()));
+
+        // params
+        if (info.getParams().length > 0) {
+            docString.append("Arguments:\n");
+            for (String param : info.getParams()) {
+                docString.append(String.format("\t%-60s\n", param));
+            }
+            docString.append("\n");
+        }
+
+        // returns
+        docString.append(String.format("Returns: %-60s\n", info.getReturns()));
+
+        return docString.toString();
+    }
 }

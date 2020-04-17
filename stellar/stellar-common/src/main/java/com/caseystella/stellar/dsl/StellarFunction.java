@@ -22,12 +22,14 @@ import java.io.IOException;
 import java.util.List;
 
 public interface StellarFunction extends Closeable {
-  Object apply(List<Object> args, Context context) throws ParseException;
-  void initialize(Context context);
-  boolean isInitialized();
+    Object apply(List<Object> args, Context context) throws ParseException;
 
-  @Override
-  default void close() throws IOException {
+    void initialize(Context context);
 
-  }
+    boolean isInitialized();
+
+    @Override
+    default void close() throws IOException {
+
+    }
 }

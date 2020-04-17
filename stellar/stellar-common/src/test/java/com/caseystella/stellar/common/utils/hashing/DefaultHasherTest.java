@@ -30,30 +30,30 @@ import java.util.Collections;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-
 public class DefaultHasherTest {
-  private Charset charset = StandardCharsets.UTF_8;
-  private BinaryEncoder encoder = new Hex(charset);
+    private Charset charset = StandardCharsets.UTF_8;
+    private BinaryEncoder encoder = new Hex(charset);
 
-  @Test
-  public void getHashAsHexOfNullValueReturnsPadded00() throws Exception {
-    assertEquals(StringUtils.repeat("00", 16), new DefaultHasher("md5", encoder).getHash(null));
-    assertEquals(StringUtils.repeat("00", 32), new DefaultHasher("sha-256", encoder).getHash(null));
-  }
+    @Test
+    public void getHashAsHexOfNullValueReturnsPadded00() throws Exception {
+        assertEquals(StringUtils.repeat("00", 16), new DefaultHasher("md5", encoder).getHash(null));
+        assertEquals(StringUtils.repeat("00", 32), new DefaultHasher("sha-256", encoder).getHash(null));
+    }
 
-  @Test
-  public void nonSerializableShouldReturnNull() throws Exception {
-    assertNull(new DefaultHasher("md5", encoder, charset).getHash(new Object()));
-  }
+    @Test
+    public void nonSerializableShouldReturnNull() throws Exception {
+        assertNull(new DefaultHasher("md5", encoder, charset).getHash(new Object()));
+    }
 
-  @Test
-  public void hashingStringWithEmptyString() throws Exception {
-    assertEquals("d41d8cd98f00b204e9800998ecf8427e", new DefaultHasher("md5", encoder).getHash(""));
-  }
+    @Test
+    public void hashingStringWithEmptyString() throws Exception {
+        assertEquals("d41d8cd98f00b204e9800998ecf8427e", new DefaultHasher("md5", encoder).getHash(""));
+    }
 
-  @Test
-  public void hashingSerializableObject() throws Exception {
-    final Collection<String> serializable = Collections.emptyList();
-    assertEquals("ef5e8c8d27af3a953b4674065c99a52a", new DefaultHasher("md5", encoder, charset).getHash(serializable));
-  }
+    @Test
+    public void hashingSerializableObject() throws Exception {
+        final Collection<String> serializable = Collections.emptyList();
+        assertEquals("ef5e8c8d27af3a953b4674065c99a52a",
+                new DefaultHasher("md5", encoder, charset).getHash(serializable));
+    }
 }

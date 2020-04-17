@@ -23,5 +23,5 @@ import com.caseystella.stellar.common.FrameContext;
 import com.caseystella.stellar.common.generated.StellarParser;
 
 public interface NumberEvaluator<T extends StellarParser.Arithmetic_operandsContext> {
-  Token<? extends Number> evaluate(T context, FrameContext.Context contextVariety);
+    Token<? extends Number> evaluate(T context, FrameContext.Context contextVariety);
 }

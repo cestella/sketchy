@@ -30,49 +30,49 @@ import static org.mockito.Mockito.when;
 
 public class SystemFunctionsTest {
 
-  @Test
-  public void smoke_test_non_mocked_env() {
-    SystemFunctions.EnvGet envGet = new SystemFunctions.EnvGet();
-    String envVal = (String) envGet.apply(ImmutableList.of("ENV_GET_VAR"));
-    assertThat("Value should not exist", envVal, equalTo(null));
-  }
+    @Test
+    public void smoke_test_non_mocked_env() {
+        SystemFunctions.EnvGet envGet = new SystemFunctions.EnvGet();
+        String envVal = (String) envGet.apply(ImmutableList.of("ENV_GET_VAR"));
+        assertThat("Value should not exist", envVal, equalTo(null));
+    }
 
-  @Test
-  public void env_get_returns_value() {
-    Environment env = mock(Environment.class);
-    when(env.get("ENV_GET_VAR")).thenReturn("ENV_GET_VALUE");
-    SystemFunctions.EnvGet envGet = new SystemFunctions.EnvGet(env);
-    String envVal = (String) envGet.apply(ImmutableList.of("ENV_GET_VAR"));
-    assertThat("Value should match", envVal, equalTo("ENV_GET_VALUE"));
-  }
+    @Test
+    public void env_get_returns_value() {
+        Environment env = mock(Environment.class);
+        when(env.get("ENV_GET_VAR")).thenReturn("ENV_GET_VALUE");
+        SystemFunctions.EnvGet envGet = new SystemFunctions.EnvGet(env);
+        String envVal = (String) envGet.apply(ImmutableList.of("ENV_GET_VAR"));
+        assertThat("Value should match", envVal, equalTo("ENV_GET_VALUE"));
+    }
 
-  @Test
-  public void env_get_returns_null_if_key_is_not_string() {
-    SystemFunctions.EnvGet envGet = new SystemFunctions.EnvGet();
-    String envVal = (String) envGet.apply(ImmutableList.of(new ArrayList()));
-    assertThat("Value should be null", envVal, equalTo(null));
-  }
+    @Test
+    public void env_get_returns_null_if_key_is_not_string() {
+        SystemFunctions.EnvGet envGet = new SystemFunctions.EnvGet();
+        String envVal = (String) envGet.apply(ImmutableList.of(new ArrayList()));
+        assertThat("Value should be null", envVal, equalTo(null));
+    }
 
-  @Test
-  public void property_get_returns_value() {
-    System.getProperties().put("ENV_GET_VAR", "ENV_GET_VALUE");
-    SystemFunctions.PropertyGet propertyGet = new SystemFunctions.PropertyGet();
-    String propertyVal = (String) propertyGet.apply(ImmutableList.of("ENV_GET_VAR"));
-    assertThat("Value should match", propertyVal, equalTo("ENV_GET_VALUE"));
-  }
+    @Test
+    public void property_get_returns_value() {
+        System.getProperties().put("ENV_GET_VAR", "ENV_GET_VALUE");
+        SystemFunctions.PropertyGet propertyGet = new SystemFunctions.PropertyGet();
+        String propertyVal = (String) propertyGet.apply(ImmutableList.of("ENV_GET_VAR"));
+        assertThat("Value should match", propertyVal, equalTo("ENV_GET_VALUE"));
+    }
 
-  @Test
-  public void property_get_nonexistent_returns_null() {
-    SystemFunctions.PropertyGet propertyGet = new SystemFunctions.PropertyGet();
-    String propertyVal = (String) propertyGet.apply(ImmutableList.of("PROPERTY_MISSING"));
-    assertThat("Value should not exist", propertyVal, equalTo(null));
-  }
+    @Test
+    public void property_get_nonexistent_returns_null() {
+        SystemFunctions.PropertyGet propertyGet = new SystemFunctions.PropertyGet();
+        String propertyVal = (String) propertyGet.apply(ImmutableList.of("PROPERTY_MISSING"));
+        assertThat("Value should not exist", propertyVal, equalTo(null));
+    }
 
-  @Test
-  public void property_get_returns_null_if_key_is_not_string() {
-    SystemFunctions.PropertyGet propertyGet = new SystemFunctions.PropertyGet();
-    String propertyVal = (String) propertyGet.apply(ImmutableList.of(new ArrayList()));
-    assertThat("Value should be null", propertyVal, equalTo(null));
-  }
+    @Test
+    public void property_get_returns_null_if_key_is_not_string() {
+        SystemFunctions.PropertyGet propertyGet = new SystemFunctions.PropertyGet();
+        String propertyVal = (String) propertyGet.apply(ImmutableList.of(new ArrayList()));
+        assertThat("Value should be null", propertyVal, equalTo(null));
+    }
 
 }

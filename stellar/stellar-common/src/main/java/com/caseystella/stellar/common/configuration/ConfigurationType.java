@@ -26,44 +26,44 @@ import java.io.IOException;
 
 public enum ConfigurationType implements Function<String, Object> {
 
-  GLOBAL("global",".", s -> {
-    try {
-      return JSONUtils.INSTANCE.load(s, JSONUtils.MAP_SUPPLIER);
-    } catch (IOException e) {
-      throw new RuntimeException("Unable to load " + s, e);
+    GLOBAL("global", ".", s -> {
+        try {
+            return JSONUtils.INSTANCE.load(s, JSONUtils.MAP_SUPPLIER);
+        } catch (IOException e) {
+            throw new RuntimeException("Unable to load " + s, e);
+        }
+    });
+
+    String name;
+    String directory;
+    String zookeeperRoot;
+    Function<String, ?> deserializer;
+
+    ConfigurationType(String name, String directory, Function<String, ?> deserializer) {
+        this.name = name;
+        this.directory = directory;
+        this.zookeeperRoot = Constants.ZOOKEEPER_TOPOLOGY_ROOT + "/" + name;
+        this.deserializer = deserializer;
     }
-  });
 
-  String name;
-  String directory;
-  String zookeeperRoot;
-  Function<String,?> deserializer;
+    public String getName() {
+        return name;
+    }
 
-  ConfigurationType(String name, String directory, Function<String, ?> deserializer) {
-    this.name = name;
-    this.directory = directory;
-    this.zookeeperRoot = Constants.ZOOKEEPER_TOPOLOGY_ROOT + "/" + name;
-    this.deserializer = deserializer;
-  }
+    public String getDirectory() {
+        return directory;
+    }
 
-  public String getName() {
-    return name;
-  }
+    public Object deserialize(String s) {
+        return deserializer.apply(s);
+    }
 
-  public String getDirectory() {
-    return directory;
-  }
+    @Override
+    public Object apply(String s) {
+        return deserialize(s);
+    }
 
-  public Object deserialize(String s) {
-    return deserializer.apply(s);
-  }
-
-  @Override
-  public Object apply(String s) {
-    return deserialize(s);
-  }
-
-  public String getZookeeperRoot() {
-    return zookeeperRoot;
-  }
+    public String getZookeeperRoot() {
+        return zookeeperRoot;
+    }
 }

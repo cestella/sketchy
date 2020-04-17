@@ -21,13 +21,14 @@ import java.util.List;
 import java.util.function.Predicate;
 
 public class Predicate2StellarFunction extends BaseStellarFunction {
-  Predicate<List<Object>> pred;
-  public Predicate2StellarFunction(Predicate<List<Object>> pred) {
-    this.pred = pred;
-  }
+    Predicate<List<Object>> pred;
 
-  @Override
-  public Object apply(List<Object> objects) {
-    return pred.test(objects);
-  }
+    public Predicate2StellarFunction(Predicate<List<Object>> pred) {
+        this.pred = pred;
+    }
+
+    @Override
+    public Object apply(List<Object> objects) {
+        return pred.test(objects);
+    }
 }

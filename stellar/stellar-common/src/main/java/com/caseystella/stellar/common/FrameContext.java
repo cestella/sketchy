@@ -18,28 +18,26 @@
 package com.caseystella.stellar.common;
 
 public enum FrameContext {
-  BOOLEAN_AND,
-  BOOLEAN_OR;
+    BOOLEAN_AND, BOOLEAN_OR;
 
-  public static class Context {
-    private FrameContext variety;
-    public Context(FrameContext variety) {
-      this.variety = variety;
+    public static class Context {
+        private FrameContext variety;
+
+        public Context(FrameContext variety) {
+            this.variety = variety;
+        }
+
+        public FrameContext getVariety() {
+            return variety;
+        }
+
+        @Override
+        public String toString() {
+            return "Context{" + "variety=" + variety + '}';
+        }
     }
 
-    public FrameContext getVariety() {
-      return variety;
+    public Context create() {
+        return new Context(this);
     }
-
-    @Override
-    public String toString() {
-      return "Context{" +
-              "variety=" + variety +
-              '}';
-    }
-  }
-
-  public Context create() {
-    return new Context(this);
-  }
 }

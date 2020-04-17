@@ -27,20 +27,25 @@ import java.util.Set;
 
 public interface Hasher {
 
-  /**
-   * Returns an encoded string representation of the hash value of the input. It is expected that
-   * this implementation does throw exceptions when the input is null.
-   * @param toHash The value to hash.
-   * @return A hash of {@code toHash} that has been encoded.
-   * @throws EncoderException If unable to encode the hash then this exception occurs.
-   * @throws NoSuchAlgorithmException If the supplied algorithm is not known.
-   */
-  Object getHash(final Object toHash) throws EncoderException, NoSuchAlgorithmException;
+    /**
+     * Returns an encoded string representation of the hash value of the input. It is expected that this implementation
+     * does throw exceptions when the input is null.
+     * 
+     * @param toHash
+     *            The value to hash.
+     * @return A hash of {@code toHash} that has been encoded.
+     * @throws EncoderException
+     *             If unable to encode the hash then this exception occurs.
+     * @throws NoSuchAlgorithmException
+     *             If the supplied algorithm is not known.
+     */
+    Object getHash(final Object toHash) throws EncoderException, NoSuchAlgorithmException;
 
-  /**
-   * Configure the hasher with a string to object map.
-   * @param config
-   */
-  void configure(final Optional<Map<String, Object>> config);
+    /**
+     * Configure the hasher with a string to object map.
+     * 
+     * @param config
+     */
+    void configure(final Optional<Map<String, Object>> config);
 
 }

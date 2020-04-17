@@ -34,78 +34,68 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class MagicListVariablesTest {
 
-  MagicListVariables magic;
-  DefaultStellarShellExecutor executor;
+    MagicListVariables magic;
+    DefaultStellarShellExecutor executor;
 
-  @BeforeEach
-  public void setup() throws Exception {
+    @BeforeEach
+    public void setup() throws Exception {
 
-    // setup the %magic
-    magic = new MagicListVariables();
+        // setup the %magic
+        magic = new MagicListVariables();
 
-    // setup the executor
-    Properties props = new Properties();
-    executor = new DefaultStellarShellExecutor(props, Optional.empty());
-    executor.init();
-  }
-
-  @Test
-  public void testGetCommand() {
-    assertEquals("%vars", magic.getCommand());
-  }
-
-  @Test
-  public void testShouldMatch() {
-    List<String> inputs = Arrays.asList(
-            "%vars",
-            "   %vars   ",
-            "%vars   FOO",
-            "    %vars    FOO "
-    );
-    for(String in : inputs) {
-      assertTrue(magic.getMatcher().apply(in), "failed: " + in);
+        // setup the executor
+        Properties props = new Properties();
+        executor = new DefaultStellarShellExecutor(props, Optional.empty());
+        executor.init();
     }
-  }
 
-  @Test
-  public void testShouldNotMatch() {
-    List<String> inputs = Arrays.asList(
-            "foo",
-            "  vars ",
-            "bar",
-            "%define"
-    );
-    for(String in : inputs) {
-      assertFalse(magic.getMatcher().apply(in), "failed: " + in);
+    @Test
+    public void testGetCommand() {
+        assertEquals("%vars", magic.getCommand());
     }
-  }
 
-  @Test
-  public void test() {
-    // define some vars
-    executor.execute("x := 2 + 2");
-    StellarResult result = executor.execute("%vars");
+    @Test
+    public void testShouldMatch() {
+        List<String> inputs = Arrays.asList("%vars", "   %vars   ", "%vars   FOO", "    %vars    FOO ");
+        for (String in : inputs) {
+            assertTrue(magic.getMatcher().apply(in), "failed: " + in);
+        }
+    }
 
-    // validate the result
-    assertTrue(result.isSuccess());
-    assertTrue(result.getValue().isPresent());
+    @Test
+    public void testShouldNotMatch() {
+        List<String> inputs = Arrays.asList("foo", "  vars ", "bar", "%define");
+        for (String in : inputs) {
+            assertFalse(magic.getMatcher().apply(in), "failed: " + in);
+        }
+    }
 
-    // validate the list of vars
-    String vars = ConversionUtils.convert(result.getValue().get(), String.class);
-    assertEquals("x = 4 via `2 + 2`", vars);
-  }
+    @Test
+    public void test() {
+        // define some vars
+        executor.execute("x := 2 + 2");
+        StellarResult result = executor.execute("%vars");
 
-  @Test
-  public void testWithNoVars() {
-    // there are no vars defined
-    StellarResult result = executor.execute("%vars");
+        // validate the result
+        assertTrue(result.isSuccess());
+        assertTrue(result.getValue().isPresent());
 
-    // validate the result
-    assertTrue(result.isSuccess());
-    assertTrue(result.getValue().isPresent());
+        // validate the list of vars
+        String vars = ConversionUtils.convert(result.getValue().get(), String.class);
+        assertEquals("x = 4 via `2 + 2`", vars);
+    }
 
-    // validate the list of vars
-    String vars = ConversionUtils.convert(result.getValue().get(), String.class);
-    assertEquals("", vars);
-  }
+    @Test
+    public void testWithNoVars() {
+        // there are no vars defined
+        StellarResult result = executor.execute("%vars");
+
+        // validate the result
+        assertTrue(result.isSuccess());
+        assertTrue(result.getValue().isPresent());
+
+        // validate the list of vars
+        String vars = ConversionUtils.convert(result.getValue().get(), String.class);
+        assertEquals("", vars);
+    }
 }

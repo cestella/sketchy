@@ -31,58 +31,54 @@ import static org.apache.commons.lang3.StringUtils.trimToEmpty;
 import static com.caseystella.stellar.common.shell.StellarResult.success;
 
 /**
- * A MagicCommand that lists the variables available within
- * the Stellar execution environment.
+ * A MagicCommand that lists the variables available within the Stellar execution environment.
  *
- *    %vars
+ * %vars
  */
 public class MagicListVariables implements SpecialCommand {
 
-  public static final String MAGIC_VARS = "%vars";
+    public static final String MAGIC_VARS = "%vars";
 
-  @Override
-  public String getCommand() {
-    return MAGIC_VARS;
-  }
-
-  @Override
-  public Function<String, Boolean> getMatcher() {
-    return (input) -> startsWith(trimToEmpty(input), MAGIC_VARS);
-  }
-
-  /**
-   * Lists each variable, its value, and if available, the expression that resulted in that value.
-   *
-   *    x = 4 via `2 + 2`
-   *
-   * @param command The command to execute.
-   * @param executor A stellar execution environment.
-   * @return
-   */
-  @Override
-  public StellarResult execute(String command, StellarShellExecutor executor) {
-
-    // format a string containing each variable and it's value
-    String vars = executor
-            .getState()
-            .entrySet()
-            .stream()
-            .map(e -> format(e))
-            .collect(Collectors.joining(", "));
-
-    return success(vars);
-  }
-
-  private String format(Map.Entry<String, VariableResult> var) {
-
-    // 'varName = varValue'
-    String out = String.format("%s = %s", var.getKey(), var.getValue().getResult());
-
-    // 'via varExpression', if the expression is known
-    if(var.getValue().getExpression().isPresent()) {
-      out += String.format(" via `%s`", var.getValue().getExpression().get());
+    @Override
+    public String getCommand() {
+        return MAGIC_VARS;
     }
 
-    return out;
-  }
+    @Override
+    public Function<String, Boolean> getMatcher() {
+        return (input) -> startsWith(trimToEmpty(input), MAGIC_VARS);
+    }
+
+    /**
+     * Lists each variable, its value, and if available, the expression that resulted in that value.
+     *
+     * x = 4 via `2 + 2`
+     *
+     * @param command
+     *            The command to execute.
+     * @param executor
+     *            A stellar execution environment.
+     * @return
+     */
+    @Override
+    public StellarResult execute(String command, StellarShellExecutor executor) {
+
+        // format a string containing each variable and it's value
+        String vars = executor.getState().entrySet().stream().map(e -> format(e)).collect(Collectors.joining(", "));
+
+        return success(vars);
+    }
+
+    private String format(Map.Entry<String, VariableResult> var) {
+
+        // 'varName = varValue'
+        String out = String.format("%s = %s", var.getKey(), var.getValue().getResult());
+
+        // 'via varExpression', if the expression is known
+        if (var.getValue().getExpression().isPresent()) {
+            out += String.format(" via `%s`", var.getValue().getExpression().get());
+        }
+
+        return out;
+    }
 }

@@ -21,7 +21,7 @@ package com.caseystella.stellar.common.system;
  * Useful so we can test mock dependency injection with environment variables
  */
 public class Environment {
-  public String get(String variable) {
-    return System.getenv().get(variable);
-  }
+    public String get(String variable) {
+        return System.getenv().get(variable);
+    }
 }

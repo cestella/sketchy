@@ -34,78 +34,68 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class MagicListGlobalsTest {
 
-  MagicListGlobals magic;
-  DefaultStellarShellExecutor executor;
+    MagicListGlobals magic;
+    DefaultStellarShellExecutor executor;
 
-  @BeforeEach
-  public void setup() throws Exception {
+    @BeforeEach
+    public void setup() throws Exception {
 
-    // setup the %magic
-    magic = new MagicListGlobals();
+        // setup the %magic
+        magic = new MagicListGlobals();
 
-    // setup the executor
-    Properties props = new Properties();
-    executor = new DefaultStellarShellExecutor(props, Optional.empty());
-    executor.init();
-  }
-
-  @Test
-  public void testGetCommand() {
-    assertEquals("%globals", magic.getCommand());
-  }
-
-  @Test
-  public void testShouldMatch() {
-    List<String> inputs = Arrays.asList(
-            "%globals",
-            "   %globals   ",
-            "%globals   FOO",
-            "    %globals    FOO "
-    );
-    for(String in : inputs) {
-      assertTrue(magic.getMatcher().apply(in), "failed: " + in);
+        // setup the executor
+        Properties props = new Properties();
+        executor = new DefaultStellarShellExecutor(props, Optional.empty());
+        executor.init();
     }
-  }
 
-  @Test
-  public void testShouldNotMatch() {
-    List<String> inputs = Arrays.asList(
-            "foo",
-            "  globals ",
-            "bar",
-            "%define"
-    );
-    for(String in : inputs) {
-      assertFalse(magic.getMatcher().apply(in), "failed: " + in);
+    @Test
+    public void testGetCommand() {
+        assertEquals("%globals", magic.getCommand());
     }
-  }
 
-  @Test
-  public void test() {
-    // define some globals
-    executor.getGlobalConfig().put("x", 2);
+    @Test
+    public void testShouldMatch() {
+        List<String> inputs = Arrays.asList("%globals", "   %globals   ", "%globals   FOO", "    %globals    FOO ");
+        for (String in : inputs) {
+            assertTrue(magic.getMatcher().apply(in), "failed: " + in);
+        }
+    }
 
-    // get all globals
-    StellarResult result = executor.execute("%globals");
+    @Test
+    public void testShouldNotMatch() {
+        List<String> inputs = Arrays.asList("foo", "  globals ", "bar", "%define");
+        for (String in : inputs) {
+            assertFalse(magic.getMatcher().apply(in), "failed: " + in);
+        }
+    }
 
-    // validate the result
-    assertTrue(result.isSuccess());
-    assertTrue(result.getValue().isPresent());
+    @Test
+    public void test() {
+        // define some globals
+        executor.getGlobalConfig().put("x", 2);
 
-    String out = ConversionUtils.convert(result.getValue().get(), String.class);
-    assertEquals("{x=2}", out);
-  }
+        // get all globals
+        StellarResult result = executor.execute("%globals");
 
-  @Test
-  public void testWithNoGlobals() {
-    // get all globals
-    StellarResult result = executor.execute("%globals");
+        // validate the result
+        assertTrue(result.isSuccess());
+        assertTrue(result.getValue().isPresent());
 
-    // validate the result
-    assertTrue(result.isSuccess());
-    assertTrue(result.getValue().isPresent());
+        String out = ConversionUtils.convert(result.getValue().get(), String.class);
+        assertEquals("{x=2}", out);
+    }
 
-    String out = ConversionUtils.convert(result.getValue().get(), String.class);
-    assertEquals("{}", out);
-  }
+    @Test
+    public void testWithNoGlobals() {
+        // get all globals
+        StellarResult result = executor.execute("%globals");
+
+        // validate the result
+        assertTrue(result.isSuccess());
+        assertTrue(result.getValue().isPresent());
+
+        String out = ConversionUtils.convert(result.getValue().get(), String.class);
+        assertEquals("{}", out);
+    }
 }

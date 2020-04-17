@@ -29,73 +29,74 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public class JSONUtilsTest {
-  private static File tmpDir;
+    private static File tmpDir;
 
-  /**
-   {
-   "a" : "hello",
-   "b" : "world"
-   }
-   */
-  @Multiline
-  private static String config;
-  private static File configFile;
+    /**
+     * { "a" : "hello", "b" : "world" }
+     */
+    @Multiline
+    private static String config;
+    private static File configFile;
 
-  @BeforeAll
-  public static void setUp() throws Exception {
-    tmpDir = UnitTestHelper.createTempDir(new File("target/jsonutilstest"));
-    configFile = UnitTestHelper.write(new File(tmpDir, "config.json"), config);
-  }
-
-  @Test
-  public void loads_file_with_typeref() throws Exception {
-    Map<String, Object> expected = new HashMap<String, Object>() {{
-      put("a", "hello");
-      put("b", "world");
-    }};
-    Map<String, Object> actual = JSONUtils.INSTANCE.load(configFile, JSONUtils.MAP_SUPPLIER);
-    assertThat("config not equal", actual, equalTo(expected));
-  }
-
-  @Test
-  @SuppressWarnings("unchecked")
-  public void loads_file_with_map_class() throws Exception {
-    Map<String, Object> expected = new HashMap<String, Object>() {{
-      put("a", "hello");
-      put("b", "world");
-    }};
-    Map<String, Object> actual = JSONUtils.INSTANCE.load(configFile, Map.class);
-    assertThat("config not equal", actual, equalTo(expected));
-  }
-
-  @Test
-  public void loads_file_with_custom_class() throws Exception {
-    TestConfig expected = new TestConfig().setA("hello").setB("world");
-    TestConfig actual = JSONUtils.INSTANCE.load(configFile, TestConfig.class);
-    assertThat("a not equal", actual.getA(), equalTo(expected.getA()));
-    assertThat("b not equal", actual.getB(), equalTo(expected.getB()));
-  }
-
-  public static class TestConfig {
-    private String a;
-    private String b;
-
-    public String getA() {
-      return a;
+    @BeforeAll
+    public static void setUp() throws Exception {
+        tmpDir = UnitTestHelper.createTempDir(new File("target/jsonutilstest"));
+        configFile = UnitTestHelper.write(new File(tmpDir, "config.json"), config);
     }
 
-    public TestConfig setA(String a) {
-      this.a = a;
-      return this;
+    @Test
+    public void loads_file_with_typeref() throws Exception {
+        Map<String, Object> expected = new HashMap<String, Object>() {
+            {
+                put("a", "hello");
+                put("b", "world");
+            }
+        };
+        Map<String, Object> actual = JSONUtils.INSTANCE.load(configFile, JSONUtils.MAP_SUPPLIER);
+        assertThat("config not equal", actual, equalTo(expected));
     }
 
-    public String getB() {
-      return b;
+    @Test
+    @SuppressWarnings("unchecked")
+    public void loads_file_with_map_class() throws Exception {
+        Map<String, Object> expected = new HashMap<String, Object>() {
+            {
+                put("a", "hello");
+                put("b", "world");
+            }
+        };
+        Map<String, Object> actual = JSONUtils.INSTANCE.load(configFile, Map.class);
+        assertThat("config not equal", actual, equalTo(expected));
     }
 
-    public TestConfig setB(String b) {
-      this.b = b;
-      return this;
+    @Test
+    public void loads_file_with_custom_class() throws Exception {
+        TestConfig expected = new TestConfig().setA("hello").setB("world");
+        TestConfig actual = JSONUtils.INSTANCE.load(configFile, TestConfig.class);
+        assertThat("a not equal", actual.getA(), equalTo(expected.getA()));
+        assertThat("b not equal", actual.getB(), equalTo(expected.getB()));
     }
-  }
+
+    public static class TestConfig {
+        private String a;
+        private String b;
+
+        public String getA() {
+            return a;
+        }
+
+        public TestConfig setA(String a) {
+            this.a = a;
+            return this;
+        }
+
+        public String getB() {
+            return b;
+        }
+
+        public TestConfig setB(String b) {
+            this.b = b;
+            return this;
+        }
+    }
 }

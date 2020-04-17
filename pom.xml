@@ -81,14 +81,17 @@
     <pluginManagement>
       <plugins>
         <plugin>
-          <groupId>com.coveo</groupId>
-          <artifactId>fmt-maven-plugin</artifactId>
-          <version>2.9</version>
+          <groupId>net.revelc.code.formatter</groupId>
+          <artifactId>formatter-maven-plugin</artifactId>
           <executions>
             <execution>
               <goals>
                 <goal>format</goal>
               </goals>
+              <configuration>
+                <configFile>eclipse-java-google-style.xml</configFile>
+                <encoding>UTF-8</encoding>
+              </configuration>
             </execution>
           </executions>
         </plugin>

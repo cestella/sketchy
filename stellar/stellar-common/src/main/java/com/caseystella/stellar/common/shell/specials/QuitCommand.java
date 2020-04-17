@@ -28,24 +28,24 @@ import static com.caseystella.stellar.common.shell.StellarResult.terminate;
 /**
  * A special command that allows the user to 'quit' their REPL session.
  *
- *    quit
+ * quit
  */
 public class QuitCommand implements SpecialCommand {
 
-  public static final String QUIT_COMMAND = "quit";
+    public static final String QUIT_COMMAND = "quit";
 
-  @Override
-  public String getCommand() {
-    return QUIT_COMMAND;
-  }
+    @Override
+    public String getCommand() {
+        return QUIT_COMMAND;
+    }
 
-  @Override
-  public Function<String, Boolean> getMatcher() {
-    return (input) -> QUIT_COMMAND.equals(input);
-  }
+    @Override
+    public Function<String, Boolean> getMatcher() {
+        return (input) -> QUIT_COMMAND.equals(input);
+    }
 
-  @Override
-  public StellarResult execute(String command, StellarShellExecutor executor) {
-    return terminate();
-  }
+    @Override
+    public StellarResult execute(String command, StellarShellExecutor executor) {
+        return terminate();
+    }
 }

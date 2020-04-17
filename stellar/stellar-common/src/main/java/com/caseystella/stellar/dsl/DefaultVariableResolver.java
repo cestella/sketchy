@@ -20,25 +20,26 @@ package com.caseystella.stellar.dsl;
 
 import java.util.function.Function;
 
-public class DefaultVariableResolver implements VariableResolver{
-  Function<String,Object> resolveFunc;
-  Function<String,Boolean> existsFunc;
+public class DefaultVariableResolver implements VariableResolver {
+    Function<String, Object> resolveFunc;
+    Function<String, Boolean> existsFunc;
 
-  public DefaultVariableResolver(Function<String,Object> resolveFunc, Function<String,Boolean> existsFunc){
-    this.resolveFunc = resolveFunc;
-    this.existsFunc = existsFunc;
-  }
-  @Override
-  public Object resolve(String variable) {
-    return resolveFunc.apply(variable);
-  }
+    public DefaultVariableResolver(Function<String, Object> resolveFunc, Function<String, Boolean> existsFunc) {
+        this.resolveFunc = resolveFunc;
+        this.existsFunc = existsFunc;
+    }
 
-  @Override
-  public boolean exists(String variable) {
-    return existsFunc.apply(variable);
-  }
+    @Override
+    public Object resolve(String variable) {
+        return resolveFunc.apply(variable);
+    }
 
-  public static DefaultVariableResolver NULL_RESOLVER() {
-    return new DefaultVariableResolver(x -> null, x -> false);
-  }
+    @Override
+    public boolean exists(String variable) {
+        return existsFunc.apply(variable);
+    }
+
+    public static DefaultVariableResolver NULL_RESOLVER() {
+        return new DefaultVariableResolver(x -> null, x -> false);
+    }
 }

@@ -18,7 +18,6 @@
 
 package com.caseystella.stellar.common;
 
-
 import com.caseystella.stellar.dsl.Context;
 import com.caseystella.stellar.dsl.functions.resolver.FunctionResolver;
 import com.caseystella.stellar.dsl.VariableResolver;
@@ -28,45 +27,42 @@ import java.util.concurrent.TimeUnit;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 /**
- * The Stellar Predicate Processor is intended to allow for specific predicate transformations using the Stellar
- * domain specific language.  In contrast to the StellarProcessor, which is a general purpose transformation
- * tool, the output of the stellar statement is always a boolean.  In java parlance, this is like a
- * java.util.function.Predicate
+ * The Stellar Predicate Processor is intended to allow for specific predicate transformations using the Stellar domain
+ * specific language. In contrast to the StellarProcessor, which is a general purpose transformation tool, the output of
+ * the stellar statement is always a boolean. In java parlance, this is like a java.util.function.Predicate
  */
 
 public class StellarPredicateProcessor extends BaseStellarProcessor<Boolean> {
 
-  /**
-   * Create a default stellar processor.  This processor uses the static expression cache.
-   */
-  public StellarPredicateProcessor() {
-    super(Boolean.class);
-  }
+    /**
+     * Create a default stellar processor. This processor uses the static expression cache.
+     */
+    public StellarPredicateProcessor() {
+        super(Boolean.class);
+    }
 
-  public StellarPredicateProcessor(int cacheSize, int expiryTime, TimeUnit expiryUnit) {
-    super(Boolean.class, cacheSize, expiryTime, expiryUnit);
-  }
-  @Override
-  public Boolean parse( String rule
-                      , VariableResolver variableResolver
-                      , FunctionResolver functionResolver
-                      , Context context
-                      )
-  {
-    if(rule == null || isEmpty(rule.trim())) {
-      return true;
+    public StellarPredicateProcessor(int cacheSize, int expiryTime, TimeUnit expiryUnit) {
+        super(Boolean.class, cacheSize, expiryTime, expiryUnit);
     }
-    try {
-      return super.parse(rule, variableResolver, functionResolver, context);
-    } catch (ClassCastException e) {
-      // predicate must return boolean
-      throw new IllegalArgumentException(String.format("The rule '%s' does not return a boolean value.", rule), e);
+
+    @Override
+    public Boolean parse(String rule, VariableResolver variableResolver, FunctionResolver functionResolver,
+            Context context) {
+        if (rule == null || isEmpty(rule.trim())) {
+            return true;
+        }
+        try {
+            return super.parse(rule, variableResolver, functionResolver, context);
+        } catch (ClassCastException e) {
+            // predicate must return boolean
+            throw new IllegalArgumentException(String.format("The rule '%s' does not return a boolean value.", rule),
+                    e);
+        } catch (Exception e) {
+            if (e.getCause() != null && e.getCause() instanceof ClassCastException) {
+                throw new IllegalArgumentException(
+                        String.format("The rule '%s' does not return a boolean value.", rule), e.getCause());
+            }
+            throw e;
+        }
     }
-    catch(Exception e) {
-      if(e.getCause() != null && e.getCause() instanceof ClassCastException) {
-        throw new IllegalArgumentException(String.format("The rule '%s' does not return a boolean value.", rule), e.getCause());
-      }
-      throw e;
-    }
-  }
 }

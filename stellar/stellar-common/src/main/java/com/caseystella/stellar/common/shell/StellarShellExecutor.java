@@ -28,52 +28,60 @@ import java.util.Optional;
 /**
  * Responsible for executing Stellar in a shell-like environment.
  *
- * Provides the additional capabilities expected of executing Stellar
- * in a shell-like environment including maintaining state, variable assignment,
- * magic commands, doc strings, and comments.
+ * Provides the additional capabilities expected of executing Stellar in a shell-like environment including maintaining
+ * state, variable assignment, magic commands, doc strings, and comments.
  */
 public interface StellarShellExecutor extends StellarExecutionNotifier {
 
-  /**
-   * Initialize the Stellar executor.
-   */
-  void init();
+    /**
+     * Initialize the Stellar executor.
+     */
+    void init();
 
-  /**
-   * Execute the Stellar expression.
-   * @param expression The Stellar expression to execute.
-   * @return The result of executing the Stellar expression.
-   */
-  StellarResult execute(String expression);
+    /**
+     * Execute the Stellar expression.
+     * 
+     * @param expression
+     *            The Stellar expression to execute.
+     * @return The result of executing the Stellar expression.
+     */
+    StellarResult execute(String expression);
 
-  /**
-   * Update the state of the executor by assign a value to a variable.
-   * @param variable The name of the variable.
-   * @param value The value to assign.
-   * @param expression The expression that resulted in the given value.  Optional.
-   */
-  void assign(String variable, Object value, Optional<String> expression);
+    /**
+     * Update the state of the executor by assign a value to a variable.
+     * 
+     * @param variable
+     *            The name of the variable.
+     * @param value
+     *            The value to assign.
+     * @param expression
+     *            The expression that resulted in the given value. Optional.
+     */
+    void assign(String variable, Object value, Optional<String> expression);
 
-  /**
-   * The current state of the Stellar execution environment.
-   */
-  Map<String, VariableResult> getState();
+    /**
+     * The current state of the Stellar execution environment.
+     */
+    Map<String, VariableResult> getState();
 
-  /**
-   * Returns the Context for the Stellar execution environment.
-   * @return The execution context.
-   */
-  Context getContext();
+    /**
+     * Returns the Context for the Stellar execution environment.
+     * 
+     * @return The execution context.
+     */
+    Context getContext();
 
-  /**
-   * Returns the global configuration of the Stellar execution environment.
-   * @return A map of values defined in the global configuration.
-   */
-  Map<String, Object> getGlobalConfig();
+    /**
+     * Returns the global configuration of the Stellar execution environment.
+     * 
+     * @return A map of values defined in the global configuration.
+     */
+    Map<String, Object> getGlobalConfig();
 
-  /**
-   * Returns the function resolver of the Stellar execution environment.
-   * @return The function resolver.
-   */
-  FunctionResolver getFunctionResolver();
+    /**
+     * Returns the function resolver of the Stellar execution environment.
+     * 
+     * @return The function resolver.
+     */
+    FunctionResolver getFunctionResolver();
 }

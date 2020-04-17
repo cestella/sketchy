@@ -25,12 +25,12 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class ConversionUtilsTest {
 
-  @Test
-  public void testIntegerConversions() {
-    Object o = 1;
-    assertEquals(Integer.valueOf(1), ConversionUtils.convert(o, Integer.class));
-    assertEquals(Integer.valueOf(1), ConversionUtils.convert("1", Integer.class));
-    assertNull(ConversionUtils.convert("foo", Integer.class));
-  }
+    @Test
+    public void testIntegerConversions() {
+        Object o = 1;
+        assertEquals(Integer.valueOf(1), ConversionUtils.convert(o, Integer.class));
+        assertEquals(Integer.valueOf(1), ConversionUtils.convert("1", Integer.class));
+        assertNull(ConversionUtils.convert("foo", Integer.class));
+    }
 
 }

@@ -36,99 +36,88 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class MagicListFunctionsTest {
 
-  MagicListFunctions magic;
-  DefaultStellarShellExecutor executor;
+    MagicListFunctions magic;
+    DefaultStellarShellExecutor executor;
 
-  @BeforeEach
-  public void setup() throws Exception {
+    @BeforeEach
+    public void setup() throws Exception {
 
-    // setup the %magic
-    magic = new MagicListFunctions();
+        // setup the %magic
+        magic = new MagicListFunctions();
 
-    // setup a function resolver - only 3 functions have been defined
-    SimpleFunctionResolver functionResolver = new SimpleFunctionResolver()
-            .withClass(StringFunctions.ToString.class)
-            .withClass(StringFunctions.ToLower.class)
-            .withClass(StringFunctions.ToUpper.class);
+        // setup a function resolver - only 3 functions have been defined
+        SimpleFunctionResolver functionResolver = new SimpleFunctionResolver().withClass(StringFunctions.ToString.class)
+                .withClass(StringFunctions.ToLower.class).withClass(StringFunctions.ToUpper.class);
 
-    // setup the executor
-    Properties props = new Properties();
-    executor = new DefaultStellarShellExecutor(functionResolver, props, Optional.empty());
-    executor.init();
-  }
-
-  @Test
-  public void testGetCommand() {
-    assertEquals("%functions", magic.getCommand());
-  }
-
-  @Test
-  public void testShouldMatch() {
-    List<String> inputs = Arrays.asList(
-            "%functions",
-            "   %functions   ",
-            "%functions FOO",
-            "    %functions    FOO "
-    );
-    for(String in : inputs) {
-      assertTrue(magic.getMatcher().apply(in), "failed: " + in);
+        // setup the executor
+        Properties props = new Properties();
+        executor = new DefaultStellarShellExecutor(functionResolver, props, Optional.empty());
+        executor.init();
     }
-  }
 
-  @Test
-  public void testShouldNotMatch() {
-    List<String> inputs = Arrays.asList(
-            "foo",
-            "  functions ",
-            "bar",
-            "%define"
-    );
-    for(String in : inputs) {
-      assertFalse(magic.getMatcher().apply(in), "failed: " + in);
+    @Test
+    public void testGetCommand() {
+        assertEquals("%functions", magic.getCommand());
     }
-  }
 
-  @Test
-  public void testFunctions() {
-    StellarResult result = magic.execute("%functions", executor);
+    @Test
+    public void testShouldMatch() {
+        List<String> inputs = Arrays.asList("%functions", "   %functions   ", "%functions FOO",
+                "    %functions    FOO ");
+        for (String in : inputs) {
+            assertTrue(magic.getMatcher().apply(in), "failed: " + in);
+        }
+    }
 
-    // validate the result
-    assertTrue(result.isSuccess());
-    assertTrue(result.getValue().isPresent());
+    @Test
+    public void testShouldNotMatch() {
+        List<String> inputs = Arrays.asList("foo", "  functions ", "bar", "%define");
+        for (String in : inputs) {
+            assertFalse(magic.getMatcher().apply(in), "failed: " + in);
+        }
+    }
 
-    // there are 3 functions that should be returned
-    String value = ConversionUtils.convert(result.getValue().get(), String.class);
-    String[] functions = value.split(", ");
-    assertEquals(3, functions.length);
-  }
+    @Test
+    public void testFunctions() {
+        StellarResult result = magic.execute("%functions", executor);
 
-  @Test
-  public void testFunctionsWithMatch() {
-    StellarResult result = magic.execute("%functions UPPER", executor);
+        // validate the result
+        assertTrue(result.isSuccess());
+        assertTrue(result.getValue().isPresent());
 
-    // validate the result
-    assertTrue(result.isSuccess());
-    assertTrue(result.getValue().isPresent());
+        // there are 3 functions that should be returned
+        String value = ConversionUtils.convert(result.getValue().get(), String.class);
+        String[] functions = value.split(", ");
+        assertEquals(3, functions.length);
+    }
 
-    // only 1 function; TO_UPPER should be returned
-    String value = ConversionUtils.convert(result.getValue().get(), String.class);
-    String[] functions = value.split(", ");
-    assertEquals(1, functions.length);
-    assertEquals("TO_UPPER", functions[0]);
-  }
+    @Test
+    public void testFunctionsWithMatch() {
+        StellarResult result = magic.execute("%functions UPPER", executor);
 
-  @Test
-  public void testFunctionsWithNoMatch() {
-    StellarResult result = magic.execute("%functions NOMATCH", executor);
+        // validate the result
+        assertTrue(result.isSuccess());
+        assertTrue(result.getValue().isPresent());
 
-    // validate the result
-    assertTrue(result.isSuccess());
-    assertTrue(result.getValue().isPresent());
+        // only 1 function; TO_UPPER should be returned
+        String value = ConversionUtils.convert(result.getValue().get(), String.class);
+        String[] functions = value.split(", ");
+        assertEquals(1, functions.length);
+        assertEquals("TO_UPPER", functions[0]);
+    }
 
-    // no functions should be returned
-    String value = ConversionUtils.convert(result.getValue().get(), String.class);
-    String[] functions = value.trim().split(", ");
-    assertEquals(1, functions.length);
-    assertEquals("", functions[0]);
-  }
+    @Test
+    public void testFunctionsWithNoMatch() {
+        StellarResult result = magic.execute("%functions NOMATCH", executor);
+
+        // validate the result
+        assertTrue(result.isSuccess());
+        assertTrue(result.getValue().isPresent());
+
+        // no functions should be returned
+        String value = ConversionUtils.convert(result.getValue().get(), String.class);
+        String[] functions = value.trim().split(", ");
+        assertEquals(1, functions.length);
+        assertEquals("", functions[0]);
+    }
 }

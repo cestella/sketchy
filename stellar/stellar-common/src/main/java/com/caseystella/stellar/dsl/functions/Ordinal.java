@@ -24,12 +24,14 @@ public interface Ordinal {
 
     /**
      * get the min value
+     * 
      * @return min value
      */
     double getMin();
 
     /**
      * get the max value
+     * 
      * @return max value
      */
     double getMax();

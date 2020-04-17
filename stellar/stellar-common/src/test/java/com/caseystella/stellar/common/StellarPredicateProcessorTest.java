@@ -20,15 +20,14 @@ package com.caseystella.stellar.common;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-
 import com.caseystella.stellar.dsl.ParseException;
 import org.junit.jupiter.api.Test;
 
 public class StellarPredicateProcessorTest {
-  @Test
-  public void testValidation() {
-    StellarPredicateProcessor processor = new StellarPredicateProcessor();
-    assertThrows(ParseException.class, () -> processor.validate("enrichedField1 == 'enrichedValue1"),
-        "Invalid rule found to be valid - unclosed single quotes.");
-  }
+    @Test
+    public void testValidation() {
+        StellarPredicateProcessor processor = new StellarPredicateProcessor();
+        assertThrows(ParseException.class, () -> processor.validate("enrichedField1 == 'enrichedValue1"),
+                "Invalid rule found to be valid - unclosed single quotes.");
+    }
 }

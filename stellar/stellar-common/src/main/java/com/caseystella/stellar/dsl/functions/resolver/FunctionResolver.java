@@ -30,26 +30,29 @@ import com.caseystella.stellar.dsl.StellarFunctionInfo;
  */
 public interface FunctionResolver extends Function<String, StellarFunction>, Closeable {
 
-  /**
-   * Provides metadata about each Stellar function that is resolvable.
-   */
-  Iterable<StellarFunctionInfo> getFunctionInfo();
+    /**
+     * Provides metadata about each Stellar function that is resolvable.
+     */
+    Iterable<StellarFunctionInfo> getFunctionInfo();
 
-  /**
-   * The names of all Stellar functions that are resolvable.
-   */
-  Iterable<String> getFunctions();
+    /**
+     * The names of all Stellar functions that are resolvable.
+     */
+    Iterable<String> getFunctions();
 
-  /**
-   * Initialize the function resolver.
-   * @param context Context used to initialize.
-   */
-  void initialize(Context context);
+    /**
+     * Initialize the function resolver.
+     * 
+     * @param context
+     *            Context used to initialize.
+     */
+    void initialize(Context context);
 
-  /**
-   * Perform any cleanup necessary for the loaded Stellar functions.
-   */
-  @Override
-  default void close() throws IOException {}
+    /**
+     * Perform any cleanup necessary for the loaded Stellar functions.
+     */
+    @Override
+    default void close() throws IOException {
+    }
 
 }

@@ -8,6 +8,7 @@ public class DoubleDistributionSketch extends DistributionSketchImpl<Double, Dou
     public DoubleDistributionSketch() {
         this(new DoublesSketchBuilder());
     }
+
     public DoubleDistributionSketch(DoublesSketchBuilder builder) {
         super(new DoubleType(), new DoublesSketchType(builder));
     }
@@ -25,7 +26,7 @@ public class DoubleDistributionSketch extends DistributionSketchImpl<Double, Dou
 
         @Override
         public Double minValue() {
-            return Long.MIN_VALUE*1.0;
+            return Long.MIN_VALUE * 1.0;
         }
 
         @Override

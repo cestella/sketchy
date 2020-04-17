@@ -8,8 +8,9 @@ import org.apache.datasketches.quantiles.*;
 
 public class DoublesSketchType implements SketchType<DoublesSketch> {
     DoublesSketchBuilder sketchBuilder;
+
     public DoublesSketchType(DoublesSketchBuilder sketchBuilder) {
-       this.sketchBuilder = sketchBuilder;
+        this.sketchBuilder = sketchBuilder;
     }
 
     @Override
@@ -19,7 +20,7 @@ public class DoublesSketchType implements SketchType<DoublesSketch> {
 
     @Override
     public void addValue(DoublesSketch sketch, Number value) {
-        ((UpdateDoublesSketch)sketch).update(value.doubleValue());
+        ((UpdateDoublesSketch) sketch).update(value.doubleValue());
     }
 
     @Override
@@ -51,11 +52,11 @@ public class DoublesSketchType implements SketchType<DoublesSketch> {
 
     @Override
     public void write(Kryo kryo, Output output) {
-       output.writeInt(sketchBuilder.getK());
+        output.writeInt(sketchBuilder.getK());
     }
 
     @Override
     public void read(Kryo kryo, Input input) {
-       sketchBuilder = new DoublesSketchBuilder().setK(input.readInt());
+        sketchBuilder = new DoublesSketchBuilder().setK(input.readInt());
     }
 }

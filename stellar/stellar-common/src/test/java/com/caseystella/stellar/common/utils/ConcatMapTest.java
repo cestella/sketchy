@@ -28,57 +28,59 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ConcatMapTest {
 
-  @Test
-  public void testToString() {
-    Map<String, Object> v1 = new HashMap<>();
-    v1.put("k1", "v1");
-    Map<String, Object> v2 = new HashMap<>();
-    v2.put("k2", "v2");
-    v2.put("k3", null);
-    Map<String, Object> union = new HashMap<String, Object>() {{
-      putAll(v1);
-      put("k2", "v2");
-    }};
-    ConcatMap c = create(v1, v2);
-    assertEquals(c.toString(), union.toString());
-  }
+    @Test
+    public void testToString() {
+        Map<String, Object> v1 = new HashMap<>();
+        v1.put("k1", "v1");
+        Map<String, Object> v2 = new HashMap<>();
+        v2.put("k2", "v2");
+        v2.put("k3", null);
+        Map<String, Object> union = new HashMap<String, Object>() {
+            {
+                putAll(v1);
+                put("k2", "v2");
+            }
+        };
+        ConcatMap c = create(v1, v2);
+        assertEquals(c.toString(), union.toString());
+    }
 
-  private ConcatMap create(Map... ms) {
-    List<Map> l = new ArrayList<>();
-    for(Map m : ms) {
-      l.add(m);
+    private ConcatMap create(Map... ms) {
+        List<Map> l = new ArrayList<>();
+        for (Map m : ms) {
+            l.add(m);
+        }
+        return new ConcatMap(l);
     }
-    return new ConcatMap(l);
-  }
 
-  private void assertKryoserializable(ConcatMap c) {
-    byte[] serialized = SerDeUtils.toBytes(c);
-    ConcatMap deserialized = SerDeUtils.fromBytes(serialized, ConcatMap.class);
-    assertEquals(deserialized, c);
-  }
+    private void assertKryoserializable(ConcatMap c) {
+        byte[] serialized = SerDeUtils.toBytes(c);
+        ConcatMap deserialized = SerDeUtils.fromBytes(serialized, ConcatMap.class);
+        assertEquals(deserialized, c);
+    }
 
-  @Test
-  public void testKryoSerialization() {
-    Map<String, Object> v1 = new HashMap<>();
-    v1.put("k1", "v1");
-    Map<String, Object> v2 = new HashMap<>();
-    v2.put("k2", "v2");
-    v2.put("k3", null);
-    {
-      //multi maps
-      ConcatMap c = create(v1, v2);
-      assertKryoserializable(c);
+    @Test
+    public void testKryoSerialization() {
+        Map<String, Object> v1 = new HashMap<>();
+        v1.put("k1", "v1");
+        Map<String, Object> v2 = new HashMap<>();
+        v2.put("k2", "v2");
+        v2.put("k3", null);
+        {
+            // multi maps
+            ConcatMap c = create(v1, v2);
+            assertKryoserializable(c);
+        }
+        {
+            // single maps
+            ConcatMap c = create(v1);
+            assertKryoserializable(c);
+        }
+        {
+            // empty maps
+            ConcatMap c = create();
+            assertKryoserializable(c);
+        }
     }
-    {
-      //single maps
-      ConcatMap c = create(v1);
-      assertKryoserializable(c);
-    }
-    {
-      //empty maps
-      ConcatMap c = create();
-      assertKryoserializable(c);
-    }
-  }
 
 }

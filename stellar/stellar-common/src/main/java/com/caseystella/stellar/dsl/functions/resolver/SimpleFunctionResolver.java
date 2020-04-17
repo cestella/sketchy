@@ -27,34 +27,34 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * A simple Stellar function resolver that resolves functions from specific
- * classes rather than by searching the classpath.
+ * A simple Stellar function resolver that resolves functions from specific classes rather than by searching the
+ * classpath.
  *
- *     FunctionResolver functionResolver = new SimpleFunctionResolver()
- *       .withClass(OneStellarFunction.class)
- *       .withClass(AnotherStellarFunction.class)
- *       .withClass(YetAnotherFunction.class)
+ * FunctionResolver functionResolver = new SimpleFunctionResolver() .withClass(OneStellarFunction.class)
+ * .withClass(AnotherStellarFunction.class) .withClass(YetAnotherFunction.class)
  */
 public class SimpleFunctionResolver extends BaseFunctionResolver {
 
-  protected static final Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+    protected static final Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-  /**
-   * The classes that will be further interrogated for Stellar functions.
-   */
-  Set<Class<? extends StellarFunction>> classesToResolve = new HashSet<>();
+    /**
+     * The classes that will be further interrogated for Stellar functions.
+     */
+    Set<Class<? extends StellarFunction>> classesToResolve = new HashSet<>();
 
-  @Override
-  public Set<Class<? extends StellarFunction>> resolvables() {
-    return classesToResolve;
-  }
+    @Override
+    public Set<Class<? extends StellarFunction>> resolvables() {
+        return classesToResolve;
+    }
 
-  /**
-   * Will attempt to resolve any Stellar functions defined within the specified class.
-   * @param clazz The class which may contain a Stellar function.
-   */
-  public SimpleFunctionResolver withClass(Class<? extends StellarFunction> clazz) {
-    this.classesToResolve.add(clazz);
-    return this;
-  }
+    /**
+     * Will attempt to resolve any Stellar functions defined within the specified class.
+     * 
+     * @param clazz
+     *            The class which may contain a Stellar function.
+     */
+    public SimpleFunctionResolver withClass(Class<? extends StellarFunction> clazz) {
+        this.classesToResolve.add(clazz);
+        return this;
+    }
 }

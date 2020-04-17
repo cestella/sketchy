@@ -22,16 +22,16 @@ import java.util.Date;
 import java.util.TimeZone;
 
 public class Clock {
-  private final static String UTC = "UTC";
+    private final static String UTC = "UTC";
 
-  public long currentTimeMillis() {
-    return System.currentTimeMillis();
-  }
+    public long currentTimeMillis() {
+        return System.currentTimeMillis();
+    }
 
-  public String currentTimeFormatted(String stdDateFormat) {
-    SimpleDateFormat format = new SimpleDateFormat(stdDateFormat);
-    format.setTimeZone(TimeZone.getTimeZone(UTC));
-    return format.format(new Date(currentTimeMillis()));
-  }
+    public String currentTimeFormatted(String stdDateFormat) {
+        SimpleDateFormat format = new SimpleDateFormat(stdDateFormat);
+        format.setTimeZone(TimeZone.getTimeZone(UTC));
+        return format.format(new Date(currentTimeMillis()));
+    }
 
 }

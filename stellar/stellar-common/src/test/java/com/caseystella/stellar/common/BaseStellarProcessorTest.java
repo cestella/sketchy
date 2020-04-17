@@ -27,77 +27,79 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SuppressWarnings("ALL")
 public class BaseStellarProcessorTest {
-  BaseStellarProcessor<Object> processor;
+    BaseStellarProcessor<Object> processor;
 
-  @BeforeEach
-  public void setUp() throws Exception {
-    processor = new BaseStellarProcessor<>(Object.class);
-  }
-
-  @Test
-  public void makeSureBasicValidationIsWorking() throws Exception {
-    {
-      assertTrue(processor.validate(""));
-      assertTrue(processor.validate(null));
-      assertTrue(processor.validate("'ah'"));
-      assertTrue(processor.validate("true"));
-      assertTrue(processor.validate("1"));
-      assertTrue(processor.validate("1L"));
-      assertTrue(processor.validate("1F"));
-      assertTrue(processor.validate("1 < 2 // always true"));
-      assertTrue(processor.validate("1 < foo"));
-      assertTrue(processor.validate("(1 < foo)"));
-      assertTrue(processor.validate("foo < bar"));
-      assertTrue(processor.validate("foo < TO_FLOAT(bar)", false, Context.EMPTY_CONTEXT()));
-      assertTrue(processor.validate("if true then b else c"));
-      assertTrue(processor.validate("IF false THEN b ELSE c"));
+    @BeforeEach
+    public void setUp() throws Exception {
+        processor = new BaseStellarProcessor<>(Object.class);
     }
 
-    {
-      assertFalse(processor.validate("'", false, Context.EMPTY_CONTEXT()));
-      assertFalse(processor.validate("(", false, Context.EMPTY_CONTEXT()));
-      assertFalse(processor.validate("()", false, Context.EMPTY_CONTEXT()));
-      assertFalse(processor.validate("'foo", false, Context.EMPTY_CONTEXT()));
-      assertFalse(processor.validate("foo << foo", false, Context.EMPTY_CONTEXT()));
-      assertFalse(processor.validate("1-1", false, Context.EMPTY_CONTEXT()));
-      assertFalse(processor.validate("1 -1", false, Context.EMPTY_CONTEXT()));
-      assertFalse(processor.validate("If a then b else c", false, Context.EMPTY_CONTEXT()));
+    @Test
+    public void makeSureBasicValidationIsWorking() throws Exception {
+        {
+            assertTrue(processor.validate(""));
+            assertTrue(processor.validate(null));
+            assertTrue(processor.validate("'ah'"));
+            assertTrue(processor.validate("true"));
+            assertTrue(processor.validate("1"));
+            assertTrue(processor.validate("1L"));
+            assertTrue(processor.validate("1F"));
+            assertTrue(processor.validate("1 < 2 // always true"));
+            assertTrue(processor.validate("1 < foo"));
+            assertTrue(processor.validate("(1 < foo)"));
+            assertTrue(processor.validate("foo < bar"));
+            assertTrue(processor.validate("foo < TO_FLOAT(bar)", false, Context.EMPTY_CONTEXT()));
+            assertTrue(processor.validate("if true then b else c"));
+            assertTrue(processor.validate("IF false THEN b ELSE c"));
+        }
+
+        {
+            assertFalse(processor.validate("'", false, Context.EMPTY_CONTEXT()));
+            assertFalse(processor.validate("(", false, Context.EMPTY_CONTEXT()));
+            assertFalse(processor.validate("()", false, Context.EMPTY_CONTEXT()));
+            assertFalse(processor.validate("'foo", false, Context.EMPTY_CONTEXT()));
+            assertFalse(processor.validate("foo << foo", false, Context.EMPTY_CONTEXT()));
+            assertFalse(processor.validate("1-1", false, Context.EMPTY_CONTEXT()));
+            assertFalse(processor.validate("1 -1", false, Context.EMPTY_CONTEXT()));
+            assertFalse(processor.validate("If a then b else c", false, Context.EMPTY_CONTEXT()));
+        }
     }
-  }
 
-  @Test
-  public void validateShouldProperlyThrowExceptionOnInvalidStellarExpression() throws Exception {
-    ParseException e = assertThrows(ParseException.class, () -> processor.validate("'", true, Context.EMPTY_CONTEXT()));
-    assertTrue(e.getMessage().contains("Unable to parse ': "));
-  }
+    @Test
+    public void validateShouldProperlyThrowExceptionOnInvalidStellarExpression() throws Exception {
+        ParseException e = assertThrows(ParseException.class,
+                () -> processor.validate("'", true, Context.EMPTY_CONTEXT()));
+        assertTrue(e.getMessage().contains("Unable to parse ': "));
+    }
 
-  @Test
-  public void validateShouldProperlyThrowExceptionByDefaultOnInvalidStellarExpression() throws Exception {
-    ParseException e = assertThrows(ParseException.class, () -> processor.validate("'", Context.EMPTY_CONTEXT()));
-    assertTrue(e.getMessage().contains("Unable to parse ': "));
-  }
+    @Test
+    public void validateShouldProperlyThrowExceptionByDefaultOnInvalidStellarExpression() throws Exception {
+        ParseException e = assertThrows(ParseException.class, () -> processor.validate("'", Context.EMPTY_CONTEXT()));
+        assertTrue(e.getMessage().contains("Unable to parse ': "));
+    }
 
-  @Test
-  public void validateShouldProperlyThrowExceptionByDefaultOnInvalidStellarExpression2() throws Exception {
-    ParseException e = assertThrows(ParseException.class, () -> processor.validate("'"));
-    assertTrue(e.getMessage().contains("Unable to parse ': "));
-  }
+    @Test
+    public void validateShouldProperlyThrowExceptionByDefaultOnInvalidStellarExpression2() throws Exception {
+        ParseException e = assertThrows(ParseException.class, () -> processor.validate("'"));
+        assertTrue(e.getMessage().contains("Unable to parse ': "));
+    }
 
-  @Test
-  public void validateMethodShouldFailOnUnknownFunctions() throws Exception {
-    ParseException e = assertThrows(ParseException.class, () -> processor.validate("1 < UNKNOWN_FUNCTION(3)", Context.EMPTY_CONTEXT()));
-    assertTrue(e.getMessage().contains(" Unable to resolve function named 'UNKNOWN_FUNCTION'."));
-  }
+    @Test
+    public void validateMethodShouldFailOnUnknownFunctions() throws Exception {
+        ParseException e = assertThrows(ParseException.class,
+                () -> processor.validate("1 < UNKNOWN_FUNCTION(3)", Context.EMPTY_CONTEXT()));
+        assertTrue(e.getMessage().contains(" Unable to resolve function named 'UNKNOWN_FUNCTION'."));
+    }
 
-  @Test
-  public void validateMethodShouldNotFailOnUnknownvariables() throws Exception {
-    assertTrue(processor.validate("unknown_variable\n\n"));
-    assertTrue(processor.validate("unknown_variable > 2", Context.EMPTY_CONTEXT()));
-  }
+    @Test
+    public void validateMethodShouldNotFailOnUnknownvariables() throws Exception {
+        assertTrue(processor.validate("unknown_variable\n\n"));
+        assertTrue(processor.validate("unknown_variable > 2", Context.EMPTY_CONTEXT()));
+    }
 
-  @Test
-  public void makeSureBasicLexerErrorsAreCaughtDuringValidation() throws Exception {
-    assertFalse(processor.validate("true †", false, Context.EMPTY_CONTEXT()));
-    assertFalse(processor.validate("¢ (1 + 2)", false, Context.EMPTY_CONTEXT()));
-  }
+    @Test
+    public void makeSureBasicLexerErrorsAreCaughtDuringValidation() throws Exception {
+        assertFalse(processor.validate("true †", false, Context.EMPTY_CONTEXT()));
+        assertFalse(processor.validate("¢ (1 + 2)", false, Context.EMPTY_CONTEXT()));
+    }
 }

@@ -23,29 +23,28 @@ import com.caseystella.stellar.common.shell.specials.SpecialCommand;
 import com.caseystella.stellar.dsl.StellarFunctionInfo;
 
 /**
- * A listener will be notified about events that occur during the
- * execution of Stellar expressions.
+ * A listener will be notified about events that occur during the execution of Stellar expressions.
  */
 public class StellarExecutionListeners {
 
-  /**
-   * A listener that is notified when a function is defined.
-   */
-  public interface FunctionDefinedListener {
-    void whenFunctionDefined(StellarFunctionInfo functionInfo);
-  }
+    /**
+     * A listener that is notified when a function is defined.
+     */
+    public interface FunctionDefinedListener {
+        void whenFunctionDefined(StellarFunctionInfo functionInfo);
+    }
 
-  /**
-   * A listener that is notified when a variable is defined or redefined.
-   */
-  public interface VariableDefinedListener {
-    void whenVariableDefined(String variableName, VariableResult result);
-  }
+    /**
+     * A listener that is notified when a variable is defined or redefined.
+     */
+    public interface VariableDefinedListener {
+        void whenVariableDefined(String variableName, VariableResult result);
+    }
 
-  /**
-   * A listener that is notified when a special command is defined.
-   */
-  public interface SpecialDefinedListener {
-    void whenSpecialDefined(SpecialCommand magic);
-  }
+    /**
+     * A listener that is notified when a special command is defined.
+     */
+    public interface SpecialDefinedListener {
+        void whenSpecialDefined(SpecialCommand magic);
+    }
 }

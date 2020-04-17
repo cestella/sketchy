@@ -25,9 +25,13 @@ import java.lang.annotation.RetentionPolicy;
 @Retention(RetentionPolicy.RUNTIME)
 @IndexAnnotated
 public @interface Stellar {
-  String namespace() default "";
-  String name();
-  String description() default "";
-  String returns() default "";
-  String[] params() default {};
+    String namespace() default "";
+
+    String name();
+
+    String description() default "";
+
+    String returns() default "";
+
+    String[] params() default {};
 }

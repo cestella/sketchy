@@ -23,9 +23,8 @@ import org.apache.commons.cli.Option;
 
 import java.util.Optional;
 
-public abstract class OptionHandler<OPT_T extends Enum<OPT_T>> implements Function<String, Option>
-{
-  public Optional<Object> getValue(OPT_T option, CommandLine cli) {
-    return Optional.empty();
-  }
+public abstract class OptionHandler<OPT_T extends Enum<OPT_T>> implements Function<String, Option> {
+    public Optional<Object> getValue(OPT_T option, CommandLine cli) {
+        return Optional.empty();
+    }
 }

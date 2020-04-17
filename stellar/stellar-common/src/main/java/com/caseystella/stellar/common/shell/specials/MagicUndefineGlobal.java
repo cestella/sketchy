@@ -33,38 +33,38 @@ import static com.caseystella.stellar.common.shell.StellarResult.error;
 /**
  * Allows a variable to be removed from the global configuration.
  *
- *    %undefine varName
+ * %undefine varName
  */
 public class MagicUndefineGlobal implements SpecialCommand {
 
-  public static final String MAGIC_UNDEFINE = "%undefine";
+    public static final String MAGIC_UNDEFINE = "%undefine";
 
-  @Override
-  public String getCommand() {
-    return MAGIC_UNDEFINE;
-  }
-
-  @Override
-  public Function<String, Boolean> getMatcher() {
-    return (input) -> startsWith(trimToEmpty(input), MAGIC_UNDEFINE);
-  }
-
-  @Override
-  public StellarResult execute(String command, StellarShellExecutor executor) {
-    StellarResult result;
-
-    String variable = StringUtils.trimToEmpty(command.substring(MAGIC_UNDEFINE.length()));
-    if(StringUtils.isNotBlank(variable)) {
-
-      // remove the variable from the globals
-      Map<String, Object> globals = executor.getGlobalConfig();
-      globals.remove(variable);
-      result = noop();
-
-    } else {
-      result = error(String.format("%s expected name of global, got '%s'", MAGIC_UNDEFINE, variable));
+    @Override
+    public String getCommand() {
+        return MAGIC_UNDEFINE;
     }
 
-    return result;
-  }
+    @Override
+    public Function<String, Boolean> getMatcher() {
+        return (input) -> startsWith(trimToEmpty(input), MAGIC_UNDEFINE);
+    }
+
+    @Override
+    public StellarResult execute(String command, StellarShellExecutor executor) {
+        StellarResult result;
+
+        String variable = StringUtils.trimToEmpty(command.substring(MAGIC_UNDEFINE.length()));
+        if (StringUtils.isNotBlank(variable)) {
+
+            // remove the variable from the globals
+            Map<String, Object> globals = executor.getGlobalConfig();
+            globals.remove(variable);
+            result = noop();
+
+        } else {
+            result = error(String.format("%s expected name of global, got '%s'", MAGIC_UNDEFINE, variable));
+        }
+
+        return result;
+    }
 }

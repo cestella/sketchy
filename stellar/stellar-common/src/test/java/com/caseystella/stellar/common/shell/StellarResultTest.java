@@ -25,138 +25,136 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class StellarResultTest {
 
-  /**
-   * Tests the 'success' method which is used to retrieve a StellarShellResult
-   * indicating success.
-   */
-  @Test
-  public void testSuccess() {
-    final int expected = 2;
+    /**
+     * Tests the 'success' method which is used to retrieve a StellarShellResult indicating success.
+     */
+    @Test
+    public void testSuccess() {
+        final int expected = 2;
 
-    // retrieve a result that indicates success
-    StellarResult result = StellarResult.success(expected);
-    assertNotNull(result);
+        // retrieve a result that indicates success
+        StellarResult result = StellarResult.success(expected);
+        assertNotNull(result);
 
-    // validate the value
-    assertTrue(result.getValue().isPresent());
-    assertEquals(expected, result.getValue().get());
+        // validate the value
+        assertTrue(result.getValue().isPresent());
+        assertEquals(expected, result.getValue().get());
 
-    // validate the exception
-    assertFalse(result.getException().isPresent());
+        // validate the exception
+        assertFalse(result.getException().isPresent());
 
-    // validate status
-    assertEquals(StellarResult.Status.SUCCESS, result.getStatus());
-    assertTrue(result.isSuccess());
-    assertFalse(result.isError());
-    assertFalse(result.isTerminate());
-  }
+        // validate status
+        assertEquals(StellarResult.Status.SUCCESS, result.getStatus());
+        assertTrue(result.isSuccess());
+        assertFalse(result.isError());
+        assertFalse(result.isTerminate());
+    }
 
-  /**
-   * Tests the 'error' method which is used to retrieve a StellarShellResult
-   * indicating that an error occurred.
-   */
-  @Test
-  public void testError() {
-    final String expected = "my error message";
+    /**
+     * Tests the 'error' method which is used to retrieve a StellarShellResult indicating that an error occurred.
+     */
+    @Test
+    public void testError() {
+        final String expected = "my error message";
 
-    // retrieve a result that indicates success
-    StellarResult result = StellarResult.error(expected);
-    assertNotNull(result);
+        // retrieve a result that indicates success
+        StellarResult result = StellarResult.error(expected);
+        assertNotNull(result);
 
-    // validate the value
-    assertFalse(result.getValue().isPresent());
+        // validate the value
+        assertFalse(result.getValue().isPresent());
 
-    // validate the exception
-    assertTrue(result.getException().isPresent());
-    assertEquals(expected, result.getException().get().getMessage());
+        // validate the exception
+        assertTrue(result.getException().isPresent());
+        assertEquals(expected, result.getException().get().getMessage());
 
-    // validate status
-    assertEquals(StellarResult.Status.ERROR, result.getStatus());
-    assertFalse(result.isSuccess());
-    assertTrue(result.isError());
-    assertFalse(result.isTerminate());
-  }
+        // validate status
+        assertEquals(StellarResult.Status.ERROR, result.getStatus());
+        assertFalse(result.isSuccess());
+        assertTrue(result.isError());
+        assertFalse(result.isTerminate());
+    }
 
-  /**
-   * Tests the 'terminate' method which is used to retrieve a StellarShellResult
-   * indicating that a termination request was made.
-   */
-  @Test
-  public void testTerminate() {
+    /**
+     * Tests the 'terminate' method which is used to retrieve a StellarShellResult indicating that a termination request
+     * was made.
+     */
+    @Test
+    public void testTerminate() {
 
-    // retrieve a result that indicates success
-    StellarResult result = StellarResult.terminate();
-    assertNotNull(result);
+        // retrieve a result that indicates success
+        StellarResult result = StellarResult.terminate();
+        assertNotNull(result);
 
-    // validate the value
-    assertTrue(result.getValue().isPresent());
+        // validate the value
+        assertTrue(result.getValue().isPresent());
 
-    // validate the exception
-    assertFalse(result.getException().isPresent());
+        // validate the exception
+        assertFalse(result.getException().isPresent());
 
-    // validate status
-    assertEquals(StellarResult.Status.TERMINATE, result.getStatus());
-    assertFalse(result.isSuccess());
-    assertFalse(result.isError());
-    assertTrue(result.isTerminate());
-  }
+        // validate status
+        assertEquals(StellarResult.Status.TERMINATE, result.getStatus());
+        assertFalse(result.isSuccess());
+        assertFalse(result.isError());
+        assertTrue(result.isTerminate());
+    }
 
-  /**
-   * Tests the 'noop' method which is used to retrieve a StellarShellResult
-   * indicating that no operation occurred, nor was required.
-   */
-  @Test
-  public void testNoop() {
+    /**
+     * Tests the 'noop' method which is used to retrieve a StellarShellResult indicating that no operation occurred, nor
+     * was required.
+     */
+    @Test
+    public void testNoop() {
 
-    // retrieve a result that indicates success
-    StellarResult result = StellarResult.noop();
-    assertNotNull(result);
+        // retrieve a result that indicates success
+        StellarResult result = StellarResult.noop();
+        assertNotNull(result);
 
-    // validate the value
-    assertTrue(result.getValue().isPresent());
+        // validate the value
+        assertTrue(result.getValue().isPresent());
 
-    // validate the exception
-    assertFalse(result.getException().isPresent());
+        // validate the exception
+        assertFalse(result.getException().isPresent());
 
-    // validate status
-    assertEquals(StellarResult.Status.SUCCESS, result.getStatus());
-    assertTrue(result.isSuccess());
-    assertFalse(result.isError());
-    assertFalse(result.isTerminate());
-  }
+        // validate status
+        assertEquals(StellarResult.Status.SUCCESS, result.getStatus());
+        assertTrue(result.isSuccess());
+        assertFalse(result.isError());
+        assertFalse(result.isTerminate());
+    }
 
-  /**
-   * A success result where the value is null is perfectly acceptable.
-   */
-  @Test
-  public void testSuccessWithNull() {
-    final Object expected = null;
+    /**
+     * A success result where the value is null is perfectly acceptable.
+     */
+    @Test
+    public void testSuccessWithNull() {
+        final Object expected = null;
 
-    // retrieve a result that indicates success
-    StellarResult result = StellarResult.success(expected);
-    assertNotNull(result);
+        // retrieve a result that indicates success
+        StellarResult result = StellarResult.success(expected);
+        assertNotNull(result);
 
-    // validate the value
-    assertTrue(result.isValueNull());
+        // validate the value
+        assertTrue(result.isValueNull());
 
-    // validate the exception
-    assertFalse(result.getException().isPresent());
+        // validate the exception
+        assertFalse(result.getException().isPresent());
 
-    // validate status
-    assertEquals(StellarResult.Status.SUCCESS, result.getStatus());
-    assertTrue(result.isSuccess());
-    assertFalse(result.isError());
-    assertFalse(result.isTerminate());
-  }
+        // validate status
+        assertEquals(StellarResult.Status.SUCCESS, result.getStatus());
+        assertTrue(result.isSuccess());
+        assertFalse(result.isError());
+        assertFalse(result.isTerminate());
+    }
 
-  /**
-   * Tests the behavior of isValueNull() with error, noop and terminate conditions.
-   */
-  @Test
-  public void testNonSuccessWithNull() {
-    assertFalse(StellarResult.error(new Exception()).isValueNull());
-    assertFalse(StellarResult.error("error msg").isValueNull());
-    assertFalse(StellarResult.noop().isValueNull());
-    assertFalse(StellarResult.terminate().isValueNull());
-  }
+    /**
+     * Tests the behavior of isValueNull() with error, noop and terminate conditions.
+     */
+    @Test
+    public void testNonSuccessWithNull() {
+        assertFalse(StellarResult.error(new Exception()).isValueNull());
+        assertFalse(StellarResult.error("error msg").isValueNull());
+        assertFalse(StellarResult.noop().isValueNull());
+        assertFalse(StellarResult.terminate().isValueNull());
+    }
 }

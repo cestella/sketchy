@@ -30,25 +30,25 @@ import static org.apache.commons.lang3.StringUtils.trimToEmpty;
 /**
  * Displays all currently defined global configuration variables.
  *
- *    %globals
+ * %globals
  */
 public class MagicListGlobals implements SpecialCommand {
 
-  public static final String MAGIC_GLOBALS = "%globals";
+    public static final String MAGIC_GLOBALS = "%globals";
 
-  @Override
-  public String getCommand() {
-    return MAGIC_GLOBALS;
-  }
+    @Override
+    public String getCommand() {
+        return MAGIC_GLOBALS;
+    }
 
-  @Override
-  public Function<String, Boolean> getMatcher() {
-    return (input) -> startsWith(trimToEmpty(input), MAGIC_GLOBALS);
-  }
+    @Override
+    public Function<String, Boolean> getMatcher() {
+        return (input) -> startsWith(trimToEmpty(input), MAGIC_GLOBALS);
+    }
 
-  @Override
-  public StellarResult execute(String command, StellarShellExecutor executor) {
-    Map<String, Object> globals = executor.getGlobalConfig();
-    return StellarResult.success(globals.toString());
-  }
+    @Override
+    public StellarResult execute(String command, StellarShellExecutor executor) {
+        Map<String, Object> globals = executor.getGlobalConfig();
+        return StellarResult.success(globals.toString());
+    }
 }

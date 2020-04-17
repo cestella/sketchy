@@ -23,20 +23,20 @@ import java.util.List;
  * Functions that do not require initialization can extend this class rather than directly implement StellarFunction
  */
 public abstract class BaseStellarFunction implements StellarFunction {
-  public abstract Object apply(List<Object> args);
+    public abstract Object apply(List<Object> args);
 
-  @Override
-  public Object apply(List<Object> args, Context context) throws ParseException {
-    return apply(args);
-  }
+    @Override
+    public Object apply(List<Object> args, Context context) throws ParseException {
+        return apply(args);
+    }
 
-  @Override
-  public void initialize(Context context) {
+    @Override
+    public void initialize(Context context) {
 
-  }
+    }
 
-  @Override
-  public boolean isInitialized() {
-    return true;
-  }
+    @Override
+    public boolean isInitialized() {
+        return true;
+    }
 }

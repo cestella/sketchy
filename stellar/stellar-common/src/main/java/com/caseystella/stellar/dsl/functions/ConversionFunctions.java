@@ -25,59 +25,52 @@ import java.util.List;
 
 public class ConversionFunctions {
 
-  public static class Cast<T> extends BaseStellarFunction {
-    Class<T> clazz;
-    public Cast(Class<T> clazz) {
-      this.clazz = clazz;
+    public static class Cast<T> extends BaseStellarFunction {
+        Class<T> clazz;
+
+        public Cast(Class<T> clazz) {
+            this.clazz = clazz;
+        }
+
+        @Override
+        public Object apply(List<Object> strings) {
+            return strings.get(0) == null ? null : ConversionUtils.convert(strings.get(0), clazz);
+        }
     }
 
-    @Override
-    public Object apply(List<Object> strings ) {
-      return strings.get(0) == null?null: ConversionUtils.convert(strings.get(0), clazz);
+    @Stellar(name = "TO_INTEGER", description = "Transforms the first argument to an integer", params = {
+            "input - Object of string or numeric type" }, returns = "Integer version of the first argument")
+    public static class TO_INTEGER extends Cast<Integer> {
+
+        public TO_INTEGER() {
+            super(Integer.class);
+        }
     }
-  }
 
-  @Stellar(name="TO_INTEGER"
-          , description="Transforms the first argument to an integer"
-          , params = { "input - Object of string or numeric type"}
-          , returns = "Integer version of the first argument"
-          )
-  public static class TO_INTEGER extends Cast<Integer> {
+    @Stellar(name = "TO_DOUBLE", description = "Transforms the first argument to a double precision number", params = {
+            "input - Object of string or numeric type" }, returns = "Double version of the first argument")
+    public static class TO_DOUBLE extends Cast<Double> {
 
-    public TO_INTEGER() {
-      super(Integer.class);
+        public TO_DOUBLE() {
+            super(Double.class);
+        }
     }
-  }
 
-  @Stellar(name="TO_DOUBLE"
-          , description="Transforms the first argument to a double precision number"
-          , params = { "input - Object of string or numeric type"}
-          , returns = "Double version of the first argument"
-          )
-  public static class TO_DOUBLE extends Cast<Double> {
+    @Stellar(name = "TO_LONG", description = "Transforms the first argument to a long integer", params = {
+            "input - Object of string or numeric type" }, returns = "Long version of the first argument")
+    public static class TO_LONG extends Cast<Long> {
 
-    public TO_DOUBLE() {
-      super(Double.class);
+        public TO_LONG() {
+            super(Long.class);
+        }
     }
-  }
 
-  @Stellar(name="TO_LONG"
-          , description="Transforms the first argument to a long integer"
-          , params = { "input - Object of string or numeric type"}
-          , returns = "Long version of the first argument"
-  )
-  public static class TO_LONG extends Cast<Long> {
+    @Stellar(name = "TO_FLOAT", description = "Transforms the first argument to a float", params = {
+            "input - Object of string or numeric type" }, returns = "Float version of the first argument")
+    public static class TO_FLOAT extends Cast<Float> {
 
-    public TO_LONG() { super(Long.class); }
-  }
-
-  @Stellar(name="TO_FLOAT"
-      , description="Transforms the first argument to a float"
-      , params = { "input - Object of string or numeric type"}
-      , returns = "Float version of the first argument"
-  )
-  public static class TO_FLOAT extends Cast<Float> {
-
-    public TO_FLOAT() { super(Float.class); }
-  }
+        public TO_FLOAT() {
+            super(Float.class);
+        }
+    }
 }

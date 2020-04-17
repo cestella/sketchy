@@ -7,8 +7,9 @@ import org.apache.datasketches.quantiles.DoublesSketchBuilder;
 
 public class LongDistributionSketch extends DistributionSketchImpl<Long, DoublesSketch> {
     public LongDistributionSketch() {
-       this(new DoublesSketchBuilder());
+        this(new DoublesSketchBuilder());
     }
+
     public LongDistributionSketch(DoublesSketchBuilder builder) {
         super(new LongType(), new DoublesSketchType(builder));
     }
@@ -65,4 +66,3 @@ public class LongDistributionSketch extends DistributionSketchImpl<Long, Doubles
         }
     }
 }
-

@@ -24,41 +24,31 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class StellarAssignmentTest {
 
-  @Test
-  public void testAssignment() {
-    for(String statement : ImmutableList.of( "foo := bar + grok"
-                                           , "foo   := bar + grok"
-                                           , "foo := bar + grok   "
-                                           )
-       )
-    {
-      StellarAssignment assignment = StellarAssignment.from(statement);
-      assertEquals("foo", assignment.getKey());
-      assertEquals("foo", assignment.getVariable());
-      assertEquals("bar + grok", assignment.getStatement());
-      assertEquals("bar + grok", assignment.getValue());
+    @Test
+    public void testAssignment() {
+        for (String statement : ImmutableList.of("foo := bar + grok", "foo   := bar + grok", "foo := bar + grok   ")) {
+            StellarAssignment assignment = StellarAssignment.from(statement);
+            assertEquals("foo", assignment.getKey());
+            assertEquals("foo", assignment.getVariable());
+            assertEquals("bar + grok", assignment.getStatement());
+            assertEquals("bar + grok", assignment.getValue());
+        }
     }
-  }
 
-  @Test
-  public void testNonAssignment() {
-    for(String statement : ImmutableList.of( "bar + grok"
-                                           , "  bar + grok"
-                                           , "bar + grok   "
-    )
-            )
-    {
-      StellarAssignment assignment = StellarAssignment.from(statement);
-      assertNull( assignment.getKey());
-      assertNull( assignment.getVariable());
-      assertEquals("bar + grok", assignment.getStatement());
-      assertEquals("bar + grok", assignment.getValue());
+    @Test
+    public void testNonAssignment() {
+        for (String statement : ImmutableList.of("bar + grok", "  bar + grok", "bar + grok   ")) {
+            StellarAssignment assignment = StellarAssignment.from(statement);
+            assertNull(assignment.getKey());
+            assertNull(assignment.getVariable());
+            assertEquals("bar + grok", assignment.getStatement());
+            assertEquals("bar + grok", assignment.getValue());
+        }
     }
-  }
 
-  @Test
-  public void testImmutability() {
-    StellarAssignment assignment = StellarAssignment.from("foo := bar");
-    assertThrows(UnsupportedOperationException.class, () -> assignment.setValue("myval"));
-  }
+    @Test
+    public void testImmutability() {
+        StellarAssignment assignment = StellarAssignment.from("foo := bar");
+        assertThrows(UnsupportedOperationException.class, () -> assignment.setValue("myval"));
+    }
 }
