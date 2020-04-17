@@ -11,6 +11,7 @@
     <module>stellar</module>
     <module>time_series</module>
     <module>sketches</module>
+    <module>nosql</module>
   </modules>
 
   <repositories>
