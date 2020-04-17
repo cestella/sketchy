@@ -1,10 +1,10 @@
 package com.caseystella.sketchy.sketches;
 
+import org.junit.jupiter.api.Test;
 import com.caseystella.stellar.common.utils.SerDeUtils;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
 import org.apache.datasketches.quantiles.DoublesSketchBuilder;
-import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,8 +14,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class LongDistributionSketchTest {
     public static void validateStatisticsProvider( DistributionSketch<Long> statsProvider
-            , SummaryStatistics summaryStats
-            , DescriptiveStatistics stats
+        , SummaryStatistics summaryStats
+        , DescriptiveStatistics stats
     ) {
         //N
         assertEquals(statsProvider.getCount(), stats.getN());

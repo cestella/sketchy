@@ -124,6 +124,7 @@ public class DoubleDistributionSketchTest {
     }
     validateEquality(values);
   }
+
   @Test
   public void testNormallyDistributedRandomDataShifted() {
     List<Double> values = new ArrayList<>();
