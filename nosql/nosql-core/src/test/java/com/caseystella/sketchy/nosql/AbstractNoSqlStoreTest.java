@@ -39,11 +39,43 @@ public abstract class AbstractNoSqlStoreTest<T extends NoSqlStore> {
     return ret;
   }
 
-  private void validateStore() throws UnableToGetException {
+  private void validateKV(Key k, Iterable<Value> values) {
+    int i = (int) (k.getTimestampBin() / 100);
+    assertEquals(2, Iterables.size(values));
+    for (Value v : values) {
+      String firstHost = String.format("host_%d", i % 2);
+      String secondHost = String.format("host_%d", (i % 2) + 1);
+      if (firstHost.equals(v.getHostId())) {
+        assertEquals(i, SerDeUtils.fromBytes(v.getData(), Integer.class));
+      } else if (secondHost.equals(v.getHostId())) {
+        assertEquals(i * 2, SerDeUtils.fromBytes(v.getData(), Integer.class));
+      } else {
+        fail(String.format("Found a host I didn't expect: %s", v.getHostId()));
+      }
+    }
+  }
+
+  private void validateStoreViaBatch() throws UnableToGetException {
+    List<Key> keys = new ArrayList<>();
+    for (int i = 0; i < 100; ++i) {
+      Key k = new Key.Builder().withColumnName("col1").withStreamId("stream_0")
+          .withDataType((short) 0).withTimestampBin(i * 100).build();
+      keys.add(k);
+    }
+    Batch b = getStore().get(keys);
+    for (Map.Entry<Key, List<Value>> entry : b.getUnderlyingBatch().entrySet()) {
+      Key k = entry.getKey();
+      List<Value> values = entry.getValue();
+      validateKV(k, values);
+    }
+  }
+
+  private void validateStoreOneByOne() throws UnableToGetException {
     for (int i = 0; i < 100; ++i) {
       Key k = new Key.Builder().withColumnName("col1").withStreamId("stream_0")
           .withDataType((short) 0).withTimestampBin(i * 100).build();
       Iterable<Value> values = getStore().get(k);
+      validateKV(k, values);
       assertEquals(2, Iterables.size(values));
       for (Value v : values) {
         String firstHost = String.format("host_%d", i % 2);
@@ -65,7 +97,8 @@ public abstract class AbstractNoSqlStoreTest<T extends NoSqlStore> {
       getStore().put(entry.getKey(), entry.getValue().getKey());
       getStore().put(entry.getKey(), entry.getValue().getValue());
     }
-    validateStore();
+    validateStoreOneByOne();
+    validateStoreViaBatch();
   }
 
   @Test
@@ -76,6 +109,7 @@ public abstract class AbstractNoSqlStoreTest<T extends NoSqlStore> {
       b.add(entry.getKey(), entry.getValue().getValue());
     }
     getStore().put(b);
-    validateStore();
+    validateStoreOneByOne();
+    validateStoreViaBatch();
   }
 }

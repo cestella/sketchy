@@ -49,11 +49,12 @@ public class Key implements KryoSerializable {
     this.streamId = streamId;
     this.columnName = columnName;
     this.dataType = dataType;
-    if(timestampBin == null || streamId == null || columnName == null || dataType == null) {
-      throw new IllegalStateException(MessageFormat.format(
-          "You must provide all of the parameters for a Key: timestampBin={0}, streamId={1}"
-              + ", columnName={2}, dataType={3}", timestampBin, streamId, columnName, dataType
-      ));
+    if (timestampBin == null || streamId == null || columnName == null || dataType == null) {
+      throw new IllegalStateException(
+          MessageFormat.format(
+              "You must provide all of the parameters for a Key: timestampBin={0}, streamId={1}"
+                  + ", columnName={2}, dataType={3}",
+              timestampBin, streamId, columnName, dataType));
     }
   }
 

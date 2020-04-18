@@ -9,6 +9,7 @@ public class Value {
     private String hostId;
     private Long computeTimestamp;
     private byte[] data;
+
     public Builder withHostId(String s) {
       hostId = s;
       return this;
@@ -38,11 +39,10 @@ public class Value {
     this.hostId = hostId;
     this.computeTimestamp = computeTimestamp;
     this.data = data;
-    if(hostId == null || computeTimestamp == null || data == null) {
+    if (hostId == null || computeTimestamp == null || data == null) {
       throw new IllegalStateException(MessageFormat.format(
           "You must provide all of the parameters for Values: hostId={0}, computeTimestamp={1}, data={2}",
-          hostId, computeTimestamp, data
-      ));
+          hostId, computeTimestamp, data));
     }
   }
 
