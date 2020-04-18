@@ -12,8 +12,9 @@
 
   <modules>
     <module>stellar</module>
-    <module>ts</module>
+    <module>time_series</module>
     <module>sketches</module>
+    <module>nosql</module>
     <module>utilities</module>
     <module>test-utils</module>
   </modules>

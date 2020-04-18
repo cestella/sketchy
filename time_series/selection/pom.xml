@@ -3,27 +3,29 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>com.caseystella.sketchy</groupId>
-		<artifactId>sketchy</artifactId>
-		<version>0.0.1</version>
-	</parent>
+	<groupId>com.caseystella.sketchy.time_series</groupId>
+	<artifactId>time_series</artifactId>
+	<version>0.0.1</version>
+</parent>
 
-	<artifactId>ts</artifactId>
+	<groupId>com.caseystella.sketchy.time_series</groupId>
+	<artifactId>selection</artifactId>
 	<version>0.0.1</version>
 
-	<name>ts</name>
+	<name>Time Series Selection Interfaces</name>
 
 	<dependencies>
-		<dependency>
-			<groupId>org.antlr</groupId>
-			<artifactId>antlr4-runtime</artifactId>
-			<version>${global_antlr_version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-lang3</artifactId>
-			<version>3.2</version>
-		</dependency>
+	<dependency>
+		<groupId>org.antlr</groupId>
+		<artifactId>antlr4-runtime</artifactId>
+		<version>${global_antlr_version}</version>
+	</dependency>
+	<dependency>
+		<groupId>org.apache.commons</groupId>
+		<artifactId>commons-lang3</artifactId>
+		<version>3.2</version>
+	</dependency>
+
     <dependency>
 			<groupId>xerces</groupId>
 			<artifactId>xercesImpl</artifactId>
