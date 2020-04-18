@@ -17,14 +17,25 @@
 
 package com.caseystella.stellar.common.shell.cli;
 
+import com.caseystella.sketchy.utilities.JSONUtils;
 import com.caseystella.stellar.common.shell.DefaultStellarAutoCompleter;
 import com.caseystella.stellar.common.shell.DefaultStellarShellExecutor;
 import com.caseystella.stellar.common.shell.StellarAutoCompleter;
 import com.caseystella.stellar.common.shell.StellarResult;
+import com.caseystella.stellar.common.shell.StellarShellExecutor;
 import com.caseystella.stellar.dsl.Context;
 import com.caseystella.stellar.dsl.StellarFunctions;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Properties;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.HelpFormatter;
@@ -33,8 +44,6 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.PosixParser;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.PropertyConfigurator;
-import com.caseystella.stellar.common.shell.StellarShellExecutor;
-import com.caseystella.stellar.common.utils.JSONUtils;
 import org.jboss.aesh.complete.CompleteOperation;
 import org.jboss.aesh.complete.Completion;
 import org.jboss.aesh.console.AeshConsoleCallback;
@@ -47,19 +56,9 @@ import org.jboss.aesh.terminal.Color;
 import org.jboss.aesh.terminal.TerminalCharacter;
 import org.jboss.aesh.terminal.TerminalColor;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Properties;
-
 /**
  * A REPL environment for Stellar.
- *
+ * <p>
  * Useful for debugging Stellar expressions.
  */
 public class StellarShell extends AeshConsoleCallback implements Completion {
@@ -123,7 +122,7 @@ public class StellarShell extends AeshConsoleCallback implements Completion {
 
   /**
    * Create a Stellar REPL.
-   * 
+   *
    * @param args The commmand-line arguments.
    */
   public StellarShell(String[] args) throws Exception {
@@ -187,7 +186,7 @@ public class StellarShell extends AeshConsoleCallback implements Completion {
 
   /**
    * Loads any variables defined in an external file.
-   * 
+   *
    * @param commandLine The command line arguments.
    * @param executor The stellar executor.
    * @throws IOException
@@ -215,7 +214,7 @@ public class StellarShell extends AeshConsoleCallback implements Completion {
 
   /**
    * Creates the Stellar execution environment.
-   * 
+   *
    * @param commandLine The command line arguments.
    * @param console The console which drives the REPL.
    * @param properties Stellar properties.
@@ -252,7 +251,7 @@ public class StellarShell extends AeshConsoleCallback implements Completion {
 
   /**
    * Creates the REPL's console.
-   * 
+   *
    * @param commandLine The command line options.
    */
   private Console createConsole(CommandLine commandLine) {
@@ -362,7 +361,7 @@ public class StellarShell extends AeshConsoleCallback implements Completion {
 
   /**
    * Performs auto-completion for the shell.
-   * 
+   *
    * @param completeOperation The auto-complete operation.
    */
   @Override

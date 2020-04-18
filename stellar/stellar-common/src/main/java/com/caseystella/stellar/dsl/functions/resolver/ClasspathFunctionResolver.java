@@ -4,9 +4,9 @@
  * copyright ownership. The ASF licenses this file to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance with the License. You may obtain a
  * copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -19,6 +19,11 @@ import static com.caseystella.stellar.dsl.functions.resolver.ClasspathFunctionRe
 import static com.caseystella.stellar.dsl.functions.resolver.ClasspathFunctionResolver.Config.STELLAR_SEARCH_INCLUDES_KEY;
 import static com.caseystella.stellar.dsl.functions.resolver.ClasspathFunctionResolver.Config.STELLAR_VFS_PATHS;
 
+import com.caseystella.sketchy.utilities.ConversionUtils;
+import com.caseystella.stellar.common.utils.VFSClassloaderUtil;
+import com.caseystella.stellar.dsl.Context;
+import com.caseystella.stellar.dsl.Stellar;
+import com.caseystella.stellar.dsl.StellarFunction;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -26,12 +31,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-
-import com.caseystella.stellar.common.utils.ConversionUtils;
-import com.caseystella.stellar.common.utils.VFSClassloaderUtil;
-import com.caseystella.stellar.dsl.Context;
-import com.caseystella.stellar.dsl.Stellar;
-import com.caseystella.stellar.dsl.StellarFunction;
 import org.apache.commons.vfs2.FileObject;
 import org.apache.commons.vfs2.FileSystemException;
 import org.apache.commons.vfs2.impl.VFSClassLoader;
@@ -40,30 +39,29 @@ import org.reflections.util.FilterBuilder;
 
 /**
  * Performs function resolution for Stellar by searching the classpath.
- *
+ * <p>
  * By default, the entire classpath will be searched for Stellar functions. At times, this can take
  * quite a while. To shorten the search time, a property can be defined to either include or exclude
  * certain packages. The fewer packages there are to search, the quicker the search will be.
- *
+ * <p>
  * The properties are pulled from the Context's 'STELLAR_CONFIG'. In the REPL, this is defined in a
  * file called 'stellar.properties' on the classpath.
- *
+ * <p>
  * The following property definition will include only Stellar functions that are part of Apache
  * Metron.
- *
+ * <p>
  * stellar.function.resolver.includes = org.apache.metron.*
- *
+ * <p>
  * The following property definition will exclude Stellar functions that are part of Metron's
  * management suite of function.
- *
+ * <p>
  * stellar.function.resolver.excludes = org.apache.metron.management.*
- *
+ * <p>
  * The following property definition would also exclude the Stellar functions that are part of the
  * management suite of functions. Of course, this may also exclude other packages, but this serves
  * as an example of the types of expression that can be used.
- *
+ * <p>
  * stellar.function.resolver.excludes = org\\.management.*
- *
  */
 public class ClasspathFunctionResolver extends BaseFunctionResolver {
   public enum Config {
@@ -142,7 +140,7 @@ public class ClasspathFunctionResolver extends BaseFunctionResolver {
 
   /**
    * Use one or more classloaders
-   * 
+   *
    * @param classloaders
    */
   public void classLoaders(ClassLoader... classloaders) {
@@ -153,7 +151,7 @@ public class ClasspathFunctionResolver extends BaseFunctionResolver {
   /**
    * Includes one or more packages in the Stellar function resolution process. The packages to
    * include can be specified with a regular expression.
-   * 
+   *
    * @param toInclude The regular expressions.
    */
   public void include(String... toInclude) {
@@ -165,7 +163,7 @@ public class ClasspathFunctionResolver extends BaseFunctionResolver {
   /**
    * Excludes one or more packages from the Stellar function resolution process. The packages to
    * exclude can be specified with a regular expression.
-   * 
+   *
    * @param toExclude The regular expressions defining packages that should be excluded.
    */
   public void exclude(String... toExclude) {

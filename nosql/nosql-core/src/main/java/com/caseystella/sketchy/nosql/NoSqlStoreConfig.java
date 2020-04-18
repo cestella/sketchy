@@ -23,6 +23,5 @@ public class NoSqlStoreConfig {
     this.config = config;
   }
 
-  public static NoSqlStore create(NoSqlStore config) throws StoreInitializationException {
-  }
+  public static NoSqlStore create(NoSqlStore config) throws StoreInitializationException {}
 }

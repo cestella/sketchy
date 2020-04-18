@@ -4,9 +4,9 @@
  * copyright ownership. The ASF licenses this file to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance with the License. You may obtain a
  * copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -16,6 +16,7 @@
 package com.caseystella.stellar.common.utils;
 
 
+import com.caseystella.sketchy.utilities.SerDeUtils;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.KryoSerializable;
 import com.esotericsoftware.kryo.io.Input;
@@ -23,7 +24,6 @@ import com.esotericsoftware.kryo.io.Output;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -35,7 +35,7 @@ import java.util.Set;
  * ConcatMap is a lazy concatenation of a list of Maps. It is lazy in that it does not construct a
  * union of all of the maps, but rather keeps the maps separate. Key/Value resolution is done via a
  * first-wins strategy (i.e. the first map which has a key will be used).
- *
+ * <p>
  * Also, note, that this is an immutable map, so operations which require mutation will have
  * UnsupportedOperationException thrown.
  */
@@ -66,7 +66,7 @@ public class ConcatMap implements Map<String, Object>, Serializable, KryoSeriali
 
   /**
    * If any maps contains the key, then this will return true.
-   * 
+   *
    * @param key
    * @return
    */
@@ -81,9 +81,8 @@ public class ConcatMap implements Map<String, Object>, Serializable, KryoSeriali
   }
 
   /**
-   *
    * If any maps contains the value, then this will return true.
-   * 
+   *
    * @param value
    * @return
    */
@@ -99,7 +98,7 @@ public class ConcatMap implements Map<String, Object>, Serializable, KryoSeriali
 
   /**
    * The first map which contains the key will have the associated value returned.
-   * 
+   *
    * @param key
    * @return
    */
@@ -117,7 +116,7 @@ public class ConcatMap implements Map<String, Object>, Serializable, KryoSeriali
 
   /**
    * This is an immutable map and this operation is not supported.
-   * 
+   *
    * @param key
    * @param value
    * @return
@@ -128,9 +127,8 @@ public class ConcatMap implements Map<String, Object>, Serializable, KryoSeriali
   }
 
   /**
-   *
    * This is an immutable map and this operation is not supported.
-   * 
+   *
    * @param key
    * @return
    */
@@ -140,9 +138,8 @@ public class ConcatMap implements Map<String, Object>, Serializable, KryoSeriali
   }
 
   /**
-   *
    * This is an immutable map and this operation is not supported.
-   * 
+   *
    * @param m
    */
   @Override
@@ -151,7 +148,6 @@ public class ConcatMap implements Map<String, Object>, Serializable, KryoSeriali
   }
 
   /**
-   *
    * This is an immutable map and this operation is not supported.
    */
   @Override
@@ -175,7 +171,7 @@ public class ConcatMap implements Map<String, Object>, Serializable, KryoSeriali
 
   /**
    * Note: this makes a copy of the values, so it is not fundamentally lazy.
-   * 
+   *
    * @return
    */
   @Override
@@ -191,7 +187,7 @@ public class ConcatMap implements Map<String, Object>, Serializable, KryoSeriali
   /**
    * This is a lazy entry collection of the associated maps. If there are duplicate keys, they will
    * appear twice here, so be careful.
-   * 
+   *
    * @return
    */
   @Override
@@ -220,10 +216,12 @@ public class ConcatMap implements Map<String, Object>, Serializable, KryoSeriali
 
   @Override
   public boolean equals(Object o) {
-    if (this == o)
+    if (this == o) {
       return true;
-    if (o == null || getClass() != o.getClass())
+    }
+    if (o == null || getClass() != o.getClass()) {
       return false;
+    }
 
     ConcatMap concatMap = (ConcatMap) o;
 

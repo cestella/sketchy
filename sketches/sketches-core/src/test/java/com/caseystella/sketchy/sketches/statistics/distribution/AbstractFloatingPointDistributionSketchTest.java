@@ -19,7 +19,7 @@ package com.caseystella.sketchy.sketches.statistics.distribution;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-import com.caseystella.stellar.common.utils.SerDeUtils;
+import com.caseystella.sketchy.utilities.SerDeUtils;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

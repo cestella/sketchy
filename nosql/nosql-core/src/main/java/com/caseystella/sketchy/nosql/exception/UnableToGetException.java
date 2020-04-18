@@ -1,8 +1,7 @@
 package com.caseystella.sketchy.nosql.exception;
 
 public class UnableToGetException extends Exception {
-  public UnableToGetException() {
-  }
+  public UnableToGetException() {}
 
   public UnableToGetException(String message) {
     super(message);

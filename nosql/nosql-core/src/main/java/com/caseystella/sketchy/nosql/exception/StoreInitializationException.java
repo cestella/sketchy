@@ -1,8 +1,7 @@
 package com.caseystella.sketchy.nosql.exception;
 
 public class StoreInitializationException extends Exception {
-  public StoreInitializationException() {
-  }
+  public StoreInitializationException() {}
 
   public StoreInitializationException(String message) {
     super(message);

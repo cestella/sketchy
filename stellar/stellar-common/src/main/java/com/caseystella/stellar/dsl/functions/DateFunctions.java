@@ -4,9 +4,9 @@
  * copyright ownership. The ASF licenses this file to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance with the License. You may obtain a
  * copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -15,13 +15,12 @@
 
 package com.caseystella.stellar.dsl.functions;
 
-import com.caseystella.stellar.common.utils.ConversionUtils;
+import com.caseystella.sketchy.utilities.ConversionUtils;
 import com.caseystella.stellar.dsl.BaseStellarFunction;
+import com.caseystella.stellar.dsl.Stellar;
 import com.github.benmanes.caffeine.cache.CacheLoader;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
-import com.caseystella.stellar.dsl.Stellar;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -57,15 +56,18 @@ public class DateFunctions {
 
     @Override
     public boolean equals(Object o) {
-      if (this == o)
+      if (this == o) {
         return true;
-      if (o == null || getClass() != o.getClass())
+      }
+      if (o == null || getClass() != o.getClass()) {
         return false;
+      }
 
       TimezonedFormat that = (TimezonedFormat) o;
 
-      if (format != null ? !format.equals(that.format) : that.format != null)
+      if (format != null ? !format.equals(that.format) : that.format != null) {
         return false;
+      }
       return timezone != null ? timezone.equals(that.timezone) : that.timezone == null;
     }
 
@@ -76,6 +78,7 @@ public class DateFunctions {
       return result;
     }
   }
+
 
   private static LoadingCache<TimezonedFormat, ThreadLocal<SimpleDateFormat>> formatCache = Caffeine
       .newBuilder().build(new CacheLoader<TimezonedFormat, ThreadLocal<SimpleDateFormat>>() {
@@ -152,6 +155,7 @@ public class DateFunctions {
     }
   }
 
+
   @Stellar(name = "DATE_FORMAT",
       description = "Takes an epoch timestamp and converts it to a date format.",
       params = {"format - DateTime format as a String.",
@@ -190,7 +194,7 @@ public class DateFunctions {
 
   /**
    * Gets the value from a list of arguments.
-   *
+   * <p>
    * If the argument at the specified position does not exist, a default value will be returned. If
    * the argument at the specified position exists, but cannot be coerced to the right type, null is
    * returned. Otherwise, the argument value is returned.
@@ -212,9 +216,9 @@ public class DateFunctions {
 
   /**
    * Stellar Function: DAY_OF_WEEK
-   *
+   * <p>
    * The numbered day within the week. The first day of the week, Sunday, has a value of 1.
-   *
+   * <p>
    * If no argument is supplied, returns the current day of week.
    */
   @Stellar(name = "DAY_OF_WEEK",
@@ -239,9 +243,10 @@ public class DateFunctions {
     }
   }
 
+
   /**
    * Stellar Function: DAY_OF_MONTH
-   *
+   * <p>
    * The day within the month. The first day within the month has a value of 1.
    */
   @Stellar(name = "DAY_OF_MONTH",
@@ -266,9 +271,10 @@ public class DateFunctions {
     }
   }
 
+
   /**
    * Stellar Function: WEEK_OF_MONTH
-   *
+   * <p>
    * The numbered week within the month. The first week has a value of 1.
    */
   @Stellar(name = "WEEK_OF_MONTH",
@@ -293,9 +299,10 @@ public class DateFunctions {
     }
   }
 
+
   /**
    * Stellar Function: WEEK_OF_YEAR
-   *
+   * <p>
    * The numbered week within the year. The first week in the year has a value of 1.
    */
   @Stellar(name = "WEEK_OF_YEAR",
@@ -320,9 +327,10 @@ public class DateFunctions {
     }
   }
 
+
   /**
    * Stellar Function: MONTH
-   *
+   * <p>
    * A number representing the month. The first month, January, has a value of 0.
    */
   @Stellar(name = "MONTH",
@@ -347,9 +355,10 @@ public class DateFunctions {
     }
   }
 
+
   /**
    * Stellar Function: YEAR
-   *
+   * <p>
    * The calendar year.
    */
   @Stellar(name = "YEAR", description = "The number representing the year. ",
@@ -373,9 +382,10 @@ public class DateFunctions {
     }
   }
 
+
   /**
    * Stellar Function: DAY_OF_YEAR
-   *
+   * <p>
    * The day number within the year. The first day of the year has value of 1.
    */
   @Stellar(name = "DAY_OF_YEAR",

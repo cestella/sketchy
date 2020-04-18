@@ -12,30 +12,34 @@ OR CONDITIONS OF ANY KIND, either express or implied. See the License for
 the specific language governing permissions and limitations under the License.
 -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-<modelVersion>4.0.0</modelVersion>
-<groupId>com.caseystella.sketchy.time_series</groupId>
-<artifactId>time_series</artifactId>
-<packaging>pom</packaging>
-<name>Time Series</name>
-<parent>
-  <artifactId>sketchy</artifactId>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
   <groupId>com.caseystella.sketchy</groupId>
+  <artifactId>sketchy</artifactId>
   <version>0.0.1</version>
 </parent>
-<description>Time Series Abstractions/Implementations</description>
-<licenses>
+
+  <groupId>com.caseystella.sketchy.time_series</groupId>
+  <artifactId>time_series</artifactId>
+  <packaging>pom</packaging>
+
+  <name>Time Series</name>
+  <description>Time Series Abstractions/Implementations</description>
+  <licenses>
   <license>
     <name>The Apache Software License, Version 2.0</name>
     <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
     <distribution>repo</distribution>
   </license>
 </licenses>
-<modules>
+
+  <modules>
   <module>selection</module>
 </modules>
-<dependencies>
+
+  <dependencies>
   <dependency>
     <groupId>org.slf4j</groupId>
     <artifactId>slf4j-api</artifactId>
@@ -76,7 +80,8 @@ the specific language governing permissions and limitations under the License.
     <scope>test</scope>
   </dependency>
 </dependencies>
-<build>
+
+  <build>
   <pluginManagement>
     <plugins>
       <plugin>

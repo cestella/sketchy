@@ -1,35 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
+
   <groupId>com.caseystella.sketchy</groupId>
   <artifactId>sketchy</artifactId>
   <version>0.0.1</version>
   <packaging>pom</packaging>
+
   <name>Sketchy</name>
   <description>Sketchy Top Level Project</description>
+
   <modules>
     <module>stellar</module>
     <module>time_series</module>
     <module>sketches</module>
     <module>nosql</module>
+    <module>utilities</module>
+    <module>test-utils</module>
   </modules>
 
-  <repositories>
-    <repository>
-      <id>clojars.org</id>
-      <url>https://clojars.org/repo</url>
-    </repository>
-    <repository>
-      <id>jcenter</id>
-      <url>https://jcenter.bintray.com/</url>
-    </repository>
-  </repositories>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-      <!-- base project versions -->
+    <!-- base project versions -->
     <base_hbase_version>1.1.1</base_hbase_version>
       <!-- full dependency versions -->
+    <global_xerces_version>2.11.0</global_xerces_version>
     <global_json_simple_version>1.1.1</global_json_simple_version>
     <global_httpclient_version>4.3.2</global_httpclient_version>
     <global_accumulo_version>1.8.0</global_accumulo_version>
@@ -56,17 +52,27 @@
     <global_kryo_version>3.0.3</global_kryo_version>
     <global_kryo_serializers_version>0.38</global_kryo_serializers_version>
     <global_reflections_version>0.9.10</global_reflections_version>
-    <global_checkstyle_version>8.29</global_checkstyle_version>
     <global_log4j_core_version>2.1</global_log4j_core_version>
     <global_simple_syslog_version>0.0.3</global_simple_syslog_version>
     <global_aesh_version>0.66.19</global_aesh_version>
     <global_datasketches_version>1.2.0-incubating</global_datasketches_version>
     <global_commons_math_version>3.6.1</global_commons_math_version>
+    <global_commons_io_version>2.5</global_commons_io_version>
     <argLine/>
   </properties>
 
   <dependencyManagement>
     <dependencies>
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>${global_slf4j_version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-log4j12</artifactId>
+        <version>${global_slf4j_version}</version>
+      </dependency>
       <dependency>
         <groupId>org.mockito</groupId>
         <artifactId>mockito-core</artifactId>
@@ -74,16 +80,32 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
+
+  <repositories>
+    <repository>
+      <id>clojars.org</id>
+      <url>https://clojars.org/repo</url>
+    </repository>
+    <repository>
+      <id>jcenter</id>
+      <url>https://jcenter.bintray.com/</url>
+    </repository>
+  </repositories>
+
   <build>
     <pluginManagement>
       <plugins>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>tidy-maven-plugin</artifactId>
+          <version>1.1.0</version>
+        </plugin>
         <plugin>
           <groupId>net.revelc.code.formatter</groupId>
           <artifactId>formatter-maven-plugin</artifactId>
           <version>${global_formatter_version}</version>
         </plugin>
-        <plugin>
-          <!-- Separates the unit tests from the integration tests. -->
+        <plugin><!-- Separates the unit tests from the integration tests. -->
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
           <version>${global_surefire_version}</version>
@@ -91,7 +113,7 @@
             <!-- Skip the default running of this plug-in (or everything is run twice...see below) -->
             <argLine>@{argLine} -Xmx2048m</argLine>
             <skip>true</skip>
-              <!-- Show 100% of the lines from the stack trace (doesn't work) -->
+            <!-- Show 100% of the lines from the stack trace (doesn't work) -->
             <trimStackTrace>false</trimStackTrace>
           </configuration>
           <executions>
@@ -139,21 +161,21 @@
             <tarLongFileMode>posix</tarLongFileMode>
           </configuration>
         </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-checkstyle-plugin</artifactId>
-          <version>2.17</version>
-          <dependencies>
-            <dependency>
-              <groupId>com.puppycrawl.tools</groupId>
-              <artifactId>checkstyle</artifactId>
-              <version>${global_checkstyle_version}</version>
-            </dependency>
-          </dependencies>
-        </plugin>
       </plugins>
     </pluginManagement>
     <plugins>
+ <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>tidy-maven-plugin</artifactId>
+        <version>1.1.0</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>pom</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
       <plugin>
         <groupId>net.revelc.code.formatter</groupId>
         <artifactId>formatter-maven-plugin</artifactId>
@@ -238,32 +260,6 @@
           </execution>
         </executions>
       </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>2.17</version>
-        <dependencies>
-          <dependency>
-            <groupId>com.puppycrawl.tools</groupId>
-            <artifactId>checkstyle</artifactId>
-            <version>${global_checkstyle_version}</version>
-          </dependency>
-        </dependencies>
-        <configuration>
-          <configLocation>checkstyle.xml</configLocation>
-          <excludes>**/generated/**/*</excludes>
-          <logViolationsToConsole>false</logViolationsToConsole>
-        </configuration>
-        <executions>
-          <execution>
-            <id>verify</id>
-            <phase>verify</phase>
-            <goals>
-              <goal>check</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
     </plugins>
   </build>
 
@@ -288,23 +284,6 @@
             <id>aggregate</id>
             <reports>
               <report>aggregate</report>
-            </reports>
-          </reportSet>
-        </reportSets>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>2.17</version>
-        <configuration>
-          <configLocation>checkstyle.xml</configLocation>
-          <excludes>**/generated/**/*</excludes>
-        </configuration>
-        <reportSets>
-          <reportSet>
-            <reports>
-              <report>checkstyle</report>
-              <report>checkstyle-aggregate</report>
             </reports>
           </reportSet>
         </reportSets>
