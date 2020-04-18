@@ -23,5 +23,12 @@ public class NoSqlStoreConfig {
     this.config = config;
   }
 
-  public static NoSqlStore create(NoSqlStore config) throws StoreInitializationException {}
+  public static NoSqlStore create(NoSqlStoreConfig c) throws StoreInitializationException,
+      ClassNotFoundException, IllegalAccessException, InstantiationException {
+    Class<? extends NoSqlStore> clazz =
+        (Class<? extends NoSqlStore>) Class.forName(c.getStoreClass());
+    NoSqlStore store = clazz.newInstance();
+    store.configure(c);
+    return store;
+  }
 }
