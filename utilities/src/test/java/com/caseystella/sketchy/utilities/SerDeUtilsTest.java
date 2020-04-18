@@ -15,17 +15,16 @@
  *
  */
 
-package com.caseystella.stellar.common.utils;
+package com.caseystella.sketchy.utilities;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.google.common.collect.ImmutableList;
-import org.junit.jupiter.api.Test;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests the Serializer.
@@ -116,20 +115,6 @@ public class SerDeUtilsTest {
     assertEquals(expected, actual);
   }
 
-  @Test
-  @SuppressWarnings("unchecked")
-  public void testBloomFilter() {
-    final BloomFilter<Object> expected =
-        new BloomFilter<>(new BloomFilter.DefaultSerializer<>(), 10000, 0.01);
-    expected.add("foo");
-    expected.add("bar");
-    byte[] raw = SerDeUtils.toBytes(expected);
-    BloomFilter<Object> actual = (BloomFilter) SerDeUtils.fromBytes(raw, Object.class);
-    assertTrue(actual.mightContain("foo"));
-    assertFalse(actual.mightContain("timothy"));
-    assertEquals(expected, actual);
-  }
-
   public static class ArbitraryPojo {
     private List<String> list = new ArrayList<>();
     private String string = "foo";
@@ -179,21 +164,27 @@ public class SerDeUtilsTest {
 
     @Override
     public boolean equals(Object o) {
-      if (this == o)
+      if (this == o) {
         return true;
-      if (o == null || getClass() != o.getClass())
+      }
+      if (o == null || getClass() != o.getClass()) {
         return false;
+      }
 
       ArbitraryPojo that = (ArbitraryPojo) o;
 
-      if (getList() != null ? !getList().equals(that.getList()) : that.getList() != null)
+      if (getList() != null ? !getList().equals(that.getList()) : that.getList() != null) {
         return false;
-      if (getString() != null ? !getString().equals(that.getString()) : that.getString() != null)
+      }
+      if (getString() != null ? !getString().equals(that.getString()) : that.getString() != null) {
         return false;
-      if (getD() != null ? !getD().equals(that.getD()) : that.getD() != null)
+      }
+      if (getD() != null ? !getD().equals(that.getD()) : that.getD() != null) {
         return false;
-      if (getMap() != null ? !getMap().equals(that.getMap()) : that.getMap() != null)
+      }
+      if (getMap() != null ? !getMap().equals(that.getMap()) : that.getMap() != null) {
         return false;
+      }
       return immutableList != null ? immutableList.equals(that.immutableList)
           : that.immutableList == null;
 

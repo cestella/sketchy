@@ -15,7 +15,7 @@
  *
  */
 
-package com.caseystella.stellar.common.utils;
+package com.caseystella.sketchy.utilities;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.KryoException;
@@ -58,8 +58,6 @@ import org.objenesis.strategy.InstantiatorStrategy;
 import org.objenesis.strategy.StdInstantiatorStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import static com.esotericsoftware.kryo.util.Util.className;
 
 /**
  * Provides basic functionality to serialize and deserialize the allowed value types for a
@@ -108,12 +106,12 @@ public class SerDeUtils {
     }
   };
 
+
   /**
    * This was backported from a more recent version of kryo than we currently run. The reason why it
    * exists is that we want a strategy for instantiation of classes which attempts a no-arg
    * constructor first and THEN falls back to reflection for performance reasons alone (this is,
    * after all, in the critical path).
-   *
    */
   static private class DefaultInstantiatorStrategy
       implements org.objenesis.strategy.InstantiatorStrategy {
@@ -151,7 +149,7 @@ public class SerDeUtils {
                   return access.newInstance();
                 } catch (Exception ex) {
                   throw new KryoException(
-                      "Error constructing instance of class: " + className(type), ex);
+                      "Error constructing instance of class: " + Util.className(type), ex);
                 }
               }
             };
@@ -175,38 +173,41 @@ public class SerDeUtils {
             try {
               return constructor.newInstance();
             } catch (Exception ex) {
-              throw new KryoException("Error constructing instance of class: " + className(type),
-                  ex);
+              throw new KryoException(
+                  "Error constructing instance of class: " + Util.className(type), ex);
             }
           }
         };
       } catch (Exception ignored) {
       }
       if (fallbackStrategy == null) {
-        if (type.isMemberClass() && !Modifier.isStatic(type.getModifiers()))
+        if (type.isMemberClass() && !Modifier.isStatic(type.getModifiers())) {
           throw new KryoException(
-              "Class cannot be created (non-static member class): " + className(type));
-        else
+              "Class cannot be created (non-static member class): " + Util.className(type));
+        } else {
           throw new KryoException(
-              "Class cannot be created (missing no-arg constructor): " + className(type));
+              "Class cannot be created (missing no-arg constructor): " + Util.className(type));
+        }
       }
       // InstantiatorStrategy.
       return fallbackStrategy.newInstantiatorOf(type);
     }
   }
 
+
   public static Serializer SERIALIZER = new Serializer();
+
 
   private static class Serializer implements Function<Object, byte[]>, Serializable {
     /**
      * Serializes the given Object into bytes.
-     *
      */
     @Override
     public byte[] apply(Object o) {
       return toBytes(o);
     }
   }
+
 
   public static class Deserializer<T> implements Function<byte[], T>, Serializable {
 
@@ -235,7 +236,7 @@ public class SerDeUtils {
 
   /**
    * Serialize a profile measurement's value.
-   *
+   * <p>
    * The value produced by a Profile definition can be any numeric data type. The data type depends
    * on how the profile is defined by the user. The user should be able to choose the data type that
    * is most suitable for their use case.
@@ -259,7 +260,7 @@ public class SerDeUtils {
 
   /**
    * Deserialize a profile measurement's value.
-   *
+   * <p>
    * The value produced by a Profile definition can be any numeric data type. The data type depends
    * on how the profile is defined by the user. The user should be able to choose the data type that
    * is most suitable for their use case.

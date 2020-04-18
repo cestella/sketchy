@@ -1,16 +1,14 @@
 package com.caseystella.sketchy.sketches.statistics.distribution;
 
-import java.util.Optional;
-import org.junit.jupiter.api.Test;
-import com.caseystella.stellar.common.utils.SerDeUtils;
-import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
-import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+
+import com.caseystella.sketchy.utilities.SerDeUtils;
+import java.util.ArrayList;
+import java.util.List;
+import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
+import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
+import org.junit.jupiter.api.Test;
 
 public class LongDistributionSketchTest {
   public static void validateStatisticsProvider(DistributionSketch<Long> statsProvider,

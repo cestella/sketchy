@@ -14,20 +14,22 @@
  */
 package com.caseystella.stellar.common.utils.hashing;
 
-import com.caseystella.stellar.common.utils.ConversionUtils;
-import org.apache.commons.codec.BinaryEncoder;
-import org.apache.commons.codec.EncoderException;
-import org.apache.commons.codec.binary.Hex;
-import org.apache.commons.lang3.SerializationUtils;
-import org.apache.commons.lang3.StringUtils;
-
+import com.caseystella.sketchy.utilities.ConversionUtils;
 import java.io.Serializable;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.Security;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import org.apache.commons.codec.BinaryEncoder;
+import org.apache.commons.codec.EncoderException;
+import org.apache.commons.codec.binary.Hex;
+import org.apache.commons.lang3.SerializationUtils;
+import org.apache.commons.lang3.StringUtils;
 
 public class DefaultHasher implements Hasher {
 
@@ -47,13 +49,14 @@ public class DefaultHasher implements Hasher {
 
   }
 
+
   private String algorithm;
   private BinaryEncoder encoder;
   private Charset charset;
 
   /**
    * Builds a utility to hash values based on a given algorithm.
-   * 
+   *
    * @param algorithm The algorithm used when hashing a value.
    * @param encoder The encoder to use to encode the hashed value.
    * @param charset The charset that will be used during hashing and encoding.
@@ -69,7 +72,7 @@ public class DefaultHasher implements Hasher {
   /**
    * Builds a utility to hash values based on a given algorithm. Uses {@link StandardCharsets#UTF_8}
    * for encoding.
-   * 
+   *
    * @param algorithm The algorithm used when hashing a value.
    * @param encoder The encoder to use to encode the hashed value.
    * @see java.security.Security
@@ -84,7 +87,7 @@ public class DefaultHasher implements Hasher {
   /**
    * Builds a utility to hash values based on a given algorithm. Uses {@link StandardCharsets#UTF_8}
    * for encoding.
-   * 
+   *
    * @param algorithm The algorithm used when hashing a value.
    * @see java.security.Security
    * @see java.security.MessageDigest
@@ -95,11 +98,11 @@ public class DefaultHasher implements Hasher {
 
   /**
    * {@inheritDoc}
-   *
+   * <p>
    * Returns a hash which has been encoded using the supplied encoder. If input is null then a
    * string containing all '0' will be returned. The length of the string is determined by the
    * hashing algorithm used.
-   * 
+   *
    * @param toHash The value to hash.
    * @return A hash of {@code toHash} that has been encoded.
    * @throws EncoderException If unable to encode the hash then this exception occurs.

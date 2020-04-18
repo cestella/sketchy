@@ -17,18 +17,17 @@
 
 package com.caseystella.stellar.common;
 
-import com.google.common.collect.ImmutableMap;
-import org.apache.commons.lang.ClassUtils;
+import com.caseystella.sketchy.utilities.ConversionUtils;
 import com.caseystella.stellar.dsl.Context;
-import com.caseystella.stellar.dsl.functions.resolver.FunctionResolver;
 import com.caseystella.stellar.dsl.MapVariableResolver;
 import com.caseystella.stellar.dsl.StellarFunctions;
 import com.caseystella.stellar.dsl.VariableResolver;
-import com.caseystella.stellar.common.utils.ConversionUtils;
-
+import com.caseystella.stellar.dsl.functions.resolver.FunctionResolver;
+import com.google.common.collect.ImmutableMap;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import org.apache.commons.lang.ClassUtils;
 
 /**
  * The default implementation of a StellarStatefulExecutor.
