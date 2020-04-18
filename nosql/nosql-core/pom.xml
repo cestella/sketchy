@@ -38,7 +38,7 @@
               <goal>test-jar</goal>
             </goals>
           </execution>
-</executions>
+        </executions>
       </plugin>
     </plugins>
   </build>
