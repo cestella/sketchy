@@ -30,7 +30,8 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <!-- base project versions -->
     <base_hbase_version>1.1.1</base_hbase_version>
-    <!-- full dependency versions -->
+      <!-- full dependency versions -->
+    <global_xerces_version>2.11.0</global_xerces_version>
     <global_json_simple_version>1.1.1</global_json_simple_version>
     <global_httpclient_version>4.3.2</global_httpclient_version>
     <global_accumulo_version>1.8.0</global_accumulo_version>
