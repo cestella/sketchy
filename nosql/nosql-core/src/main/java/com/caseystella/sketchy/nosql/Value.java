@@ -1,35 +1,50 @@
 package com.caseystella.sketchy.nosql;
 
+import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Objects;
 
 public class Value {
   public static class Builder {
-    private Value value = new Value();
-
+    private String hostId;
+    private Long computeTimestamp;
+    private byte[] data;
     public Builder withHostId(String s) {
-      value.hostId = s;
+      hostId = s;
       return this;
     }
 
     public Builder withComputeTimestamp(long t) {
-      value.computeTimestamp = t;
+      computeTimestamp = t;
       return this;
     }
 
     public Builder withData(byte[] d) {
-      value.data = d;
+      data = d;
       return this;
     }
 
     public Value build() {
-      return value;
+      return new Value(hostId, computeTimestamp, data);
     }
   }
 
   private String hostId;
-  private long computeTimestamp;
+  private Long computeTimestamp;
   private byte[] data;
+
+  public Value(String hostId, Long computeTimestamp, byte[] data) {
+
+    this.hostId = hostId;
+    this.computeTimestamp = computeTimestamp;
+    this.data = data;
+    if(hostId == null || computeTimestamp == null || data == null) {
+      throw new IllegalStateException(MessageFormat.format(
+          "You must provide all of the parameters for Values: hostId={0}, computeTimestamp={1}, data={2}",
+          hostId, computeTimestamp, data
+      ));
+    }
+  }
 
   public String getHostId() {
     return hostId;

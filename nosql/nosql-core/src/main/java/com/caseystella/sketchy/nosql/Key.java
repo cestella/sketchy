@@ -4,44 +4,58 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.KryoSerializable;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
+import java.text.MessageFormat;
 import java.util.Objects;
 
 public class Key implements KryoSerializable {
-
-
   public static class Builder {
-    Key key = new Key();
+    private Long timestampBin;
+    private String streamId;
+    private String columnName;
+    private Short dataType;
 
     public Builder withTimestampBin(long t) {
-      key.timestampBin = t;
+      timestampBin = t;
       return this;
     }
 
     public Builder withStreamId(String v) {
-      key.streamId = v;
+      streamId = v;
       return this;
     }
 
     public Builder withColumnName(String v) {
-      key.columnName = v;
+      columnName = v;
       return this;
     }
 
     public Builder withDataType(short v) {
-      key.dataType = v;
+      dataType = v;
       return this;
     }
 
     public Key build() {
-      return key;
+      return new Key(timestampBin, streamId, columnName, dataType);
     }
   }
 
-  // TODO: Ensure we specify ALL of these parameters.
-  private long timestampBin;
+  private Long timestampBin;
   private String streamId;
   private String columnName;
-  private short dataType;
+  private Short dataType;
+
+  public Key(Long timestampBin, String streamId, String columnName, Short dataType) {
+    this.timestampBin = timestampBin;
+    this.streamId = streamId;
+    this.columnName = columnName;
+    this.dataType = dataType;
+    if(timestampBin == null || streamId == null || columnName == null || dataType == null) {
+      throw new IllegalStateException(MessageFormat.format(
+          "You must provide all of the parameters for a Key: timestampBin={0}, streamId={1}"
+              + ", columnName={2}, dataType={3}", timestampBin, streamId, columnName, dataType
+      ));
+    }
+  }
 
   public long getTimestampBin() {
     return timestampBin;
