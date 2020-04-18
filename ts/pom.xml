@@ -1,15 +1,18 @@
 <?xml version="1.0"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+
 	<parent>
 		<groupId>com.caseystella.sketchy</groupId>
 		<artifactId>sketchy</artifactId>
 		<version>0.0.1</version>
 	</parent>
+
 	<artifactId>ts</artifactId>
 	<version>0.0.1</version>
+
 	<name>ts</name>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.antlr</groupId>
@@ -24,7 +27,7 @@
     <dependency>
 			<groupId>xerces</groupId>
 			<artifactId>xercesImpl</artifactId>
-      <version>${global_xerces_version}</version>
+			<version>${global_xerces_version}</version>
 		</dependency>
 
 		<dependency>
@@ -39,7 +42,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.caseystella.sketchy</groupId>
-			<artifactId>serialization</artifactId>
+			<artifactId>utilities</artifactId>
 			<version>${parent.version}</version>
 		</dependency>
 		<dependency>
@@ -67,7 +70,13 @@
 		</dependency>
 
 	</dependencies>
+
 	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+			</resource>
+		</resources>
 		<pluginManagement>
 			<plugins>
 				<plugin>
@@ -93,11 +102,5 @@
 				</executions>
 			</plugin>
 		</plugins>
-		<resources>
-			<resource>
-				<directory>src/main/resources</directory>
-			</resource>
-		</resources>
-
 	</build>
 </project>

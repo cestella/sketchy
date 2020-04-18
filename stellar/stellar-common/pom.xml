@@ -1,22 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
+
   <parent>
-    <artifactId>stellar</artifactId>
     <groupId>com.caseystella.sketchy.stellar</groupId>
+    <artifactId>stellar</artifactId>
     <version>0.0.1</version>
   </parent>
+
   <artifactId>stellar-common</artifactId>
+
   <name>stellar-common</name>
   <description>Core elements of the Stellar DSL</description>
+
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <commons.config.version>1.10</commons.config.version>
     <guava_version>${global_guava_version}</guava_version>
   </properties>
+
   <dependencies>
     <dependency>
       <groupId>com.caseystella.sketchy</groupId>
@@ -139,8 +142,8 @@
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
       <version>${guava_version}</version>
-      <optional>true</optional>
       <scope>compile</scope>
+      <optional>true</optional>
     </dependency>
 
     <dependency>
@@ -173,7 +176,13 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+
   <build>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+      </resource>
+    </resources>
     <pluginManagement>
       <plugins>
         <plugin>
@@ -242,10 +251,5 @@
         </executions>
       </plugin>
     </plugins>
-    <resources>
-      <resource>
-        <directory>src/main/resources</directory>
-      </resource>
-    </resources>
   </build>
 </project>
