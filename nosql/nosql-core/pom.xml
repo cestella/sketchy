@@ -8,19 +8,22 @@
     <version>0.0.1</version>
   </parent>
 
-  <groupId>com.caseystella.sketchy.nosql</groupId>
   <artifactId>nosql-core</artifactId>
-  <version>0.0.1</version>
+  <version>${parent.version}</version>
 
-  <name>nosql-core</name>
-  <url>http://maven.apache.org</url>
+  <name>Core NoSQL Abstractions</name>
 
   <dependencies>
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
+      <groupId>com.caseystella.sketchy</groupId>
+      <artifactId>test-utils</artifactId>
+      <version>${parent.version}</version>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.caseystella.sketchy</groupId>
+      <artifactId>utilities</artifactId>
+      <version>0.0.1</version>
     </dependency>
   </dependencies>
 </project>
