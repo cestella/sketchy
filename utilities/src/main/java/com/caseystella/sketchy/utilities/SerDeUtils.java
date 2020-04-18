@@ -15,9 +15,7 @@
  *
  */
 
-package com.caseystella.sketchy.serialization;
-
-import static com.esotericsoftware.kryo.util.Util.className;
+package com.caseystella.sketchy.utilities;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.KryoException;

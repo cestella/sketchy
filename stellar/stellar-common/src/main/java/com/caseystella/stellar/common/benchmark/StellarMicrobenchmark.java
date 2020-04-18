@@ -14,7 +14,7 @@
  */
 package com.caseystella.stellar.common.benchmark;
 
-import com.caseystella.sketchy.serialization.JSONUtils;
+import com.caseystella.sketchy.utilities.JSONUtils;
 import com.caseystella.stellar.common.utils.cli.OptionHandler;
 import com.caseystella.stellar.dsl.Context;
 import com.caseystella.stellar.dsl.MapVariableResolver;

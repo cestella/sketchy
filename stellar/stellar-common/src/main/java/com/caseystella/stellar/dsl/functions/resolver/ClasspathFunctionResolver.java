@@ -19,7 +19,7 @@ import static com.caseystella.stellar.dsl.functions.resolver.ClasspathFunctionRe
 import static com.caseystella.stellar.dsl.functions.resolver.ClasspathFunctionResolver.Config.STELLAR_SEARCH_INCLUDES_KEY;
 import static com.caseystella.stellar.dsl.functions.resolver.ClasspathFunctionResolver.Config.STELLAR_VFS_PATHS;
 
-import com.caseystella.sketchy.serialization.ConversionUtils;
+import com.caseystella.sketchy.utilities.ConversionUtils;
 import com.caseystella.stellar.common.utils.VFSClassloaderUtil;
 import com.caseystella.stellar.dsl.Context;
 import com.caseystella.stellar.dsl.Stellar;
@@ -39,30 +39,29 @@ import org.reflections.util.FilterBuilder;
 
 /**
  * Performs function resolution for Stellar by searching the classpath.
- *
+ * <p>
  * By default, the entire classpath will be searched for Stellar functions. At times, this can take
  * quite a while. To shorten the search time, a property can be defined to either include or exclude
  * certain packages. The fewer packages there are to search, the quicker the search will be.
- *
+ * <p>
  * The properties are pulled from the Context's 'STELLAR_CONFIG'. In the REPL, this is defined in a
  * file called 'stellar.properties' on the classpath.
- *
+ * <p>
  * The following property definition will include only Stellar functions that are part of Apache
  * Metron.
- *
+ * <p>
  * stellar.function.resolver.includes = org.apache.metron.*
- *
+ * <p>
  * The following property definition will exclude Stellar functions that are part of Metron's
  * management suite of function.
- *
+ * <p>
  * stellar.function.resolver.excludes = org.apache.metron.management.*
- *
+ * <p>
  * The following property definition would also exclude the Stellar functions that are part of the
  * management suite of functions. Of course, this may also exclude other packages, but this serves
  * as an example of the types of expression that can be used.
- *
+ * <p>
  * stellar.function.resolver.excludes = org\\.management.*
- *
  */
 public class ClasspathFunctionResolver extends BaseFunctionResolver {
   public enum Config {

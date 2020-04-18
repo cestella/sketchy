@@ -13,7 +13,7 @@
  * the License.
  */
 
-package com.caseystella.sketchy.serialization;
+package com.caseystella.sketchy.utilities;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;

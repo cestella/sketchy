@@ -14,7 +14,7 @@
  */
 package com.caseystella.stellar.common.utils;
 
-import com.caseystella.sketchy.serialization.SerDeUtils;
+import com.caseystella.sketchy.utilities.SerDeUtils;
 import com.google.common.hash.Funnel;
 import com.google.common.hash.PrimitiveSink;
 import java.io.Serializable;

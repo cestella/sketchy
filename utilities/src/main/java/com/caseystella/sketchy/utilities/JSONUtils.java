@@ -13,7 +13,7 @@
  * the License.
  */
 
-package com.caseystella.sketchy.serialization;
+package com.caseystella.sketchy.utilities;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;

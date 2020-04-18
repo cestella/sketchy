@@ -12,7 +12,7 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.caseystella.sketchy.serialization;
+package com.caseystella.sketchy.utilities;
 
 import com.caseystella.sketchy.test.UnitTestHelper;
 import java.io.File;

@@ -21,7 +21,7 @@ import static com.caseystella.stellar.common.shell.StellarResult.error;
 import static com.caseystella.stellar.common.shell.StellarResult.noop;
 import static com.caseystella.stellar.common.shell.StellarResult.success;
 
-import com.caseystella.sketchy.serialization.JSONUtils;
+import com.caseystella.sketchy.utilities.JSONUtils;
 import com.caseystella.stellar.common.StellarProcessor;
 import com.caseystella.stellar.common.configuration.ConfigurationsUtils;
 import com.caseystella.stellar.common.shell.specials.AssignmentCommand;

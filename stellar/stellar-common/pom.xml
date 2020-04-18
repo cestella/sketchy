@@ -20,7 +20,7 @@
   <dependencies>
     <dependency>
       <groupId>com.caseystella.sketchy</groupId>
-      <artifactId>serialization</artifactId>
+      <artifactId>utilities</artifactId>
       <version>${parent.version}</version>
     </dependency>
     <dependency>
@@ -165,11 +165,6 @@
       <groupId>org.apache.httpcomponents</groupId>
       <artifactId>httpclient</artifactId>
       <version>${global_httpclient_version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.caseystella.sketchy</groupId>
-      <artifactId>serialization</artifactId>
-      <version>${parent.version}</version>
     </dependency>
     <dependency>
       <groupId>com.caseystella.sketchy</groupId>

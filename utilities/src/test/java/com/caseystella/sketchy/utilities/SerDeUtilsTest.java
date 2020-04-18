@@ -15,7 +15,7 @@
  *
  */
 
-package com.caseystella.sketchy.serialization;
+package com.caseystella.sketchy.utilities;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

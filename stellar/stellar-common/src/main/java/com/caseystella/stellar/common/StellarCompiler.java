@@ -16,7 +16,7 @@ package com.caseystella.stellar.common;
 
 import static java.lang.String.format;
 
-import com.caseystella.sketchy.serialization.ConversionUtils;
+import com.caseystella.sketchy.utilities.ConversionUtils;
 import com.caseystella.stellar.common.evaluators.ArithmeticEvaluator;
 import com.caseystella.stellar.common.evaluators.ComparisonExpressionWithOperatorEvaluator;
 import com.caseystella.stellar.common.evaluators.NumberLiteralEvaluator;

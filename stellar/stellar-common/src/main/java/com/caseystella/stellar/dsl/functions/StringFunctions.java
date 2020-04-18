@@ -15,8 +15,8 @@
 
 package com.caseystella.stellar.dsl.functions;
 
-import com.caseystella.sketchy.serialization.ConversionUtils;
-import com.caseystella.sketchy.serialization.JSONUtils;
+import com.caseystella.sketchy.utilities.ConversionUtils;
+import com.caseystella.sketchy.utilities.JSONUtils;
 import com.caseystella.stellar.dsl.BaseStellarFunction;
 import com.caseystella.stellar.dsl.ParseException;
 import com.caseystella.stellar.dsl.Stellar;

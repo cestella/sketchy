@@ -11,7 +11,7 @@
     <module>stellar</module>
     <module>ts</module>
     <module>sketches</module>
-    <module>serialization</module>
+    <module>utilities</module>
     <module>test-utils</module>
   </modules>
 

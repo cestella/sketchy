@@ -15,7 +15,7 @@
 
 package com.caseystella.stellar.common.configuration;
 
-import com.caseystella.sketchy.serialization.JSONUtils;
+import com.caseystella.sketchy.utilities.JSONUtils;
 import com.caseystella.stellar.common.Constants;
 import com.google.common.base.Function;
 import java.io.IOException;

@@ -14,7 +14,7 @@
  */
 package com.caseystella.stellar.common;
 
-import com.caseystella.sketchy.serialization.ConversionUtils;
+import com.caseystella.sketchy.utilities.ConversionUtils;
 import com.caseystella.stellar.dsl.Context;
 import com.caseystella.stellar.dsl.VariableResolver;
 import com.caseystella.stellar.dsl.functions.resolver.FunctionResolver;

@@ -17,10 +17,10 @@
 
 package com.caseystella.sketchy.sketches.statistics.distribution.sketchimpl;
 
-import com.caseystella.sketchy.serialization.SerDeUtils;
 import com.caseystella.sketchy.sketches.statistics.distribution.DistributionSketch;
 import com.caseystella.sketchy.sketches.statistics.distribution.types.number.NumberType;
 import com.caseystella.sketchy.sketches.statistics.distribution.types.sketch.SketchType;
+import com.caseystella.sketchy.utilities.SerDeUtils;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;

@@ -16,7 +16,7 @@ package com.caseystella.stellar.common.utils;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.caseystella.sketchy.serialization.SerDeUtils;
+import com.caseystella.sketchy.utilities.SerDeUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

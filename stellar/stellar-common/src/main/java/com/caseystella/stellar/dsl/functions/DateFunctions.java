@@ -15,7 +15,7 @@
 
 package com.caseystella.stellar.dsl.functions;
 
-import com.caseystella.sketchy.serialization.ConversionUtils;
+import com.caseystella.sketchy.utilities.ConversionUtils;
 import com.caseystella.stellar.dsl.BaseStellarFunction;
 import com.caseystella.stellar.dsl.Stellar;
 import com.github.benmanes.caffeine.cache.CacheLoader;
@@ -194,7 +194,7 @@ public class DateFunctions {
 
   /**
    * Gets the value from a list of arguments.
-   *
+   * <p>
    * If the argument at the specified position does not exist, a default value will be returned. If
    * the argument at the specified position exists, but cannot be coerced to the right type, null is
    * returned. Otherwise, the argument value is returned.
@@ -216,9 +216,9 @@ public class DateFunctions {
 
   /**
    * Stellar Function: DAY_OF_WEEK
-   *
+   * <p>
    * The numbered day within the week. The first day of the week, Sunday, has a value of 1.
-   *
+   * <p>
    * If no argument is supplied, returns the current day of week.
    */
   @Stellar(name = "DAY_OF_WEEK",
@@ -246,7 +246,7 @@ public class DateFunctions {
 
   /**
    * Stellar Function: DAY_OF_MONTH
-   *
+   * <p>
    * The day within the month. The first day within the month has a value of 1.
    */
   @Stellar(name = "DAY_OF_MONTH",
@@ -274,7 +274,7 @@ public class DateFunctions {
 
   /**
    * Stellar Function: WEEK_OF_MONTH
-   *
+   * <p>
    * The numbered week within the month. The first week has a value of 1.
    */
   @Stellar(name = "WEEK_OF_MONTH",
@@ -302,7 +302,7 @@ public class DateFunctions {
 
   /**
    * Stellar Function: WEEK_OF_YEAR
-   *
+   * <p>
    * The numbered week within the year. The first week in the year has a value of 1.
    */
   @Stellar(name = "WEEK_OF_YEAR",
@@ -330,7 +330,7 @@ public class DateFunctions {
 
   /**
    * Stellar Function: MONTH
-   *
+   * <p>
    * A number representing the month. The first month, January, has a value of 0.
    */
   @Stellar(name = "MONTH",
@@ -358,7 +358,7 @@ public class DateFunctions {
 
   /**
    * Stellar Function: YEAR
-   *
+   * <p>
    * The calendar year.
    */
   @Stellar(name = "YEAR", description = "The number representing the year. ",
@@ -385,7 +385,7 @@ public class DateFunctions {
 
   /**
    * Stellar Function: DAY_OF_YEAR
-   *
+   * <p>
    * The day number within the year. The first day of the year has value of 1.
    */
   @Stellar(name = "DAY_OF_YEAR",

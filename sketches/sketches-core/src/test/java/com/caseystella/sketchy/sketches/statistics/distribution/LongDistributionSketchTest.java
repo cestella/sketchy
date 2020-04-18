@@ -3,7 +3,7 @@ package com.caseystella.sketchy.sketches.statistics.distribution;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-import com.caseystella.sketchy.serialization.SerDeUtils;
+import com.caseystella.sketchy.utilities.SerDeUtils;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;

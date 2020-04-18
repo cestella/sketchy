@@ -17,7 +17,7 @@
 
 package com.caseystella.stellar.common.shell.cli;
 
-import com.caseystella.sketchy.serialization.JSONUtils;
+import com.caseystella.sketchy.utilities.JSONUtils;
 import com.caseystella.stellar.common.shell.DefaultStellarAutoCompleter;
 import com.caseystella.stellar.common.shell.DefaultStellarShellExecutor;
 import com.caseystella.stellar.common.shell.StellarAutoCompleter;

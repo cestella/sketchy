@@ -13,7 +13,7 @@
  * the License.
  */
 
-package com.caseystella.sketchy.serialization;
+package com.caseystella.sketchy.utilities;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;

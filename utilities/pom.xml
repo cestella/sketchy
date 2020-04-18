@@ -9,7 +9,7 @@
     <artifactId>sketchy</artifactId>
     <version>0.0.1</version>
   </parent>
-  <artifactId>serialization</artifactId>
+  <artifactId>utilities</artifactId>
   <version>0.0.1</version>
   <name>Serialization Core Utilities</name>
   <dependencies>

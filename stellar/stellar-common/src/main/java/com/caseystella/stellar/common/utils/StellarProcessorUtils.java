@@ -15,7 +15,7 @@
 
 package com.caseystella.stellar.common.utils;
 
-import com.caseystella.sketchy.serialization.SerDeUtils;
+import com.caseystella.sketchy.utilities.SerDeUtils;
 import com.caseystella.stellar.common.StellarPredicateProcessor;
 import com.caseystella.stellar.common.StellarProcessor;
 import com.caseystella.stellar.dsl.Context;

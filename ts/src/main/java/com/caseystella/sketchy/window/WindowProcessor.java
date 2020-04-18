@@ -18,7 +18,7 @@ package com.caseystella.sketchy.window;
 
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 
-import com.caseystella.sketchy.serialization.ConversionUtils;
+import com.caseystella.sketchy.utilities.ConversionUtils;
 import com.caseystella.sketchy.window.generated.WindowBaseListener;
 import com.caseystella.sketchy.window.generated.WindowLexer;
 import com.caseystella.sketchy.window.generated.WindowParser;
